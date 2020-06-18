@@ -1,7 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="484c427c-eb60-4453-9303-87edf628d348" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/target/classes/application.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/classes/com/rickjinny/mark/MarkApplication.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/target/test-classes/com/rickjinny/mark/MarkApplicationTests.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IgnoredFileRootStore">
+    <option name="generatedRoots">
+      <set>
+        <option value="$PROJECT_DIR$/.idea" />
+      </set>
+    </option>
   </component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
@@ -11,6 +30,7 @@
     </option>
   </component>
   <component name="ProjectId" id="1dUwxE9Q9hNPTQPyVWqGOg4ApsZ" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showExcludedFiles" value="true" />
@@ -74,5 +94,79 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+  </component>
+  <component name="ServiceViewManager">
+    <option name="viewStates">
+      <list>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="484c427c-eb60-4453-9303-87edf628d348" name="Default Changelist" comment="" />
+      <created>1592493223107</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1592493223107</updated>
+      <workItem from="1592493225591" duration="683000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="WindowStateProjectService">
+    <state width="1618" height="424" key="GridCell.Tab.0.bottom" timestamp="1592495378355">
+      <screen x="0" y="23" width="1680" height="942" />
+    </state>
+    <state width="1618" height="424" key="GridCell.Tab.0.bottom/0.23.1680.942@0.23.1680.942" timestamp="1592495378355" />
+    <state width="1618" height="424" key="GridCell.Tab.0.center" timestamp="1592495378353">
+      <screen x="0" y="23" width="1680" height="942" />
+    </state>
+    <state width="1618" height="424" key="GridCell.Tab.0.center/0.23.1680.942@0.23.1680.942" timestamp="1592495378353" />
+    <state width="1618" height="424" key="GridCell.Tab.0.left" timestamp="1592495378353">
+      <screen x="0" y="23" width="1680" height="942" />
+    </state>
+    <state width="1618" height="424" key="GridCell.Tab.0.left/0.23.1680.942@0.23.1680.942" timestamp="1592495378353" />
+    <state width="1618" height="424" key="GridCell.Tab.0.right" timestamp="1592495378354">
+      <screen x="0" y="23" width="1680" height="942" />
+    </state>
+    <state width="1618" height="424" key="GridCell.Tab.0.right/0.23.1680.942@0.23.1680.942" timestamp="1592495378354" />
+    <state width="1618" height="424" key="GridCell.Tab.1.bottom" timestamp="1592495378357">
+      <screen x="0" y="23" width="1680" height="942" />
+    </state>
+    <state width="1618" height="424" key="GridCell.Tab.1.bottom/0.23.1680.942@0.23.1680.942" timestamp="1592495378357" />
+    <state width="1618" height="424" key="GridCell.Tab.1.center" timestamp="1592495378356">
+      <screen x="0" y="23" width="1680" height="942" />
+    </state>
+    <state width="1618" height="424" key="GridCell.Tab.1.center/0.23.1680.942@0.23.1680.942" timestamp="1592495378356" />
+    <state width="1618" height="424" key="GridCell.Tab.1.left" timestamp="1592495378355">
+      <screen x="0" y="23" width="1680" height="942" />
+    </state>
+    <state width="1618" height="424" key="GridCell.Tab.1.left/0.23.1680.942@0.23.1680.942" timestamp="1592495378355" />
+    <state width="1618" height="424" key="GridCell.Tab.1.right" timestamp="1592495378356">
+      <screen x="0" y="23" width="1680" height="942" />
+    </state>
+    <state width="1618" height="424" key="GridCell.Tab.1.right/0.23.1680.942@0.23.1680.942" timestamp="1592495378356" />
   </component>
 </project>
