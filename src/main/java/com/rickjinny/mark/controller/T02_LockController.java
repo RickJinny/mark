@@ -101,7 +101,7 @@ public class T02_LockController {
         long begin = System.currentTimeMillis();
         IntStream.rangeClosed(1,1000).parallel().forEach(i -> {
             slow();
-            // 只对 List 加锁
+            // 只对 List 加锁, 不要对 slow() 方法加锁
             synchronized (data) {
                 data.add(i);
             }
