@@ -1,5 +1,6 @@
 package com.rickjinny.mark.controller;
 
+import com.rickjinny.mark.bean.Data;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -47,29 +48,12 @@ public class T02_LockController {
     /**
      * 2、
      */
-    @Getter
-    private static int counter = 0;
-
-    public static int reset() {
-        counter = 0;
-        return counter;
-    }
-
-    public synchronized void wrong() {
-        counter++;
-    }
-
     @RequestMapping("/wrong")
     public int wrong(@RequestParam(value = "count", defaultValue = "1000000") int counter) {
-        reset();
+        Data.reset();
         // 多线程循环，一定次数调用不同实例的 wrong 方法
         IntStream.rangeClosed(1, counter).parallel()
-                .forEach(i -> wrong());
-        return getCounter();
+                .forEach(i -> new Data().wrong());
+        return Data.getCounter();
     }
-
-
-
-
-
 }
