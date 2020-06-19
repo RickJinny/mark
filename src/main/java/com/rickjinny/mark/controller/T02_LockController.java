@@ -1,7 +1,6 @@
 package com.rickjinny.mark.controller;
 
 import com.rickjinny.mark.bean.Data;
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -12,13 +11,14 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.IntStream;
 
-import static java.lang.System.*;
-
 @RestController
 @RequestMapping("/lock")
 @Slf4j
 public class T02_LockController {
 
+    /**
+     * 1、
+     */
     private volatile int a = 1;
     private volatile int b = 1;
 
@@ -49,6 +49,8 @@ public class T02_LockController {
         new Thread(() -> lock.compare()).start();
     }
 
+
+
     /**
      * 2、
      */
@@ -60,6 +62,8 @@ public class T02_LockController {
                 .forEach(i -> new Data().wrong());
         return Data.getCounter();
     }
+
+
 
     /**
      * 3、精细化加锁，只对 List<Integer> 对象加锁
