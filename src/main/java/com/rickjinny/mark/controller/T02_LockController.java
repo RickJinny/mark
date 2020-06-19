@@ -17,7 +17,7 @@ import java.util.stream.IntStream;
 public class T02_LockController {
 
     /**
-     * 1、
+     * 1、synchronized 加锁的问题
      */
     private volatile int a = 1;
     private volatile int b = 1;
@@ -52,7 +52,8 @@ public class T02_LockController {
 
 
     /**
-     * 2、
+     * 2、加锁前要清楚锁和被保护的对象是不是一个层面的
+     *    Data 的 getCounter() 方法，要使用对象锁，不要使用方法锁
      */
     @RequestMapping("/wrong")
     public int wrong(@RequestParam(value = "count", defaultValue = "1000000") int counter) {
@@ -84,7 +85,7 @@ public class T02_LockController {
     public int wrong3() {
         long begin = System.currentTimeMillis();
         IntStream.rangeClosed(1, 1000).parallel().forEach(i -> {
-            // 加锁粒度太粗了
+            // 加锁粒度太粗了，show 执行很慢，所以会导致很慢
             synchronized (this) {
                 slow();
                 data.add(i);
