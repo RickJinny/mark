@@ -1,6 +1,7 @@
 package com.rickjinny.mark.controller;
 
 import com.rickjinny.mark.bean.Data;
+import com.rickjinny.mark.bean.Product;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.IntStream;
 
 @RestController
@@ -51,6 +53,7 @@ public class T02_LockController {
 
 
 
+
     /**
      * 2、加锁前要清楚锁和被保护的对象是不是一个层面的
      *    Data 的 getCounter() 方法，要使用对象锁，不要使用方法锁
@@ -63,6 +66,7 @@ public class T02_LockController {
                 .forEach(i -> new Data().wrong());
         return Data.getCounter();
     }
+
 
 
 
@@ -108,5 +112,36 @@ public class T02_LockController {
         });
         log.info("took:{}", System.currentTimeMillis() - begin);
         return data.size();
+    }
+
+
+    /**
+     * 4、多把锁要小心死锁问题
+     */
+
+    private boolean createOrder(List<Product> order) {
+        // 存放所有获得的锁
+        List<ReentrantLock> locks = new ArrayList<>();
+
+        for (Product product : order) {
+            try {
+                // 获得锁 10 秒，超时
+                if (product.lock.tryLock(10, TimeUnit.SECONDS)) {
+                    locks.add(product.lock);
+                } else {
+                    locks.forEach(ReentrantLock::unlock);
+                    return false;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        // 锁全部拿到之后，执行扣减库存业务逻辑
+        try {
+            order.forEach(item -> item.remaining--);
+        } finally {
+            locks.forEach(ReentrantLock::unlock);
+        }
+        return true;
     }
 }
