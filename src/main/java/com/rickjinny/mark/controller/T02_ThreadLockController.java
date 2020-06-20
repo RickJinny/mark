@@ -20,7 +20,7 @@ import java.util.stream.IntStream;
 @RestController
 @RequestMapping("/lock")
 @Slf4j
-public class T02_LockController {
+public class T02_ThreadLockController {
 
     /**
      * 1、synchronized 加锁的问题
@@ -50,7 +50,7 @@ public class T02_LockController {
     }
 
     public static void main(String[] args) {
-        T02_LockController lock = new T02_LockController();
+        T02_ThreadLockController lock = new T02_ThreadLockController();
         new Thread(() -> lock.add()).start();
         new Thread(() -> lock.compare()).start();
     }
