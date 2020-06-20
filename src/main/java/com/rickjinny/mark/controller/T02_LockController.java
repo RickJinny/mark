@@ -8,9 +8,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @RestController
@@ -143,5 +147,51 @@ public class T02_LockController {
             locks.forEach(ReentrantLock::unlock);
         }
         return true;
+    }
+
+    private ConcurrentHashMap<String, Product> products = new ConcurrentHashMap<>();
+
+    private List<Product> createCart() {
+        return IntStream.rangeClosed(1, 3)
+                    .mapToObj(i -> "item" + ThreadLocalRandom.current().nextInt(products.size()))
+                    .map(name -> products.get(name))
+                    .collect(Collectors.toList());
+    }
+
+    @RequestMapping("/wrong4")
+    public long wrong4() {
+        long begin = System.currentTimeMillis();
+        // 并发进行 100 次下单操作，统计成功次数
+        long success = IntStream.rangeClosed(1, 100).parallel()
+                .mapToObj(i -> {
+                    List<Product> cart = createCart();
+                    return createOrder(cart);
+                })
+                .filter(result -> result)
+                .count();
+        log.info("success:{} totalRemaining:{} took:{}ms items:{}",
+                success,
+                products.entrySet().stream().map(item -> item.getValue().remaining).reduce(0, Integer::sum),
+                System.currentTimeMillis() - begin, products);
+        return success;
+    }
+
+    @RequestMapping("/right4")
+    public long right4() {
+        long begin = System.currentTimeMillis();
+        long success = IntStream.rangeClosed(1, 100).parallel()
+                .mapToObj(i -> {
+                    List<Product> cart = createCart().stream()
+                            .sorted(Comparator.comparing(Product::getName))
+                            .collect(Collectors.toList());
+                    return createOrder(cart);
+                })
+                .filter(result -> result)
+                .count();
+        log.info("success:{} totalRemaining:{} took:{}ms items:{}",
+                success,
+                products.entrySet().stream().map(product -> product.getValue().remaining).reduce(0, Integer::sum),
+                System.currentTimeMillis() - begin, products);
+        return success;
     }
 }

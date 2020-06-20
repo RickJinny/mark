@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="484c427c-eb60-4453-9303-87edf628d348" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/rickjinny/mark/bean/Product.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/rickjinny/mark/controller/T02_LockController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/rickjinny/mark/controller/T02_LockController.java" afterDir="false" />
     </list>
@@ -158,7 +157,7 @@
       <option name="presentableId" value="Default" />
       <updated>1592493223107</updated>
       <workItem from="1592493225591" duration="1231000" />
-      <workItem from="1592577540997" duration="6332000" />
+      <workItem from="1592577540997" duration="8100000" />
     </task>
     <servers />
   </component>
