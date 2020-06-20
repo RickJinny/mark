@@ -5,9 +5,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.UUID;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -48,5 +47,42 @@ public class T03_ThreadPoolController {
             log.info("Number of Tasks in Queue: {}", threadPool.getQueue().size());
             log.info("====================");
         }, 0, 1, TimeUnit.SECONDS);
+    }
+
+    @RequestMapping("/right")
+    public int right() throws InterruptedException {
+        // 使用一个计数器跟踪完成的任务数
+        AtomicInteger atomicInteger = new AtomicInteger();
+        // 创建一个具有 2 个核心线程、5 个最大线程、使用容量为 10 的 ArrayBlockingQueue 阻塞队列作为工作队列的线程池，使用默认的 AbortPolicy 拒绝策略
+        ThreadPoolExecutor threadPool = new ThreadPoolExecutor(2, 5, 5,
+                TimeUnit.SECONDS, new ArrayBlockingQueue<>(10), new ThreadPoolExecutor.AbortPolicy());
+        printStats(threadPool);
+        // 每隔 1 秒提交 1 次，一共提交 20 次任务
+        IntStream.rangeClosed(1, 20).forEach(i -> {
+            try {
+                TimeUnit.SECONDS.sleep(1);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            int id = atomicInteger.incrementAndGet();
+            try {
+                threadPool.submit(() -> {
+                    log.info("{} started", id);
+                    // 每个任务耗时 10 秒
+                    try {
+                        TimeUnit.SECONDS.sleep(10);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    log.info("{} finished", id);
+                });
+            } catch (Exception e) {
+                // 提交出现异常的话，打印出错误信息并为计数器减一
+                log.error("error submitting task {}", id, e);
+                atomicInteger.decrementAndGet();
+            }
+        });
+        TimeUnit.SECONDS.sleep(60);
+        return atomicInteger.intValue();
     }
 }
