@@ -85,4 +85,26 @@ public class T03_ThreadPoolController {
         TimeUnit.SECONDS.sleep(60);
         return atomicInteger.intValue();
     }
+
+    @RequestMapping("/wrong")
+    private String wrong() {
+        ThreadPoolExecutor threadPool = ThreadPoolHelper.getThreadPool();
+        IntStream.rangeClosed(1, 10).forEach(i -> {
+            threadPool.execute(() -> {
+                try {
+                    TimeUnit.SECONDS.sleep(1);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+        });
+        return "OK";
+    }
+
+    static class ThreadPoolHelper {
+        public static ThreadPoolExecutor getThreadPool() {
+            // 线程池没有复用
+            return (ThreadPoolExecutor) Executors.newCachedThreadPool();
+        }
+    }
 }
