@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="484c427c-eb60-4453-9303-87edf628d348" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/rickjinny/mark/controller/T03_ThreadPoolController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/rickjinny/mark/controller/T03_ThreadPoolController.java" afterDir="false" />
-    </list>
+    <list default="true" id="484c427c-eb60-4453-9303-87edf628d348" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -165,7 +162,7 @@
       <workItem from="1592636190985" duration="1027000" />
       <workItem from="1592658419823" duration="372000" />
       <workItem from="1592660948440" duration="86000" />
-      <workItem from="1592724696389" duration="523000" />
+      <workItem from="1592724696389" duration="555000" />
     </task>
     <servers />
   </component>
@@ -234,10 +231,10 @@
       <screen x="0" y="23" width="1680" height="942" />
     </state>
     <state x="234" y="23" key="SettingsEditor/0.23.1680.942@0.23.1680.942" timestamp="1592614676196" />
-    <state x="394" y="249" key="com.intellij.ide.util.TipDialog" timestamp="1592577541056">
+    <state x="394" y="249" key="com.intellij.ide.util.TipDialog" timestamp="1592841050657">
       <screen x="0" y="23" width="1680" height="942" />
     </state>
-    <state x="394" y="249" key="com.intellij.ide.util.TipDialog/0.23.1680.942@0.23.1680.942" timestamp="1592577541056" />
+    <state x="394" y="249" key="com.intellij.ide.util.TipDialog/0.23.1680.942@0.23.1680.942" timestamp="1592841050657" />
     <state x="563" y="383" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1592583567416">
       <screen x="0" y="23" width="1680" height="942" />
     </state>
@@ -246,16 +243,5 @@
       <screen x="0" y="23" width="1680" height="942" />
     </state>
     <state x="337" y="23" width="1005" height="942" key="search.everywhere.popup/0.23.1680.942@0.23.1680.942" timestamp="1592585207706" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/rickjinny/mark/controller/T03_ThreadPoolController.java</url>
-          <line>56</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>
