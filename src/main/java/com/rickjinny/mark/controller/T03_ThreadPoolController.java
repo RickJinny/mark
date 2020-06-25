@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @RestController
-@RequestMapping("/pool")
+@RequestMapping("/threadPool")
 @Slf4j
 public class T03_ThreadPoolController {
 
