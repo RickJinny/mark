@@ -15,7 +15,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.IntStream;
 
 /**
- * 23、缓存设计
+ * 23、缓存设计：缓存雪崩问题
  */
 @RestController
 @RequestMapping("/cache")
@@ -89,7 +89,7 @@ public class T23_RedisCacheController {
         Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(() -> {
             log.info("DB QPS : {}", atomicInteger.getAndSet(0));
         }, 0, 1, TimeUnit.SECONDS);
-        
+
         countDownLatch.await();
     }
 
