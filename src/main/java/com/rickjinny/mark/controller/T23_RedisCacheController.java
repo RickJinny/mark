@@ -65,7 +65,7 @@ public class T23_RedisCacheController {
      * 而且通过适当的休眠, 控制从数据库更新数据的频率, 降低数据库压力。
      */
     @PostConstruct
-    public void rightInit2() {
+    public void rightInit2() throws InterruptedException {
         CountDownLatch countDownLatch = new CountDownLatch(1);
         // 每隔 30秒 全量更新一次缓存
         Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(() -> {
@@ -89,6 +89,7 @@ public class T23_RedisCacheController {
         Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(() -> {
             log.info("DB QPS : {}", atomicInteger.getAndSet(0));
         }, 0, 1, TimeUnit.SECONDS);
+        countDownLatch.await();
     }
 
     @RequestMapping("/city")
