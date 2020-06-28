@@ -1,5 +1,6 @@
 package com.rickjinny.mark.utils;
 
+import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.CollectionUtils;
 import redis.clients.jedis.Jedis;
@@ -400,8 +401,7 @@ public class RedisUtil {
         if(CollectionUtils.isEmpty(dataList)){
             return new ArrayList<T>();
         }
-//        return JavaJsonConvert.json2List(dataList.toString(), clazz);
-        return null;
+        return JSON.parseArray(dataList.toString(), clazz);
     }
 
     /**
