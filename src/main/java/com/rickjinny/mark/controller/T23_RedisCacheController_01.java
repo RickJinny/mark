@@ -18,7 +18,7 @@ import java.util.stream.IntStream;
  * 23、缓存设计：缓存雪崩问题
  */
 @RestController
-@RequestMapping("/cache")
+@RequestMapping("/cache01")
 @Slf4j
 public class T23_RedisCacheController_01 {
 
