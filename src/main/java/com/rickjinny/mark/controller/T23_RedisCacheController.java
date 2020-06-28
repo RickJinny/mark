@@ -21,8 +21,12 @@ import java.util.stream.IntStream;
 @Slf4j
 public class T23_RedisCacheController {
 
+    // 为了高并发下, 计数的原子性，使用 AtomicInteger
     private AtomicInteger atomicInteger = new AtomicInteger();
 
+    /**
+     * 在类中，执行顺序：构造方法 > @Autowired > @PostConstruct
+     */
     @PostConstruct
     public void wrongInit() {
         // 初始化 1000 个城市数据到 Redis, 所有缓存数据有效期是 30 秒
@@ -41,10 +45,12 @@ public class T23_RedisCacheController {
         int id = ThreadLocalRandom.current().nextInt(1000) + 1;
         String key = "city" + id;
         String data = RedisUtil.get(key);
+        // 如果缓存里面不存在的话，到数据库里面查询
         if (data == null) {
             // 回源数据库查询
             data = getCityFromDB(id);
-            if (StringUtils.isBlank(data)) {
+            // 如果数据库里面为可的话
+            if (StringUtils.isNotBlank(data)) {
                 // 缓存 30 秒过期
                 RedisUtil.set(key, data, 30);
             }
