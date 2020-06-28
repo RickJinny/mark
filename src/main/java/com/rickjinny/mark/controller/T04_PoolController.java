@@ -2,12 +2,10 @@ package com.rickjinny.mark.controller;
 
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import redis.clients.jedis.Jedis;
 
-import javax.annotation.PostConstruct;
 import java.util.concurrent.TimeUnit;
 
 @RestController
@@ -15,13 +13,13 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class T04_PoolController {
 
-    @PostConstruct
-    public void init() {
-        try (Jedis jedis = new Jedis("127.0.0.1", 6379)) {
-            Assert.isTrue("Ok".equals(jedis.set("a", "1")), "set a = 1 return OK");
-            Assert.isTrue("Ok".equals(jedis.set("b", "2")), "set b = 2 return OK");
-        }
-    }
+//    @PostConstruct
+//    public void init() {
+//        try (Jedis jedis = new Jedis("127.0.0.1", 6379)) {
+//            Assert.isTrue("Ok".equals(jedis.set("a", "1")), "set a = 1 return OK");
+//            Assert.isTrue("Ok".equals(jedis.set("b", "2")), "set b = 2 return OK");
+//        }
+//    }
 
     @RequestMapping("/test1")
     public void test1() throws InterruptedException {
