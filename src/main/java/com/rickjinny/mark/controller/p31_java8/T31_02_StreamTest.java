@@ -4,10 +4,8 @@ import com.google.common.collect.Lists;
 import org.junit.Test;
 
 import java.awt.geom.Point2D;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.OptionalDouble;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 使用 Java8 简化代码:
@@ -40,7 +38,7 @@ public class T31_02_StreamTest {
     }
 
     /**
-     * 使用 Stream 流, 来简化 calc(List<Integer> ints) 方法的代码逻辑
+     * 1、使用 Stream 流, 来简化 calc(List<Integer> ints) 方法的代码逻辑
      */
     @Test
     public void stream() {
@@ -79,4 +77,48 @@ public class T31_02_StreamTest {
         Optional.empty().orElseThrow(IllegalAccessError::new);
 
     }
+
+
+    /**
+     * 3、结合 Lambda 和 Stream 对各种类的增强。
+     */
+
+    private Map<Long, Product> cache = new ConcurrentHashMap<>();
+
+    private Product getProductAndCache(Long id) {
+        Product product = null;
+        // key 存在, 返回 value
+        if (cache.containsKey(id)) {
+            product = cache.get(id);
+        } else {
+            // 不存在, 则获取 value。需要遍历数据源查询获得 Product
+            for (Product p : Product.getData()) {
+                if (p.getId().equals(id)) {
+                    product = p;
+                    break;
+                }
+            }
+            // 加入 ConcurrentHashMap
+            if (product != null) {
+                cache.put(id, product);
+            }
+        }
+        return product;
+    }
+
+
+    /**
+     * 利用 ConcurrentHashMap 的 computeIfAbsent 方法，一行代码就可以实现。
+     */
+    private Product getProductAndCacheCool(Long id) {
+        return cache.computeIfAbsent(id, i -> // 当key 不存在时，提供一个 Function 来代表根据 key 获取 value 的过程
+                Product.getData().stream()
+                        .filter(p -> p.getId().equals(i)) // 过滤
+                        .findFirst() // 找到第一个, 得到 Optional<Product>
+                        .orElse(null) // 如果找不到 Product, 则使用 null
+        );
+    }
+
+
+
 }
