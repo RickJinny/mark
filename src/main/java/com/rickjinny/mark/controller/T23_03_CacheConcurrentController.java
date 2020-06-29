@@ -20,7 +20,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * 这种情况, 就是我们常说的缓存击穿或缓存并发问题。
  */
 @RestController
-@RequestMapping("/cache02")
+@RequestMapping("/cache03")
 @Slf4j
 public class T23_03_CacheConcurrentController {
 
