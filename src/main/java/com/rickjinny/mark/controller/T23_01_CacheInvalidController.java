@@ -20,7 +20,7 @@ import java.util.stream.IntStream;
 @RestController
 @RequestMapping("/cache01")
 @Slf4j
-public class T23_RedisCacheController_01 {
+public class T23_01_CacheInvalidController {
 
     /**
      * 为了高并发下, 计数的原子性，使用 AtomicInteger
