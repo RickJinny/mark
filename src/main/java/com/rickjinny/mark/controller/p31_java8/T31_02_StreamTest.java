@@ -158,7 +158,7 @@ public class T31_02_StreamTest {
                 }
             };
         }
-        
+
         R apply(T t) throws E;
     }
 }
