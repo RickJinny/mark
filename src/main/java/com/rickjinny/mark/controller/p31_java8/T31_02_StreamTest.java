@@ -2,10 +2,18 @@ package com.rickjinny.mark.controller.p31_java8;
 
 import com.google.common.collect.Lists;
 import org.junit.Test;
+import pl.touk.throwing.ThrowingFunction;
 
 import java.awt.geom.Point2D;
+import java.io.IOException;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 /**
  * 使用 Java8 简化代码:
@@ -119,6 +127,22 @@ public class T31_02_StreamTest {
         );
     }
 
-
-
+    /**
+     * 利用 Files.walk 返回一个 Path 的流, 通过两行代码就能实现递归搜索 + grep 的操作。
+     * 整个逻辑是: 递归搜索文件夹, 查找所有的 .java 文件; 然后读取文件每一行内容, 用正则
+     * 表达式匹配 public class 关键字; 最后输出文件名和这行内容
+     */
+    @Test
+    public void filesExample() throws IOException {
+        // 无限深度, 递归遍历文件夹
+        try (Stream<Path> pathStream = Files.walk(Paths.get("."))) {
+            pathStream.filter(Files::isRegularFile)
+                    .filter(FileSystems.getDefault().getPathMatcher("glob:**/*.java")::matches) // 搜索 java 源码文件
+                    .flatMap(ThrowingFunction.unchecked(path ->
+                            Files.readAllLines(path).stream() // 读取文件内容, 转换为 Stream<List>
+                                    .filter(line -> Pattern.compile("public class").matcher(line).find()) // 使用正则过滤带有 public class 的行
+                                    .map(line -> path.getFileName() + " >> " + line))) // 把这行文件内容转换为文件名 + 行
+                    .forEach(System.out::println); // 打印所有行
+        }
+    }
 }
