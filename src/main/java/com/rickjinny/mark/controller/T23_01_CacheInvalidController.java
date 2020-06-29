@@ -4,7 +4,6 @@ import com.rickjinny.mark.utils.RedisUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.PostConstruct;
 import java.util.concurrent.CountDownLatch;
@@ -17,7 +16,7 @@ import java.util.stream.IntStream;
 /**
  * 23、缓存设计：缓存雪崩问题
  */
-@RestController
+//@RestController
 @RequestMapping("/cache01")
 @Slf4j
 public class T23_01_CacheInvalidController {

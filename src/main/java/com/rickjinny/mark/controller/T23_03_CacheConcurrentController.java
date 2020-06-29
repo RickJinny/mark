@@ -72,7 +72,7 @@ public class T23_03_CacheConcurrentController {
                     /**
                      * 双重检查, 因为可能已有一个 B 线程过了第一次判断, 在等锁, 然后 A 线程已经把数据写入 Redis 中
                      */
-                    if (StringUtils.isBlank(data)) {
+                    if (StringUtils.isEmpty(data)) {
                         // 回到数据库查询
                         data = getDataFromDB();
                         RedisUtil.set("hotKey", data, 5);
