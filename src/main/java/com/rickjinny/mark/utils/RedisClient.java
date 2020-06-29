@@ -2,6 +2,7 @@ package com.rickjinny.mark.utils;
 
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
@@ -10,6 +11,7 @@ import redis.clients.jedis.JedisPoolConfig;
 import java.util.*;
 
 @Slf4j
+@Component
 public class RedisClient {
 
     private static int MAX_WAIT = 15 * 1000;
