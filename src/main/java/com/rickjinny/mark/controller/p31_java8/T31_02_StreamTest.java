@@ -2,7 +2,6 @@ package com.rickjinny.mark.controller.p31_java8;
 
 import com.google.common.collect.Lists;
 import org.junit.Test;
-import pl.touk.throwing.ThrowingFunction;
 
 import java.awt.geom.Point2D;
 import java.io.IOException;
@@ -12,6 +11,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
@@ -144,5 +144,21 @@ public class T31_02_StreamTest {
                                     .map(line -> path.getFileName() + " >> " + line))) // 把这行文件内容转换为文件名 + 行
                     .forEach(System.out::println); // 打印所有行
         }
+    }
+
+    @FunctionalInterface
+    public interface ThrowingFunction<T, R, E extends Throwable> {
+
+        static <T, R, E extends Throwable> Function<T, R> unchecked(ThrowingFunction<T, R, E> f) {
+            return t -> {
+                try {
+                    return f.apply(t);
+                } catch (Throwable e) {
+                    throw new RuntimeException(e);
+                }
+            };
+        }
+        
+        R apply(T t) throws E;
     }
 }
