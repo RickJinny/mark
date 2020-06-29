@@ -1,6 +1,6 @@
 package com.rickjinny.mark.controller;
 
-import com.rickjinny.mark.utils.RedisUtil;
+import com.rickjinny.mark.utils.RedisClient;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,7 +32,7 @@ public class T23_01_CacheInvalidController {
     @PostConstruct
     public void wrongInit() {
         // 初始化 1000 个城市数据到 Redis, 所有缓存数据有效期是 30 秒
-        IntStream.rangeClosed(1, 1000).forEach(i -> RedisUtil.set("city" + i, getCityFromDB(i), 30));
+        IntStream.rangeClosed(1, 1000).forEach(i -> RedisClient.set("city" + i, getCityFromDB(i), 30));
         log.info("Cache init finished");
 
         // 每秒一次，输出数据库访问的 QPS
@@ -49,7 +49,7 @@ public class T23_01_CacheInvalidController {
     @PostConstruct
     public void rightInit1 () {
         // 这次缓存的过期时间是 30秒 + 10秒内的随机延迟
-        IntStream.rangeClosed(1, 1000).forEach(i -> RedisUtil.set("city" + i, getCityFromDB(i),
+        IntStream.rangeClosed(1, 1000).forEach(i -> RedisClient.set("city" + i, getCityFromDB(i),
                 30 + ThreadLocalRandom.current().nextInt(10)));
         log.info("Cache init finished.");
         // 同样1秒一次输出数据库 QPS
@@ -76,7 +76,7 @@ public class T23_01_CacheInvalidController {
                 } catch (InterruptedException e) {
                     if (StringUtils.isNotBlank(data)) {
                         // 缓存永不过期，被动更新
-                        RedisUtil.set("city" + i, data);
+                        RedisClient.set("city" + i, data);
                     }
                 }
                 log.info("Cache update finished");
@@ -97,7 +97,7 @@ public class T23_01_CacheInvalidController {
         // 随机查询一个城市
         int id = ThreadLocalRandom.current().nextInt(1000) + 1;
         String key = "city" + id;
-        String data = RedisUtil.get(key);
+        String data = RedisClient.get(key);
         // 如果缓存里面不存在的话，到数据库里面查询
         if (data == null) {
             // 回源数据库查询
@@ -105,7 +105,7 @@ public class T23_01_CacheInvalidController {
             // 如果数据库里面为可的话
             if (StringUtils.isNotBlank(data)) {
                 // 缓存 30 秒过期
-                RedisUtil.set(key, data, 30);
+                RedisClient.set(key, data, 30);
             }
         }
         return data;

@@ -1,15 +1,14 @@
 package com.rickjinny.mark.controller;
 
-import com.rickjinny.mark.utils.RedisUtil;
+import com.rickjinny.mark.utils.RedisClient;
+import com.rickjinny.mark.utils.lock.RedisLock;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.redisson.api.RLock;
-import org.redisson.api.RedissonClient;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.PostConstruct;
+import java.util.UUID;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -30,13 +29,10 @@ public class T23_03_CacheConcurrentController {
      */
     private AtomicInteger atomicInteger = new AtomicInteger();
 
-    @Autowired
-    private RedissonClient redissonClient;
-
     @PostConstruct
     public void init() {
         // 初始化一个热点数据到 Redis 中, 过期时间设置为5秒
-        RedisUtil.set("hotKey", getDataFromDB(), 5);
+        RedisClient.set("hotKey", getDataFromDB(), 5);
 
         // 每隔1秒输出一下回源的 QPS
         Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(() -> {
@@ -51,35 +47,37 @@ public class T23_03_CacheConcurrentController {
 
     @RequestMapping("/wrong")
     public String wrong() {
-        String data = RedisUtil.get("hotKey");
+        String data = RedisClient.get("hotKey");
         if (StringUtils.isEmpty(data)) {
             data = getDataFromDB();
             // 重新加入缓存, 过期时间还是 5 秒
-            RedisUtil.set("hotKey", data, 5);
+            RedisClient.set("hotKey", data, 5);
         }
         return data;
     }
 
     @RequestMapping("/right")
     public String right() {
-        String data = RedisUtil.get("hotKey");
+        String data = RedisClient.get("hotKey");
         if (StringUtils.isEmpty(data)) {
-            RLock locker = redissonClient.getLock("locker");
+            String key = "redisLock_" + System.currentTimeMillis();
+            String value = UUID.randomUUID().toString();
+            boolean lock = RedisLock.lock(key, value, 30, TimeUnit.MILLISECONDS);
             // 获取分布式锁
-            if (locker.tryLock()) {
+            if (lock) {
                 try {
-                    data = RedisUtil.get("hotKey");
+                    data = RedisClient.get("hotKey");
                     /**
                      * 双重检查, 因为可能已有一个 B 线程过了第一次判断, 在等锁, 然后 A 线程已经把数据写入 Redis 中
                      */
                     if (StringUtils.isEmpty(data)) {
                         // 回到数据库查询
                         data = getDataFromDB();
-                        RedisUtil.set("hotKey", data, 5);
+                        RedisClient.set("hotKey", data, 5);
                     }
                 } finally {
                     // 别忘记释放, 另外注意写法, 获取锁后整段代码 try + finally, 确保 unlock 万一失
-                    locker.unlock();
+                    RedisLock.unlock(key, value);
                 }
             }
         }

@@ -10,7 +10,7 @@ import redis.clients.jedis.JedisPoolConfig;
 import java.util.*;
 
 @Slf4j
-public class RedisUtil {
+public class RedisClient {
 
     private static int MAX_WAIT = 15 * 1000;
     private static int TIMEOUT = 10 * 1000;
