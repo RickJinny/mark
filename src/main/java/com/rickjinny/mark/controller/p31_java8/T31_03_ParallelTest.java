@@ -5,6 +5,8 @@ import org.junit.Test;
 
 import java.time.LocalDateTime;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.IntStream;
@@ -72,7 +74,19 @@ public class T31_03_ParallelTest {
      * 第二种方式: 使用 Executors.newFixedThreadPool 来获得固定线程数的线程池，使用 execute 提交所有任务到线程池执行，
      * 最后关闭线程池等待所有任务执行完成。
      */
-    
+    private int threadPool(int taskCount, int threadCount) throws InterruptedException {
+        // 总操作次数计算器
+        AtomicInteger atomicInteger = new AtomicInteger();
+        // 初始化一个线程数量 = threadCount 的线程池
+        ExecutorService executorService = Executors.newFixedThreadPool(threadCount);
+        // 所有任务直接提交到线程池处理
+        IntStream.rangeClosed(1, taskCount).forEach(i -> executorService.execute(() -> increment(atomicInteger)));
+        // 提交关闭线程池申请, 等待之前所有任务执行完成
+        executorService.shutdown();
+        executorService.awaitTermination(1, TimeUnit.HOURS);
+        // 查询计数器当前值
+        return atomicInteger.get();
+    }
 
 
 }
