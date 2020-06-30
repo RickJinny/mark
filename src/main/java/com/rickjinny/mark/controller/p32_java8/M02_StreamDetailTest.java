@@ -19,6 +19,7 @@ import java.util.stream.IntStream;
  * Stream 流中具体 api 的使用:
  * 1、filter 方法
  * 2、map 方法
+ * 3、flatMap 方法
  *
  */
 public class M02_StreamDetailTest {
@@ -97,5 +98,36 @@ public class M02_StreamDetailTest {
             Product product = new Product((long) i, "product" + i, i * 100.0);
             productList.add(product);
         }
+    }
+
+    /**
+     * 3、flatMap 方法。
+     * 使用：flatMap 展开或者扁平化操作, 相当于 map + flat, 通过 map 把每一个元素替换为一个流, 然后展开这个流。
+     *
+     * 比如：我们要统计所有订单的总价格, 可以有两种方式。
+     */
+    @Test
+    public void flatMap() {
+        /**
+         * 第一种方式: 直接通过原始商品列表的商品个数 * 商品单价，进行统计的话, 可以先把订单通过 flatMap 展开成商品清单,
+         * 也就是把 Order 替换为 Stream, 然后对每一个 OrderItem 用 mapToDouble 转换获得商品总价, 最后进行一次 Sum 求和。
+         */
+        // 直接展开订单商品进行价格统计
+        double sum = orders.stream()
+                .flatMap(order -> order.getOrderItemList().stream())
+                .mapToDouble(item -> item.getProductQuantity() * item.getProductPrice())
+                .sum();
+        System.out.println(sum);
+
+        /**
+         * 第二种方式: 利用 flatMapToDouble 方法把列表中每一项展开替换为一个 DoubleStream,
+         * 也就是直接把每一个订单转换为每一个商品的总价，然后求和。
+         */
+        // 另一种方式是：flatMap + mapToDouble = flatMapToDouble
+        double sum1 = orders.stream()
+                .flatMapToDouble(order -> order.getOrderItemList().stream()
+                        .mapToDouble(item -> item.getProductQuantity() * item.getProductPrice()))
+                .sum();
+        System.out.println(sum1);
     }
 }
