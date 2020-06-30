@@ -108,26 +108,30 @@ public class M02_StreamDetailTest {
      */
     @Test
     public void flatMap() {
+        // 不依赖订单上的总价格字段
+        double sum1 = orders.stream().mapToDouble(order -> order.getTotalPrice()).sum();
+        System.out.println(sum1);
+
         /**
          * 第一种方式: 直接通过原始商品列表的商品个数 * 商品单价，进行统计的话, 可以先把订单通过 flatMap 展开成商品清单,
          * 也就是把 Order 替换为 Stream, 然后对每一个 OrderItem 用 mapToDouble 转换获得商品总价, 最后进行一次 Sum 求和。
          */
         // 直接展开订单商品进行价格统计
-        double sum = orders.stream()
+        double sum2 = orders.stream()
                 .flatMap(order -> order.getOrderItemList().stream())
                 .mapToDouble(item -> item.getProductQuantity() * item.getProductPrice())
                 .sum();
-        System.out.println(sum);
+        System.out.println(sum2);
 
         /**
          * 第二种方式: 利用 flatMapToDouble 方法把列表中每一项展开替换为一个 DoubleStream,
          * 也就是直接把每一个订单转换为每一个商品的总价，然后求和。
          */
         // 另一种方式是：flatMap + mapToDouble = flatMapToDouble
-        double sum1 = orders.stream()
+        double sum3 = orders.stream()
                 .flatMapToDouble(order -> order.getOrderItemList().stream()
                         .mapToDouble(item -> item.getProductQuantity() * item.getProductPrice()))
                 .sum();
-        System.out.println(sum1);
+        System.out.println(sum3);
     }
 }
