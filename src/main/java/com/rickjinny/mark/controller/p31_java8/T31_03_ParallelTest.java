@@ -127,6 +127,17 @@ public class T31_03_ParallelTest {
     }
 
     /**
-     * 
+     * 第五种方式: 使用 CompletableFuture 来实现。
+     * CompletableFuture.runAsync 方法可以指定一个线程池，一般会使用 CompletableFuture 的时候用到。
      */
+    private int completeFuture(int taskCount, int threadCount) throws ExecutionException, InterruptedException {
+        // 总操作次数计数器
+        AtomicInteger atomicInteger = new AtomicInteger();
+        // 自定义一个并行度 = threadCount 的 ForkJoinPool
+        ForkJoinPool forkJoinPool = new ForkJoinPool(threadCount);
+        //
+        CompletableFuture.runAsync(() -> IntStream.rangeClosed(1, taskCount).parallel().forEach(i -> T31_03_ParallelTest.this.increment(atomicInteger)), forkJoinPool).get();
+        // 查询当前计数器的值
+        return atomicInteger.get();
+    }
 }
