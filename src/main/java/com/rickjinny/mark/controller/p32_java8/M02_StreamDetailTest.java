@@ -2,14 +2,18 @@ package com.rickjinny.mark.controller.p32_java8;
 
 import com.rickjinny.mark.controller.p32_java8.bean.Order;
 import com.rickjinny.mark.controller.p32_java8.bean.OrderItem;
+import com.rickjinny.mark.controller.p32_java8.bean.Product;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 import java.util.concurrent.atomic.LongAdder;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * Stream 流中具体 api 的使用:
@@ -49,6 +53,7 @@ public class M02_StreamDetailTest {
      * 2、map 方法使用
      * map 操作可以做转换（或者说投影）, 类似 SQL 中的 select。
      * 为了对比, 使用两种方式统计订单中所有商品的数量, 前一种是通过两次遍历实现, 后一种是通过两次 mapToLong + sum 实现。
+     * 显然，后一种方法无需中间变量, 更直观。
      */
     @Test
     public void map() {
@@ -75,5 +80,22 @@ public class M02_StreamDetailTest {
                 .mapToLong(OrderItem::getProductQuantity)
                 .sum()).sum();
         System.out.println(sum);
+
+
+        /**
+         *  再补充一下, 使用 for 循环生成数据, 是我们平时常用的操作。
+         *  现在，我们可以用一行代码 IntStream 配合 mapToObj 替代 for 循环来生成数据，比如生成 10 个 product 元素构成 List。
+         */
+        // 把 IntStream 通过转换为 Stream<Project>
+        List<Product> products = IntStream.rangeClosed(1, 10)
+                .mapToObj(i -> new Product((long) i, "product" + i, i * 100.0))
+                .collect(Collectors.toList());
+
+        // 原始的遍历写法，如下所示：
+        List<Product> productList = new ArrayList<>();
+        for (int i = 1; i <= 10; i++) {
+            Product product = new Product((long) i, "product" + i, i * 100.0);
+            productList.add(product);
+        }
     }
 }
