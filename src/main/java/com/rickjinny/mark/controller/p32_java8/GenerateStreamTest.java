@@ -6,6 +6,9 @@ import org.junit.Test;
 
 import java.math.BigInteger;
 import java.util.Arrays;
+import java.util.stream.Collectors;
+import java.util.stream.DoubleStream;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 /**
@@ -58,4 +61,38 @@ public class GenerateStreamTest {
         Stream.generate(Math::random).limit(10).forEach(System.out::println);
     }
 
+    /**
+     * 第五种方法: 通过 IntStream 或 DoubleStream 构造基本类型的流。
+     */
+    @Test
+    public void primitive() {
+        // 演示 IntStream 和 DoubleStream
+        IntStream.range(1, 3).forEach(System.out::println);
+        IntStream.range(0, 3).mapToObj(i -> "x").forEach(System.out::println);
+
+        IntStream.rangeClosed(1, 3).forEach(System.out::println);
+        DoubleStream.of(1.1, 2.2, 3.3).forEach(System.out::println);
+
+        // 各种转换, 后面注释代表了输出结果
+        Class<? extends int[]> aClass1 = IntStream.of(1, 2).toArray().getClass();
+        System.out.println(aClass1); // class [I
+        Class<? extends int[]> aClass2 = Stream.of(1, 2).mapToInt(Integer::intValue).toArray().getClass();
+        System.out.println(aClass2); // class [I
+        Class<? extends Object[]> aClass3 = IntStream.of(1, 2).boxed().toArray().getClass();
+        System.out.println(aClass3); // class [Ljava.lang.Object;
+        Class<? extends double[]> aClass4 = IntStream.of(1, 2).asDoubleStream().toArray().getClass();
+        System.out.println(aClass4); // class [D
+        Class<? extends long[]> aClass5 = IntStream.of(1, 2).asLongStream().toArray().getClass();
+        System.out.println(aClass5); // class [J
+
+        // 注意基本类型流和装箱后的流的区别
+        Arrays.asList("a", "b", "c").stream()
+                .mapToInt(String::length)
+                .asLongStream()
+                .mapToDouble(x -> x / 10.0)
+                .boxed()
+                .mapToLong(x -> 1L)
+                .mapToObj(x -> "")
+                .collect(Collectors.toList());
+    }
 }
