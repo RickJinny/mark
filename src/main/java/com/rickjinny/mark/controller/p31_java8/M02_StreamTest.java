@@ -1,6 +1,7 @@
 package com.rickjinny.mark.controller.p31_java8;
 
 import com.google.common.collect.Lists;
+import com.rickjinny.mark.controller.p31_java8.bean.Product;
 import org.junit.Test;
 
 import java.awt.geom.Point2D;
@@ -21,7 +22,7 @@ import java.util.stream.Stream;
  * 2、使用 Optional 简化判空逻辑。
  * 3、JDK8 结合 Lambda 和 Stream 对各种类的增强。
  */
-public class T31_02_StreamTest {
+public class M02_StreamTest {
 
     private static double calc(List<Integer> ints) {
         // 临时中间集合

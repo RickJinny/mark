@@ -12,7 +12,7 @@ import java.util.function.Supplier;
 /**
  * 31、Java8 中的重要知识点
  */
-public class T31_01_LambdaTest {
+public class M01_LambdaTest {
 
     @Test
     public void lambdaMethod() {

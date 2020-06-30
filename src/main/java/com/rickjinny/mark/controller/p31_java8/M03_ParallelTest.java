@@ -15,7 +15,7 @@ import java.util.stream.IntStream;
  * 此外 Java8 还提供了并行流的功能: 通过 parallel 方法, 一键把 Stream 转换为并行操作提交到线程池处理。
  */
 @Slf4j
-public class T31_03_ParallelTest {
+public class M03_ParallelTest {
 
     /**
      * 通过线程池来处理 1 到 100
@@ -138,7 +138,7 @@ public class T31_03_ParallelTest {
         // 自定义一个并行度 = threadCount 的 ForkJoinPool
         ForkJoinPool forkJoinPool = new ForkJoinPool(threadCount);
         //
-        CompletableFuture.runAsync(() -> IntStream.rangeClosed(1, taskCount).parallel().forEach(i -> T31_03_ParallelTest.this.increment(atomicInteger)), forkJoinPool).get();
+        CompletableFuture.runAsync(() -> IntStream.rangeClosed(1, taskCount).parallel().forEach(i -> M03_ParallelTest.this.increment(atomicInteger)), forkJoinPool).get();
         // 查询当前计数器的值
         return atomicInteger.get();
     }

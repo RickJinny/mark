@@ -1,4 +1,4 @@
-package com.rickjinny.mark.controller.p31_java8;
+package com.rickjinny.mark.controller.p31_java8.bean;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
