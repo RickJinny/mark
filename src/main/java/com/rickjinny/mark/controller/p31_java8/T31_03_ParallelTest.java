@@ -1,7 +1,9 @@
 package com.rickjinny.mark.controller.p31_java8;
 
 import lombok.extern.slf4j.Slf4j;
+import org.junit.Assert;
 import org.junit.Test;
+import org.springframework.util.StopWatch;
 
 import java.time.LocalDateTime;
 import java.util.concurrent.*;
@@ -139,5 +141,39 @@ public class T31_03_ParallelTest {
         CompletableFuture.runAsync(() -> IntStream.rangeClosed(1, taskCount).parallel().forEach(i -> T31_03_ParallelTest.this.increment(atomicInteger)), forkJoinPool).get();
         // 查询当前计数器的值
         return atomicInteger.get();
+    }
+
+    /**
+     * 使用 StopWatch 可以方便的对程序部分代码进行计时(ms级别)，适用于同步单线程代码块。
+     * StopWatch 是位于org.springframework.util包下的一个工具类。
+     * @throws InterruptedException
+     */
+    @Test
+    public void allTest() throws InterruptedException, ExecutionException {
+        int taskCount = 10000;
+        int threadCount = 20;
+        StopWatch stopWatch = new StopWatch();
+
+        stopWatch.start("thread");
+        Assert.assertEquals(taskCount, thread(taskCount, threadCount));
+        stopWatch.stop();
+
+        stopWatch.start("threadPool");
+        Assert.assertEquals(taskCount, threadPool(taskCount, threadCount));
+        stopWatch.stop();
+
+        stopWatch.start("forkJoin");
+        Assert.assertEquals(taskCount, forkJoin(taskCount, threadCount));
+        stopWatch.stop();
+
+        stopWatch.start("stream");
+        Assert.assertEquals(taskCount, stream(taskCount, threadCount));
+        stopWatch.stop();
+
+        stopWatch.start("completeFuture");
+        Assert.assertEquals(taskCount, completeFuture(taskCount, threadCount));
+        stopWatch.start();
+
+        log.info(stopWatch.prettyPrint());
     }
 }
