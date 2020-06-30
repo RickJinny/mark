@@ -140,9 +140,10 @@ public class M02_StreamDetailTest {
     @Test
     public void sorted() {
         // 大于 50 的订单，按照订单价格倒序前 5
-        orders.stream().filter(order -> order.getTotalPrice() > 50)
-                .sorted(Comparator.comparing(Order::getTotalPrice).reversed())
-                .limit(5)
+        System.out.println("大于 50 的订单，按照订单价格倒序前 5");
+        orders.stream().filter(order -> order.getTotalPrice() > 50)  // 过滤大于 50 的订单
+                .sorted(Comparator.comparing(Order::getTotalPrice).reversed()) // 按照订单价格倒序排列
+                .limit(5) // 取其前 5 个
                 .forEach(System.out::println);
     }
 }
