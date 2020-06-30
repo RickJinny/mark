@@ -1,4 +1,4 @@
-package com.rickjinny.mark.controller;
+package com.rickjinny.mark.controller.p23;
 
 import com.rickjinny.mark.utils.RedisClient;
 import com.rickjinny.mark.utils.lock.RedisLock;

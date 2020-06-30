@@ -1,4 +1,4 @@
-package com.rickjinny.mark.controller;
+package com.rickjinny.mark.controller.p04;
 
 
 import lombok.extern.slf4j.Slf4j;
