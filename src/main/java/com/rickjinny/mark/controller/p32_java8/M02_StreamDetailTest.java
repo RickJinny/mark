@@ -18,6 +18,7 @@ import java.util.stream.IntStream;
  * 2、map 方法
  * 3、flatMap 方法
  * 4、sorted 方法
+ * 5、distinct 方法
  */
 public class M02_StreamDetailTest {
 
@@ -145,5 +146,33 @@ public class M02_StreamDetailTest {
                 .sorted(Comparator.comparing(Order::getTotalPrice).reversed()) // 按照订单价格倒序排列
                 .limit(5) // 取其前 5 个
                 .forEach(System.out::println);
+    }
+
+    /**
+     * 5、distinct 方法
+     * distinct 操作的作用是去重。类似 SQL 中的 distinct, 比如下面的代码实现：
+     * （1）查询去重后的下单用户。使用 map 从订单提取出购买用户, 然后使用 distinct 去重。
+     * （2）查询购买过的商品名。使用 flatMap + map 提取出订单中所有的商品名, 然后使用 distinct 去重。
+     */
+    @Test
+    public void distinct() {
+        /**
+         * 1、去重下单用户: 使用 map 从订单提取出购买用户, 然后使用 distinct 去重。
+         */
+        String users = orders.stream()
+                .map(order -> order.getCustomerName())
+                .distinct()
+                .collect(Collectors.joining(","));
+        System.out.println(users);
+        
+        /**
+         * 2、查询购买够的商品: 使用 flatMap + map 提取出订单中所有的商品名, 然后使用 distinct 去重。
+         */
+        String products = orders.stream()
+                .flatMap(order -> order.getOrderItemList().stream())
+                .map(OrderItem::getProductName)
+                .distinct()
+                .collect(Collectors.joining(","));
+        System.out.println(products);
     }
 }
