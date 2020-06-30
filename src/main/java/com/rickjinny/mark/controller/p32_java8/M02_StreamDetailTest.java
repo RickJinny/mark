@@ -19,6 +19,7 @@ import java.util.stream.IntStream;
  * 3、flatMap 方法
  * 4、sorted 方法
  * 5、distinct 方法
+ * 6、skip & limit
  */
 public class M02_StreamDetailTest {
 
@@ -164,7 +165,7 @@ public class M02_StreamDetailTest {
                 .distinct()
                 .collect(Collectors.joining(","));
         System.out.println(users);
-        
+
         /**
          * 2、查询购买够的商品: 使用 flatMap + map 提取出订单中所有的商品名, 然后使用 distinct 去重。
          */
@@ -174,5 +175,37 @@ public class M02_StreamDetailTest {
                 .distinct()
                 .collect(Collectors.joining(","));
         System.out.println(products);
+    }
+
+    /**
+     * 6、skip & limit 方法
+     * skip 和 limit 操作用于分页, 类似 MySQL 中的 limit。
+     * 其中, skip 实现跳过一定的项, limit 用于限制项总数。
+     * <p>
+     * 比如下面的代码:
+     * (1) 按照下单时间顺序, 查询前 2 个订单的顾客姓名和下单时间。
+     * (2) 按照下单时间顺序, 查询第 3 个和第 4 个订单的顾客姓名和下单时间。
+     */
+    @Test
+    public void skipAndLimit() {
+
+        /**
+         * (1) 按照下单时间顺序, 查询前 2 个订单的顾客姓名和下单时间。
+         */
+        orders.stream()
+                .sorted(Comparator.comparing(Order::getPlaceAt))
+                .map(order -> order.getCustomerName() + "@" + order.getPlaceAt())
+                .limit(2)
+                .forEach(System.out::println);
+
+        /**
+         * (2) 按照下单时间顺序, 查询第 3 个和第 4 个订单的顾客姓名和下单时间。
+         */
+        orders.stream()
+                .sorted(Comparator.comparing(Order::getPlaceAt))
+                .map(order -> order.getCustomerName() + "@" + order.getPlaceAt())
+                .skip(2)
+                .limit(2)
+                .forEach(System.out::println);
     }
 }
