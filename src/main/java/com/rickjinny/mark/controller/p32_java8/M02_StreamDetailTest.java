@@ -251,7 +251,27 @@ public class M02_StreamDetailTest {
                 .collect(Collectors.toCollection(LinkedList::new));
 
         /**
-         * 第四个案例：
+         * 第四个案例：使用 toMap 获取订单id + 下单用户名的 Map
          */
+        orders.stream()
+                .collect(Collectors.toMap(Order::getId, Order::getCustomerName))
+                .entrySet()
+                .forEach(System.out::println);
+
+        /**
+         * 第五个案例：使用 toMap 获取下单用户名 + 最近一次下单时间的 Map
+         */
+        orders.stream()
+                .collect(Collectors.toMap(Order::getCustomerName, Order::getPlaceAt, (x, y) -> x.isAfter(y) ? x : y))
+                .entrySet()
+                .forEach(System.out::println);
+
+        /**
+         * 第六个案例：订单平均购买的商品数量
+         */
+        Double collect = orders.stream()
+                .collect(Collectors.averagingInt(order ->
+                        order.getOrderItemList().stream().collect(Collectors.summingInt(OrderItem::getProductQuantity))));
+        System.out.println(collect);
     }
 }
