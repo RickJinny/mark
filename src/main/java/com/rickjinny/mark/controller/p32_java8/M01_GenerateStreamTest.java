@@ -20,7 +20,7 @@ import java.util.stream.Stream;
  * 第五种方法: 通过 IntStream 或 DoubleStream 构造基本类型的流。
  */
 @Slf4j
-public class GenerateStreamTest {
+public class M01_GenerateStreamTest {
 
     /**
      * 第一种方法: 通过 stream 方法把 List 或数组转换为流。
