@@ -1,5 +1,6 @@
 package com.rickjinny.mark.controller.p32_java8;
 
+import com.rickjinny.mark.controller.p32_java8.bean.Customer;
 import com.rickjinny.mark.controller.p32_java8.bean.Order;
 import com.rickjinny.mark.controller.p32_java8.bean.OrderItem;
 import com.rickjinny.mark.controller.p32_java8.bean.Product;
@@ -22,7 +23,8 @@ import java.util.stream.IntStream;
  * 5、distinct 方法
  * 6、skip & limit
  * 7、collect 收集操作
- * 8、groupBy 的方法
+ * 8、groupBy 方法
+ * 9、partitionBy 方法
  */
 public class M02_StreamDetailTest {
 
@@ -371,5 +373,21 @@ public class M02_StreamDetailTest {
                 Collectors.groupingBy(order -> order.getPlaceAt().format(DateTimeFormatter.ofPattern("yyyyMM")),
                         Collectors.groupingBy(order -> order.getCustomerName(),
                                 Collectors.mapping(order -> order.getId(), Collectors.toList()))));
+    }
+
+
+    /**
+     * 9、partitionBy 方法
+     * partitionBy 用于分区, 分区是特殊的分组, 只有 true 和 false 两组。
+     * 比如：我们把用户按照是否下单进行分区, 给 partitionBy 传入一个 Predicate 作为数据分区的区分, 输出是 Map<Boolean, List<T>
+     */
+    @Test
+    public void partitionBy() {
+        // 测试一下，partitionBy 配合 anyMatch，可以把用户分为下过订单和没下过订单两组。
+        // 根据是否有下单记录，进行分区
+        Map<Boolean, List<Customer>> map = Customer.getData().stream().collect(
+                Collectors.partitioningBy(customer -> orders.stream().mapToLong(Order::getCustomerId)
+                        .anyMatch(id -> id == customer.getId())));
+        System.out.println(map);
     }
 }
