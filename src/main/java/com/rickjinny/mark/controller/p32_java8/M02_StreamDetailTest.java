@@ -366,8 +366,10 @@ public class M02_StreamDetailTest {
                         Collectors.mapping(order -> order.getId(), Collectors.toList())));
 
         // 根据下单年月 + 用户名两次分组, 统计订单 id 列表
-        orders.stream().collect(Collectors.groupingBy(order -> order.getCustomerName(),
-                Collectors.mapping(order -> order.getId(), Collectors.toList())));
-        
+        System.out.println("根据下单年月 + 用户名两次分组, 统计订单 id 列表");
+        orders.stream().collect(
+                Collectors.groupingBy(order -> order.getPlaceAt().format(DateTimeFormatter.ofPattern("yyyyMM")),
+                        Collectors.groupingBy(order -> order.getCustomerName(),
+                                Collectors.mapping(order -> order.getId(), Collectors.toList()))));
     }
 }
