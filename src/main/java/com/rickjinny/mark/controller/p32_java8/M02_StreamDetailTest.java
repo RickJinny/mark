@@ -7,10 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.atomic.LongAdder;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -20,7 +17,7 @@ import java.util.stream.IntStream;
  * 1、filter 方法
  * 2、map 方法
  * 3、flatMap 方法
- *
+ * 4、sorted 方法
  */
 public class M02_StreamDetailTest {
 
@@ -103,7 +100,7 @@ public class M02_StreamDetailTest {
     /**
      * 3、flatMap 方法。
      * 使用：flatMap 展开或者扁平化操作, 相当于 map + flat, 通过 map 把每一个元素替换为一个流, 然后展开这个流。
-     *
+     * <p>
      * 比如：我们要统计所有订单的总价格, 可以有两种方式。
      */
     @Test
@@ -133,5 +130,19 @@ public class M02_StreamDetailTest {
                         .mapToDouble(item -> item.getProductQuantity() * item.getProductPrice()))
                 .sum();
         System.out.println(sum3);
+    }
+
+    /**
+     * 4、sorted 方法使用
+     * sorted 操作可用用于行内排序的场景, 类似 SQL 中的 order by。 比如：要实现大于 50 元订单的按价格倒序取前5,
+     * 可以通过 Order::getTotalPrice 方法引用直接指定需要排序的依据字段，通过 reversed() 实现倒序。
+     */
+    @Test
+    public void sorted() {
+        // 大于 50 的订单，按照订单价格倒序前 5
+        orders.stream().filter(order -> order.getTotalPrice() > 50)
+                .sorted(Comparator.comparing(Order::getTotalPrice).reversed())
+                .limit(5)
+                .forEach(System.out::println);
     }
 }
