@@ -20,6 +20,7 @@ import java.util.stream.IntStream;
  * 4、sorted 方法
  * 5、distinct 方法
  * 6、skip & limit
+ * 7、collect 收集操作
  */
 public class M02_StreamDetailTest {
 
@@ -207,5 +208,50 @@ public class M02_StreamDetailTest {
                 .skip(2)
                 .limit(2)
                 .forEach(System.out::println);
+    }
+
+
+    /**
+     * 7、collect 收集操作
+     * 对流进行终止操作, 把流导出为我们需要的数据结构。
+     * 终结是指导出后, 无法再串联使用其他的中间操作, 比如: filter、map、flatMap、sorted、distinct、limit、skip。
+     * 在 Stream 操作中, collect 是最复杂的终结操作, 比较简单的终结操作还有 forEach、toArray、min、max、count、anyMatch 等。
+     * 下面通过 6 个案例:
+     */
+    @Test
+    public void collect() {
+        /**
+         * 第 1 个案例: 实现了字符串拼接操作, 生成一定位数的随机字符串。
+         */
+        String str1 = random.ints(48, 122)
+                .filter(i -> (i < 57 || i > 65) && (i < 90 || i > 92))
+                .mapToObj(i -> (char) i)
+                .limit(20)
+                .collect(StringBuilder::new, StringBuilder::append, StringBuilder::append)
+                .toString();
+        System.out.println(str1);
+
+
+        /**
+         * 第二个案例: 所有下单用户, 使用 toSet 去重后实现字符串拼接
+         */
+        String str2 = orders.stream()
+                .map(order -> order.getCustomerName())
+                .collect(Collectors.toSet())
+                .stream()
+                .collect(Collectors.joining(",", "[", "]"));
+        System.out.println(str2);
+
+
+        /**
+         * 第三个案例：用 toCollection 收集器指定集合类型
+         */
+        LinkedList<Order> linkedList = orders.stream()
+                .limit(2)
+                .collect(Collectors.toCollection(LinkedList::new));
+
+        /**
+         * 第四个案例：
+         */
     }
 }
