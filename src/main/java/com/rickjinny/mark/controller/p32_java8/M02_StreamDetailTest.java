@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.atomic.LongAdder;
+import java.util.function.BinaryOperator;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -332,7 +333,7 @@ public class M02_StreamDetailTest {
                 .sorted(Map.Entry.<String, Integer>comparingByValue().reversed())
                 .collect(Collectors.toList());
         System.out.println(collect3);
-        
+
         // 统计最受欢迎的商品, 倒序后取第一个
         System.out.println("统计最受欢迎的商品, 倒序后取第一个");
         orders.stream()
@@ -390,5 +391,23 @@ public class M02_StreamDetailTest {
                 Collectors.partitioningBy(customer -> orders.stream().mapToLong(Order::getCustomerId)
                         .anyMatch(id -> id == customer.getId())));
         System.out.println(map);
+    }
+
+    @Test
+    public void minMax() {
+        orders.stream().max(Comparator.comparing(Order::getTotalPrice)).ifPresent(System.out::println);
+        orders.stream().min(Comparator.comparing(Order::getTotalPrice)).ifPresent(System.out::println);
+    }
+
+    @Test
+    public void reduce() {
+        System.out.println("统计花钱最多的人");
+        orders.stream()
+                .collect(Collectors.groupingBy(Order::getCustomerName, Collectors.summingDouble(Order::getTotalPrice)))
+                .entrySet()
+                .stream()
+                .reduce(BinaryOperator.maxBy(Map.Entry.comparingByValue()))
+                .map(Map.Entry::getKey)
+                .orElse("N/A");
     }
 }
