@@ -172,7 +172,7 @@ public class T31_03_ParallelTest {
 
         stopWatch.start("completeFuture");
         Assert.assertEquals(taskCount, completeFuture(taskCount, threadCount));
-        stopWatch.start();
+        stopWatch.stop();
 
         log.info(stopWatch.prettyPrint());
     }
