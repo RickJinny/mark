@@ -4,6 +4,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
 import java.time.LocalDateTime;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.IntStream;
 
 /**
@@ -27,4 +30,49 @@ public class T31_03_ParallelTest {
             }
         });
     }
+
+    /**
+     * 使用 threadCount 个线程对某个方法总计执行 taskCount 次的操作案例。用于演示并发情况下的多线程处理性能。
+     * 除了会用到并行流, 我们有时也会使用线程池或直接使用线程进行类似操作。为了方便对比各种实现方式, 这里我一次性给出实现此类操作
+     * 的五种方式。
+     */
+    private void increment(AtomicInteger atomicInteger) {
+        atomicInteger.incrementAndGet();
+        try {
+            TimeUnit.MILLISECONDS.sleep(10);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 第一种方式：直接使用线程。
+     * 直接把任务按照线程数均匀分割，分配到不同的线程执行，使用 CountDownLatch 来阻塞线程, 直到所有线程都完成操作。
+     * 这种方式，需要我们自己分割。
+     */
+    private int thread(int taskCount, int threadCount) throws InterruptedException {
+        // 总操作次数计数器
+        AtomicInteger atomicInteger = new AtomicInteger();
+        // 使用 CountDownLatch 来等待所有线程执行完成
+        CountDownLatch countDownLatch = new CountDownLatch(threadCount);
+        // 使用 IntStream 把数字直接转为 Thread
+        IntStream.rangeClosed(1, threadCount).mapToObj( i -> new Thread(() -> {
+            // 手动把 taskCount 分成 taskCout 份, 每一份有一个线程执行
+            IntStream.rangeClosed(1, taskCount / threadCount).forEach(j -> increment(atomicInteger));
+            // 每个线程处理完成自己那部分数据之后, countDown 一次
+            countDownLatch.countDown();
+        })).forEach(Thread::start);
+        // 等到所有线程执行完成
+        countDownLatch.await();
+        // 查询计数器当前值
+        return atomicInteger.get();
+    }
+
+    /**
+     * 第二种方式: 使用 Executors.newFixedThreadPool 来获得固定线程数的线程池，使用 execute 提交所有任务到线程池执行，
+     * 最后关闭线程池等待所有任务执行完成。
+     */
+    
+
+
 }
