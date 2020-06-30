@@ -108,4 +108,25 @@ public class T31_03_ParallelTest {
         return atomicInteger.get();
     }
 
+    /**
+     * 第四种方式: 直接使用并行流，并行流使用公共的 ForkJoinPool，也就是 ForkJoinPool.commonPool()
+     * 公共的 ForkJoinPool 默认的并行度是 CPU的核心数 - 1, 原因是对于 CPU 绑定的任务分配超过 CPU 个数的线程没有意义。
+     * 由于并行流还会使用主线程执行任务, 也会占用一个 CPU核心, 所有公共 ForkJoinPool 的并行度即使 -1 , 也能满足所有 CPU 核心。
+     * <p>
+     * 这里，我们通过配置强制指定（增大）了并行数，但因为使用的是公共的 ForkJoinPool，所以可能会存在干扰。
+     */
+    private int stream(int taskCount, int threadCount) {
+        // 设置公共 ForkJoinPool 的并行度
+        System.setProperty("java.util.concurrent.ForkJoinPool.common.parallelism", String.valueOf(threadCount));
+        // 总操作次数计数器
+        AtomicInteger atomicInteger = new AtomicInteger();
+        // 由于我们设置了公共 ForkJoinPool 的并行度, 直接使用 parallel 提交的任务即可
+        IntStream.rangeClosed(1, taskCount).parallel().forEach(i -> increment(atomicInteger));
+        // 查询计数器的当前值
+        return atomicInteger.get();
+    }
+
+    /**
+     * 
+     */
 }
