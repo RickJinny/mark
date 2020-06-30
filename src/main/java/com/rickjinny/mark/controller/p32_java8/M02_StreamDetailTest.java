@@ -65,7 +65,9 @@ public class M02_StreamDetailTest {
         // 计算所有订单商品数量
         // 通过两次遍历实现
         LongAdder longAdder = new LongAdder();
-        orders.stream().forEach(order -> order.getOrderItemList().forEach(orderItem -> longAdder.add(orderItem.getProductQuantity())));
+        orders.stream().forEach(
+                order -> order.getOrderItemList().forEach(
+                        orderItem -> longAdder.add(orderItem.getProductQuantity())));
         System.out.println(longAdder.sum());
 
         // 使用两次 mapToLong + sum 实现
@@ -330,8 +332,7 @@ public class M02_StreamDetailTest {
                 .sorted(Map.Entry.<String, Integer>comparingByValue().reversed())
                 .collect(Collectors.toList());
         System.out.println(collect3);
-
-
+        
         // 统计最受欢迎的商品, 倒序后取第一个
         System.out.println("统计最受欢迎的商品, 倒序后取第一个");
         orders.stream()
