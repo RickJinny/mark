@@ -4,10 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 
 import java.time.LocalDateTime;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.IntStream;
 
@@ -88,5 +85,27 @@ public class T31_03_ParallelTest {
         return atomicInteger.get();
     }
 
+    /**
+     * 第三种方式：使用 ForkJoinPool 而不是普通线程执行任务。
+     * ForkJoinPool 和传统的 ThreadPoolExecutor 区别在于: 前者对于 n 并行度有 n 个独立队列, 后者是共享队列。
+     * 如果大量执行比较短的任务, ThreadPoolExecutor 的单队列就可能会成为瓶颈。这时, 使用 ForkJoinPool 性能会更好。
+     * <p>
+     * 因此，ForkJoinPool 更适合大任务分割成许多小任务并行执行的场景, 而 ThreadPoolExecutor 适合许多独立任务并发执行的场景。
+     * <p>
+     * 在这里，我们先自定义一个具有指定并行数的 ForkJoinPool ，再通过这个 ForkJoinPool 并行执行操作。
+     */
+    private int forkJoin(int taskCount, int threadCount) throws InterruptedException {
+        // 总操作次数计数器
+        AtomicInteger atomicInteger = new AtomicInteger();
+        // 自定义一个并行度 = threadCount 的 ForkJoinPool
+        ForkJoinPool forkJoinPool = new ForkJoinPool(threadCount);
+        // 所有任务直接提交到线程池处理
+        forkJoinPool.execute(() -> IntStream.rangeClosed(1, taskCount).parallel().forEach(i -> increment(atomicInteger)));
+        // 提交关闭线程池申请，等待之前所有任务执行完成
+        forkJoinPool.shutdown();
+        forkJoinPool.awaitTermination(1, TimeUnit.HOURS);
+        // 查询计数器当前值
+        return atomicInteger.get();
+    }
 
 }
