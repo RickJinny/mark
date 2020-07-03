@@ -50,7 +50,9 @@ public class NormalUserCart {
                 .map(Item::getCouponPrice)
                 .reduce(BigDecimal.ZERO, BigDecimal::add));
         // 应付总价 = 商品总价 + 运费总价 - 总优惠
-        cart.setPayPrice(cart.getTotalItemPrice().add(cart.getTotalDeliveryPrice()).subtract(cart.getTotalDiscount()));
+        cart.setPayPrice(cart.getTotalItemPrice()
+                .add(cart.getTotalDeliveryPrice())
+                .subtract(cart.getTotalDiscount()));
         return cart;
     }
 }
