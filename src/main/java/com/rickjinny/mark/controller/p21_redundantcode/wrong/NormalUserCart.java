@@ -1,4 +1,4 @@
-package com.rickjinny.mark.controller.p21_redundantcode;
+package com.rickjinny.mark.controller.p21_redundantcode.wrong;
 
 import com.rickjinny.mark.controller.p21_redundantcode.bean.Cart;
 import com.rickjinny.mark.controller.p21_redundantcode.bean.DB;

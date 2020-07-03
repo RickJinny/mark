@@ -1,4 +1,4 @@
-package com.rickjinny.mark.controller.p21_redundantcode;
+package com.rickjinny.mark.controller.p21_redundantcode.wrong;
 
 import com.rickjinny.mark.controller.p21_redundantcode.bean.Cart;
 import com.rickjinny.mark.controller.p21_redundantcode.bean.DB;
@@ -10,12 +10,13 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 免运费、无折扣的内部用户, 同样只是处理商品折扣和运费时的逻辑差异
+ * VIP用户的购物车逻辑
  */
-public class InternalUserCart {
+public class VipUserCart {
 
     public Cart process(Long userId, Map<Long, Integer> items) {
         Cart cart = new Cart();
+        // 把 Map 的购物车转换为 Item 列表
         List<Item> itemList = new ArrayList<>();
         items.entrySet().stream().forEach(entry -> {
             Item item = new Item();
@@ -26,11 +27,21 @@ public class InternalUserCart {
         });
         cart.setItems(itemList);
 
+        // 处理运费和商品优惠
         itemList.stream().forEach(item -> {
-            // 免运费
-            item.setDeliveryPrice(BigDecimal.ZERO);
-            // 无优惠
-            item.setCouponPrice(BigDecimal.ZERO);
+            // 运费为商品总价的 10%
+            item.setDeliveryPrice(item.getPrice()
+                    .multiply(BigDecimal.valueOf(item.getQuantity()))
+                    .multiply(new BigDecimal("0.1")));
+            // 购买两件以上相同的商品, 第三件开始享受一定折扣
+            if (item.getQuantity() > 2) {
+                item.setCouponPrice(item.getPrice()
+                        .multiply(BigDecimal.valueOf(100 - DB.getUserCouponPercent(userId))
+                                .divide(new BigDecimal("100")))
+                        .multiply(BigDecimal.valueOf(item.getQuantity() - 2)));
+            } else {
+                item.setCouponPrice(BigDecimal.ZERO);
+            }
         });
 
         // 计算商品总价
