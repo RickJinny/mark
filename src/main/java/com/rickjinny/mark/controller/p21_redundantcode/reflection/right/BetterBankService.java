@@ -71,7 +71,30 @@ public class BetterBankService {
                 .execute()
                 .returnContent()
                 .asString();
-        log.info("调用银行API {}, url:{}, 参数:{}, 耗时: {}ms", bankAPI.desc(), bankAPI.url(), param, System.currentTimeMillis() - begin);
+        log.info("调用银行API {}, url:{}, 参数:{}, 耗时: {}ms", bankAPI.desc(), bankAPI.url(),
+                param, System.currentTimeMillis() - begin);
         return result;
+    }
+
+    /**
+     * 创建用户方法
+     */
+    public static String createUser(String name, String identity, String mobile, int age) throws IOException {
+        CreateUserAPI createUserAPI = new CreateUserAPI();
+        createUserAPI.setName(name);
+        createUserAPI.setIdentity(identity);
+        createUserAPI.setAge(age);
+        createUserAPI.setMobile(mobile);
+        return remoteCall(createUserAPI);
+    }
+
+    /**
+     * 支付方法
+     */
+    public static String pay(long userId, BigDecimal amount) throws IOException {
+        PayAPI payAPI = new PayAPI();
+        payAPI.setUserId(userId);
+        payAPI.setAmount(amount);
+        return remoteCall(payAPI);
     }
 }
