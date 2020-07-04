@@ -1,0 +1,22 @@
+package com.rickjinny.mark.controller.p21_redundantcode.templatemethod.right;
+
+import com.rickjinny.mark.controller.p21_redundantcode.templatemethod.bean.Item;
+import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
+
+@Service(value = "NormalUserCart")
+public class NormalUserCart extends AbstractCart {
+
+    @Override
+    protected void processCouponPrice(Long userId, Item item) {
+        item.setCouponPrice(BigDecimal.ZERO);
+    }
+
+    @Override
+    protected void processDeliveryPrice(Long userId, Item item) {
+        item.setDeliveryPrice(item.getPrice()
+                .multiply(BigDecimal.valueOf(item.getQuantity()))
+                .multiply(new BigDecimal("0.1")));
+    }
+}
