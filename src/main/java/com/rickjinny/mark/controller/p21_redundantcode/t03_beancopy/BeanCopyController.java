@@ -1,4 +1,4 @@
-package com.rickjinny.mark.controller.p21_redundantcode.beancopy;
+package com.rickjinny.mark.controller.p21_redundantcode.t03_beancopy;
 
 import lombok.Data;
 import org.springframework.beans.BeanUtils;

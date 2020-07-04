@@ -1,4 +1,4 @@
-package com.rickjinny.mark.controller.p21_redundantcode.templatemethod.bean;
+package com.rickjinny.mark.controller.p21_redundantcode.t01_templatemethod.bean;
 
 import java.math.BigDecimal;
 import java.util.HashMap;

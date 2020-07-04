@@ -1,8 +1,8 @@
-package com.rickjinny.mark.controller.p21_redundantcode.templatemethod.wrong;
+package com.rickjinny.mark.controller.p21_redundantcode.t01_templatemethod.wrong;
 
-import com.rickjinny.mark.controller.p21_redundantcode.templatemethod.bean.Cart;
-import com.rickjinny.mark.controller.p21_redundantcode.templatemethod.bean.DB;
-import com.rickjinny.mark.controller.p21_redundantcode.templatemethod.bean.Item;
+import com.rickjinny.mark.controller.p21_redundantcode.t01_templatemethod.bean.Cart;
+import com.rickjinny.mark.controller.p21_redundantcode.t01_templatemethod.bean.DB;
+import com.rickjinny.mark.controller.p21_redundantcode.t01_templatemethod.bean.Item;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;

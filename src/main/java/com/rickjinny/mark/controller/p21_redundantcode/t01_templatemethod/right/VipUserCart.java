@@ -1,7 +1,7 @@
-package com.rickjinny.mark.controller.p21_redundantcode.templatemethod.right;
+package com.rickjinny.mark.controller.p21_redundantcode.t01_templatemethod.right;
 
-import com.rickjinny.mark.controller.p21_redundantcode.templatemethod.bean.DB;
-import com.rickjinny.mark.controller.p21_redundantcode.templatemethod.bean.Item;
+import com.rickjinny.mark.controller.p21_redundantcode.t01_templatemethod.bean.DB;
+import com.rickjinny.mark.controller.p21_redundantcode.t01_templatemethod.bean.Item;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;

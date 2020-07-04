@@ -1,4 +1,4 @@
-package com.rickjinny.mark.controller.p21_redundantcode.reflection.right;
+package com.rickjinny.mark.controller.p21_redundantcode.t02_reflection.right;
 
 import java.lang.annotation.*;
 

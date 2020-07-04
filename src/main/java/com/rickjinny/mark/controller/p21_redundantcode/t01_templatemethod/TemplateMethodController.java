@@ -1,11 +1,11 @@
-package com.rickjinny.mark.controller.p21_redundantcode.templatemethod;
+package com.rickjinny.mark.controller.p21_redundantcode.t01_templatemethod;
 
-import com.rickjinny.mark.controller.p21_redundantcode.templatemethod.wrong.NormalUserCart;
-import com.rickjinny.mark.controller.p21_redundantcode.templatemethod.bean.Cart;
-import com.rickjinny.mark.controller.p21_redundantcode.templatemethod.bean.DB;
-import com.rickjinny.mark.controller.p21_redundantcode.templatemethod.right.AbstractCart;
-import com.rickjinny.mark.controller.p21_redundantcode.templatemethod.wrong.InternalUserCart;
-import com.rickjinny.mark.controller.p21_redundantcode.templatemethod.wrong.VipUserCart;
+import com.rickjinny.mark.controller.p21_redundantcode.t01_templatemethod.wrong.NormalUserCart;
+import com.rickjinny.mark.controller.p21_redundantcode.t01_templatemethod.bean.Cart;
+import com.rickjinny.mark.controller.p21_redundantcode.t01_templatemethod.bean.DB;
+import com.rickjinny.mark.controller.p21_redundantcode.t01_templatemethod.right.AbstractCart;
+import com.rickjinny.mark.controller.p21_redundantcode.t01_templatemethod.wrong.InternalUserCart;
+import com.rickjinny.mark.controller.p21_redundantcode.t01_templatemethod.wrong.VipUserCart;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;

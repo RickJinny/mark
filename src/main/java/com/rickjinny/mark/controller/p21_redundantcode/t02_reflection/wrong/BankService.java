@@ -1,4 +1,4 @@
-package com.rickjinny.mark.controller.p21_redundantcode.reflection.wrong;
+package com.rickjinny.mark.controller.p21_redundantcode.t02_reflection.wrong;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.http.client.fluent.Request;
