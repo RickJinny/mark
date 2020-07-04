@@ -32,17 +32,19 @@ public class TemplateMethodController {
 
     @GetMapping("/wrong")
     public Cart wrong(@RequestParam("userId") Long userId) {
+        // 根据用户id 获得用户类型
         String userCategory = DB.getUserCategory(userId);
+        // 普通用户处理逻辑
         if (userCategory.equals("Normal")) {
             NormalUserCart normalUserCart = new NormalUserCart();
             return normalUserCart.process(userId, items);
         }
-
+        // VIP用户处理逻辑
         if (userCategory.equals("Vip")) {
             VipUserCart vipUserCart = new VipUserCart();
             return vipUserCart.process(userId, items);
         }
-
+        // 内部用户处理逻辑
         if (userCategory.equals("Internal")) {
             InternalUserCart internalUserCart = new InternalUserCart();
             return internalUserCart.process(userId, items);

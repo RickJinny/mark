@@ -11,6 +11,9 @@ import java.util.Map;
 
 public abstract class AbstractCart {
 
+    /**
+     * 处理购物车的大量重复逻辑在父类实现
+     */
     public Cart process(Long userId, Map<Long, Integer> items) {
         Cart cart = new Cart();
         List<Item> itemList = new ArrayList<>();
@@ -22,6 +25,7 @@ public abstract class AbstractCart {
             itemList.add(item);
         });
         cart.setItems(itemList);
+        // 让子类处理每一个商品的优惠
         itemList.stream().forEach(item -> {
             processCouponPrice(userId, item);
             processDeliveryPrice(userId, item);
@@ -46,8 +50,14 @@ public abstract class AbstractCart {
         return cart;
     }
 
+    /**
+     * 处理商品优惠的逻辑，留给子类实现
+     */
     protected abstract void processCouponPrice(Long userId, Item item);
 
+    /**
+     * 处理配送费的逻辑，留给子类实现
+     */
     protected abstract void processDeliveryPrice(Long userId, Item item);
 
 }
