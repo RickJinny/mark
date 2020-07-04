@@ -62,10 +62,10 @@ public class APIResponseController {
 
     @RequestMapping("/client")
     public String client(@RequestParam(value = "error", defaultValue = "0") int error) {
-        String url = Arrays.asList("http://localhost:45678/apiresposne/server?userId=2",
-                "http://localhost:45678/apiresposne/server2",
-                "http://localhost:45678/apiresposne/server?userId=",
-                "http://localhost:45678/apiresposne/server?userId=1").get(error);
+        String url = Arrays.asList("http://localhost:8080/apiresposne/server?userId=2",
+                "http://localhost:8080/apiresposne/server2",
+                "http://localhost:8080/apiresposne/server?userId=",
+                "http://localhost:8080/apiresposne/server?userId=1").get(error);
 
         // 第一层，先看状态码，如果状态码不是 200，不处理响应体
         String response = "";
