@@ -1,10 +1,10 @@
 package com.rickjinny.mark.controller.p21_redundantcode.templatemethod;
 
+import com.rickjinny.mark.controller.p21_redundantcode.templatemethod.wrong.NormalUserCart;
 import com.rickjinny.mark.controller.p21_redundantcode.templatemethod.bean.Cart;
 import com.rickjinny.mark.controller.p21_redundantcode.templatemethod.bean.DB;
 import com.rickjinny.mark.controller.p21_redundantcode.templatemethod.right.AbstractCart;
 import com.rickjinny.mark.controller.p21_redundantcode.templatemethod.wrong.InternalUserCart;
-import com.rickjinny.mark.controller.p21_redundantcode.templatemethod.wrong.NormalUserCart;
 import com.rickjinny.mark.controller.p21_redundantcode.templatemethod.wrong.VipUserCart;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
