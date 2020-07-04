@@ -41,10 +41,12 @@ public class BetterBankService {
                     // 根据字段类型以正确的填充方式格式化字符串
                     switch (bankAPIField.type()) {
                         case "S":
-                            sb.append(String.format("%-" + bankAPIField.length() + "s", value.toString()).replace(' ', '_'));
+                            sb.append(String.format("%-" + bankAPIField.length() + "s", value.toString())
+                                    .replace(' ', '_'));
                             break;
                         case "N":
-                            sb.append(String.format("%" + bankAPIField.length() + "s", value.toString()).replace(' ', '0'));
+                            sb.append(String.format("%" + bankAPIField.length() + "s", value.toString())
+                                    .replace(' ', '0'));
                             break;
                         case "M":
                             if (!(value instanceof BigDecimal)) {
