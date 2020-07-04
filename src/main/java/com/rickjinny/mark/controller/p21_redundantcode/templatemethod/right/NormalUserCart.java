@@ -5,6 +5,9 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 
+/**
+ * 普通用户的购物车 NormalUserCart，实现的是 0 优惠和 10% 运费的逻辑。
+ */
 @Service(value = "NormalUserCart")
 public class NormalUserCart extends AbstractCart {
 
