@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.fluent.Request;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -44,6 +45,19 @@ public class APIResponseController {
             response.setData(new OrderInfo("Created", 2L));
         }
         return response;
+    }
+
+    @GetMapping("/server1")
+    public OrderInfo server1(@RequestParam("userId") Long userId) {
+        if (userId == null) {
+            throw new APIException(3001, "Illegal userId");
+        }
+        if (userId == 1) {
+            // 把订单服务的错误包装转换，同时日志记录内部错误
+            log.warn("用户 {} 调用订单服务失败, 原因是 Risk order detected", userId);
+            throw new APIException(3002, "Internal Error, order is cancelled");
+        }
+        return new OrderInfo("Created", 2L);
     }
 
     @RequestMapping("/client")
