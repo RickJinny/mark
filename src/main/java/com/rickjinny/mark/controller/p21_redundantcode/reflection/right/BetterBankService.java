@@ -6,6 +6,7 @@ import org.apache.http.client.fluent.Request;
 import org.apache.http.entity.ContentType;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Arrays;
@@ -20,7 +21,9 @@ public class BetterBankService {
         bankAPI.url();
 
         StringBuilder sb = new StringBuilder();
-        Arrays.stream(api.getClass().getDeclaredFields()) // 获得所有字段
+        // 获得所有字段
+        Field[] declaredFields = api.getClass().getDeclaredFields();
+        Arrays.stream(declaredFields)
                 .filter(field -> field.isAnnotationPresent(BankAPIField.class)) // 查找标记了注解的字段
                 .sorted(Comparator.comparingInt(a -> a.getAnnotation(BankAPIField.class).order())) // 根据注解中的 order 对字段排序
                 .peek(field -> field.setAccessible(true)) // 设置可以访问私有字段
