@@ -70,12 +70,14 @@ public class APIResponseController {
                 APIResponse<OrderInfo> apiResponse = objectMapper.readValue(response, new TypeReference<APIResponse<OrderInfo>>(){});
                 // 第二层: success 是 false 直接提示用户
                 if (!apiResponse.isSuccess()) {
-                    return String.format("创建订单失败, 请稍后再试, 错误代码： %s 错误原因：%s", apiResponse.getCode(), apiResponse.getMessage());
+                    return String.format("创建订单失败, 请稍后再试, 错误代码： %s 错误原因：%s",
+                            apiResponse.getCode(), apiResponse.getMessage());
                 } else {
                     // 第三层: 往下解析 OrderInfo
                     OrderInfo orderInfo = apiResponse.getData();
                     if ("Created".equals(orderInfo.getStatus())) {
-                        return String.format("创建订单成功，订单号是: %s, 状态是: %s", orderInfo.getOrderId(), orderInfo.getStatus());
+                        return String.format("创建订单成功，订单号是: %s, 状态是: %s",
+                                orderInfo.getOrderId(), orderInfo.getStatus());
                     } else {
                         return String.format("创建订单失败, 请联系客服处理");
                     }
