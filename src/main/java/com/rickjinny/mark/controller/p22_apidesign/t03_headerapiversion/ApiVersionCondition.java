@@ -5,7 +5,7 @@ import org.springframework.web.servlet.mvc.condition.RequestCondition;
 
 import javax.servlet.http.HttpServletRequest;
 
-public class APIVersionCondition implements RequestCondition<APIVersionCondition> {
+public class ApiVersionCondition implements RequestCondition<ApiVersionCondition> {
 
     @Getter
     private String apiVersion;
@@ -13,24 +13,24 @@ public class APIVersionCondition implements RequestCondition<APIVersionCondition
     @Getter
     private String headerKey;
 
-    public APIVersionCondition(String apiVersion, String headerKey) {
+    public ApiVersionCondition(String apiVersion, String headerKey) {
         this.apiVersion = apiVersion;
         this.headerKey = headerKey;
     }
 
     @Override
-    public APIVersionCondition combine(APIVersionCondition apiVersionCondition) {
-        return new APIVersionCondition(apiVersionCondition.getApiVersion(), apiVersionCondition.getHeaderKey());
+    public ApiVersionCondition combine(ApiVersionCondition apiVersionCondition) {
+        return new ApiVersionCondition(apiVersionCondition.getApiVersion(), apiVersionCondition.getHeaderKey());
     }
 
     @Override
-    public APIVersionCondition getMatchingCondition(HttpServletRequest request) {
+    public ApiVersionCondition getMatchingCondition(HttpServletRequest request) {
         String version = request.getHeader(headerKey);
         return apiVersion.equals(version) ? this : null;
     }
 
     @Override
-    public int compareTo(APIVersionCondition apiVersionCondition, HttpServletRequest httpServletRequest) {
+    public int compareTo(ApiVersionCondition apiVersionCondition, HttpServletRequest httpServletRequest) {
         return 0;
     }
 }

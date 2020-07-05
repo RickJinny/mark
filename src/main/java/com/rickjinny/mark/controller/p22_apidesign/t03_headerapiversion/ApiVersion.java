@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 @Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface APIVersion {
+public @interface ApiVersion {
     String value();
     String headerKey() default "X-API_VERSION";
 }

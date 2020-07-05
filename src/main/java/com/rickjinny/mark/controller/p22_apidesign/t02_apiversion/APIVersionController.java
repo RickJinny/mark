@@ -60,7 +60,7 @@ public class APIVersionController {
     }
 
     @GetMapping(value = "/api/user")
-    @APIVersion("v4")
+//    @APIVersion("v4")
     public int right4() {
         return 4;
     }

@@ -8,7 +8,7 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
 
 import java.lang.reflect.Method;
 
-public class APIVersionHandlerMapping extends RequestMappingHandlerMapping {
+public class ApiVersionHandlerMapping extends RequestMappingHandlerMapping {
 
     @Override
     protected boolean isHandler(Class<?> beanType) {
@@ -16,18 +16,18 @@ public class APIVersionHandlerMapping extends RequestMappingHandlerMapping {
     }
 
     @Override
-    protected RequestCondition<APIVersionCondition> getCustomTypeCondition(Class<?> handlerType) {
-        APIVersion apiVersion = AnnotationUtils.findAnnotation(handlerType, APIVersion.class);
+    protected RequestCondition<ApiVersionCondition> getCustomTypeCondition(Class<?> handlerType) {
+        ApiVersion apiVersion = AnnotationUtils.findAnnotation(handlerType, ApiVersion.class);
         return createCondition(apiVersion);
     }
 
     @Override
     protected RequestCondition<?> getCustomMethodCondition(Method method) {
-        APIVersion apiVersion = AnnotationUtils.findAnnotation(method, APIVersion.class);
+        ApiVersion apiVersion = AnnotationUtils.findAnnotation(method, ApiVersion.class);
         return createCondition(apiVersion);
     }
 
-    private RequestCondition<APIVersionCondition> createCondition(APIVersion apiVersion) {
-        return apiVersion == null ? null : new APIVersionCondition(apiVersion.value(), apiVersion.headerKey());
+    private RequestCondition<ApiVersionCondition> createCondition(ApiVersion apiVersion) {
+        return apiVersion == null ? null : new ApiVersionCondition(apiVersion.value(), apiVersion.headerKey());
     }
 }
