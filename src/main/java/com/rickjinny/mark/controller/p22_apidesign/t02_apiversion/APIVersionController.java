@@ -8,6 +8,11 @@ import org.springframework.web.bind.annotation.*;
  * 1、通过 URL Path 实现
  * 2、通过 QueryString 实现。
  * 3、通过 HTTP 头实现。
+ * 
+ * 这样客户端可以在配置中, 处理相关版本控制的参数, 有可能实现版本的动态切换。
+ * 在这三种方式中: URL Path 的方式最直观也最不容易出错;
+ *              QueryString 不易携带, 不太推荐作为公开 API 的版本策略;
+ *              HTTP 头的方式比较没有侵入性, 如果仅仅是部分接口需要进行版本控制, 可以考虑这种方式。
  */
 @Slf4j
 @RestController
