@@ -100,6 +100,11 @@ public class FileService {
         return response;
     }
 
+    /**
+     * 查询异步上传的结果
+     * @param request
+     * @return
+     */
     public SyncQueryUploadTaskResponse syncQueryUploadTask(SyncQueryUploadTaskRequest request) {
         SyncQueryUploadTaskResponse response = new SyncQueryUploadTaskResponse(request.getTaskId());
         response.setDownloadUrl(downloadUrl.getOrDefault(request.getTaskId(), response).getDownloadUrl());
