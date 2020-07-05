@@ -60,7 +60,11 @@ public class APIResponseController {
         return new OrderInfo("Created", 2L);
     }
 
+    /**
+     * 如果 client 方法不需要包装为 APIResponse, 就可以标记上这个注解 @NoAPIResponse。
+     */
     @RequestMapping("/client")
+    @NoAPIResponse
     public String client(@RequestParam(value = "error", defaultValue = "0") int error) {
         String url = Arrays.asList("http://localhost:8080/apiresposne/server?userId=2",
                 "http://localhost:8080/apiresposne/server2",
