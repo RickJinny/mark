@@ -1,8 +1,6 @@
 package com.rickjinny.mark.controller.p22_apidesign.t04_apiasyncsyncmode;
 
-import com.rickjinny.mark.controller.p22_apidesign.t04_apiasyncsyncmode.bean.SyncQueryUploadTaskResponse;
-import com.rickjinny.mark.controller.p22_apidesign.t04_apiasyncsyncmode.bean.UploadRequest;
-import com.rickjinny.mark.controller.p22_apidesign.t04_apiasyncsyncmode.bean.UploadResponse;
+import com.rickjinny.mark.controller.p22_apidesign.t04_apiasyncsyncmode.bean.*;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -61,6 +59,37 @@ public class FileService {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return response;
+    }
+
+    public SyncUploadResponse syncUpload(SyncUploadRequest request) {
+        SyncUploadResponse response = new SyncUploadResponse();
+        response.setDownloadUrl(uploadFile(request.getFile()));
+        response.setThumbnailDownloadUrl(uploadThumbnailFile(request.getFile()));
+        return response;
+    }
+
+    public AsyncUploadResponse asyncUpload(AsyncUploadRequest request) {
+        AsyncUploadResponse response = new AsyncUploadResponse();
+        String taskId = "upload" + atomicInteger.incrementAndGet();
+        response.setTaskId(taskId);
+        threadPool.execute(() -> {
+            String url = uploadFile(request.getFile());
+            downloadUrl.computeIfAbsent(taskId, id -> new SyncQueryUploadTaskResponse(id))
+                    .setDownloadUrl(url);
+        });
+        threadPool.execute(() -> {
+            String url = uploadThumbnailFile(request.getFile());
+            downloadUrl.computeIfAbsent(taskId, id -> new SyncQueryUploadTaskResponse(id))
+                    .setThumbnailDownloadUrl(url);
+        });
+        return response;
+    }
+
+    public SyncQueryUploadTaskResponse syncQueryUploadTask(SyncQueryUploadTaskRequest request) {
+        SyncQueryUploadTaskResponse response = new SyncQueryUploadTaskResponse(request.getTaskId());
+        response.setDownloadUrl(downloadUrl.getOrDefault(request.getTaskId(), response).getDownloadUrl());
+        response.setThumbnailDownloadUrl(downloadUrl.getOrDefault(request.getTaskId(), response).getThumbnailDownloadUrl());
         return response;
     }
 }
