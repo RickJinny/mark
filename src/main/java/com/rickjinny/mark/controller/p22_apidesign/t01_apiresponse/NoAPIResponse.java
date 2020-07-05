@@ -1,4 +1,4 @@
-package com.rickjinny.mark.controller.p22_apidesign.apiresponse;
+package com.rickjinny.mark.controller.p22_apidesign.t01_apiresponse;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

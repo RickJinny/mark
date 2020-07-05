@@ -1,4 +1,4 @@
-package com.rickjinny.mark.controller.p22_apidesign.apiresponse;
+package com.rickjinny.mark.controller.p22_apidesign.t01_apiresponse;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
