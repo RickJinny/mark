@@ -22,5 +22,5 @@ public class Constants {
 
     public static final String DEAD_QUEUE = "dead";
 
-    public static final String EDAD_ROUTING_KEY = "dead";
+    public static final String DEAD_ROUTING_KEY = "dead";
 }
