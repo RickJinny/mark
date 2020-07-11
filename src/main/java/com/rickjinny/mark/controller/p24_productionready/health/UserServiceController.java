@@ -25,6 +25,9 @@ public class UserServiceController {
         }
     }
 
+    /**
+     * 定义一个接口，来把耗时很长的任务提交到这个 demoThreadPool 线程池，用来模拟线程池队列满的情况。
+     */
     @GetMapping("/slowTask")
     public void slowTask() {
         ThreadPoolProvider.getDemoThreadPool().execute(() -> {
