@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @RestController
@@ -26,6 +27,12 @@ public class UserServiceController {
 
     @GetMapping("/slowTask")
     public void slowTask() {
-
+        ThreadPoolProvider.getDemoThreadPool().execute(() -> {
+            try {
+                TimeUnit.HOURS.sleep(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
     }
 }
