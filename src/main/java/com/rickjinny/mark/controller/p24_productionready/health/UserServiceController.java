@@ -16,6 +16,7 @@ public class UserServiceController {
 
     @GetMapping("/getUser")
     public User getUser(@RequestParam("userId") Long id) {
+        // 一半概率返回正确响应，一半概率抛异常
         if (ThreadLocalRandom.current().nextInt() % 2 == 0) {
             return new User(id, "name" + id);
         } else {
