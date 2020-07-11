@@ -22,7 +22,7 @@ import java.util.concurrent.atomic.AtomicLong;
 @Slf4j
 @RequestMapping(value = "/deliver")
 public class DeliverOrderHandlerController {
-    
+
     // 配送服务运行状态
     private volatile boolean deliverStatus = true;
 
