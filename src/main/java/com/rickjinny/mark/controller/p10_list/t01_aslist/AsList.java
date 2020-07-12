@@ -1,4 +1,4 @@
-package com.rickjinny.mark.controller.p10_list.aslist;
+package com.rickjinny.mark.controller.p10_list.t01_aslist;
 
 import lombok.extern.slf4j.Slf4j;
 
