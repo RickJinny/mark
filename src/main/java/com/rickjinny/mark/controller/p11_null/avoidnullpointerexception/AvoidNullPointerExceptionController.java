@@ -11,7 +11,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 @RestController
-@RequestMapping("avoidnullpointerexception")
+@RequestMapping("avoidNull")
 @Slf4j
 public class AvoidNullPointerExceptionController {
 
