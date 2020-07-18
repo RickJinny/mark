@@ -1,4 +1,4 @@
-package com.rickjinny.mark.controller.p06_transaction;
+package com.rickjinny.mark.controller.p06_transaction.repository;
 
 import com.rickjinny.mark.controller.p06_transaction.bean.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;

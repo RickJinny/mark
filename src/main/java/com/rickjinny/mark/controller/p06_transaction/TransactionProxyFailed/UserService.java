@@ -1,6 +1,6 @@
-package com.rickjinny.mark.controller.p06_transaction.transactionProxyFailed;
+package com.rickjinny.mark.controller.p06_transaction.TransactionProxyFailed;
 
-import com.rickjinny.mark.controller.p06_transaction.UserRepository;
+import com.rickjinny.mark.controller.p06_transaction.repository.UserRepository;
 import com.rickjinny.mark.controller.p06_transaction.bean.UserEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
