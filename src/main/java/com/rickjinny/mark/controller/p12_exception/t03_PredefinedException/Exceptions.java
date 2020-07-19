@@ -12,6 +12,9 @@ public class Exceptions {
      */
     public static BusinessException orderExists = new BusinessException("订单已经存在", 3001);
 
+    /**
+     * 修复的方式：改一下 Exceptions 类的实现，通过不同的方法把每一种异常都 new 出来抛出即可。
+     */
     public static BusinessException orderExists() {
         return new BusinessException("订单已经存在", 3001);
     }
