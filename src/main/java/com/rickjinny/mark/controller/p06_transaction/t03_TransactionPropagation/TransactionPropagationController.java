@@ -1,4 +1,4 @@
-package com.rickjinny.mark.controller.p06_transaction.TransactionPropagation;
+package com.rickjinny.mark.controller.p06_transaction.t03_TransactionPropagation;
 
 import com.rickjinny.mark.controller.p06_transaction.bean.UserEntity;
 import lombok.extern.slf4j.Slf4j;

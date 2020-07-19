@@ -1,4 +1,4 @@
-package com.rickjinny.mark.controller.p06_transaction.TransactionProxyFailed;
+package com.rickjinny.mark.controller.p06_transaction.t01_TransactionProxyFailed;
 
 import com.rickjinny.mark.controller.p06_transaction.repository.UserRepository;
 import com.rickjinny.mark.controller.p06_transaction.bean.UserEntity;

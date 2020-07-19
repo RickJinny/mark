@@ -1,4 +1,4 @@
-package com.rickjinny.mark.controller.p06_transaction.TransactionRollBackFailed;
+package com.rickjinny.mark.controller.p06_transaction.t02_TransactionRollBackFailed;
 
 import com.rickjinny.mark.controller.p06_transaction.bean.UserEntity;
 import com.rickjinny.mark.controller.p06_transaction.repository.UserRepository;
