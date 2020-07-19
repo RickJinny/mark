@@ -19,6 +19,14 @@ import java.util.stream.IntStream;
 @Slf4j
 public class ThreadPoolAndExceptionController {
 
+    /**
+     * 任务1到4，所在的线程是 test0，任务 6 开始运行在线程 test1。由于我的线程池通过线程工厂为线程使用统一的前缀 test 加上
+     * 计数器进行命名，因此从线程名的改变可以知道因为异常的抛出，老线程退出了，线程池只能重新创建一个线程。如果每个异步任务都以
+     * 异常结束，那么线程池可能完全起不到线程重用的作用。
+     *
+     * 因为没有手动捕获异常进行处理，ThreadGroup 帮我们进行了未捕获异常的默认处理，向标准错误输出打印了出现异常的线程名称和异常信息。
+     * 显然，这种没有以统一的错误日志格式记录错误信息打印出来的形式，对生产代码是不合适的。
+     */
     @GetMapping(value = "/execute")
     public void execute() throws InterruptedException {
         String prefix = "test";
