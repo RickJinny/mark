@@ -19,7 +19,7 @@ import java.util.stream.IntStream;
 @Slf4j
 public class ThreadPoolAndExceptionController {
 
-    @GetMapping(value = "execute/")
+    @GetMapping(value = "/execute")
     public void execute() throws InterruptedException {
         String prefix = "test";
         ExecutorService threadPool = Executors.newFixedThreadPool(1,
