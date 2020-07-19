@@ -23,20 +23,29 @@ public class HandleExceptionController {
         throw new RuntimeException("系统错误");
     }
 
+    /**
+     * 在 wrong1() 方法中，调用 readFile() 方法，捕获异常后，完全不记录原始异常，直接抛出一个转换后异常，
+     * 导致出了问题不知道 IOException 具体是哪里引起的。
+     */
     @GetMapping(value = "/wrong1")
     public void wrong1() {
         try {
             readFile();
         } catch (IOException e) {
+            // 原始异常信息丢失
             throw new RuntimeException("系统忙，请稍后再试!");
         }
     }
 
+    /**
+     * 只记录了异常消息，却丢失了异常的类型、栈等重要信息。
+     */
     @GetMapping(value = "wrong2")
     public void wrong2() {
         try {
             readFile();
         } catch (IOException e) {
+            // 只保留了异常消息, 栈没有记录
             log.error("文件读取错误, {}", e.getMessage());
             throw new RuntimeException("系统忙，请稍后再试! ");
         }
@@ -52,6 +61,11 @@ public class HandleExceptionController {
         }
     }
 
+    /**
+     * 正确的打印异常的方法1，使用：
+     * log.error("文件读取错误", e);
+     * throw new RuntimeException("系统繁忙，请稍后再试!");
+     */
     @GetMapping(value = "/right1")
     public void right1() {
         try {
@@ -62,6 +76,11 @@ public class HandleExceptionController {
         }
     }
 
+    /**
+     * 正确的打印异常的方法2，使用：
+     * throw new RuntimeException("系统忙，请稍后再试", e);
+     * 把原始异常作为转换后新异常的 cause，原始异常信息同样不会丢失。
+     */
     @GetMapping(value = "/right2")
     public void right2() {
         try {
@@ -70,7 +89,10 @@ public class HandleExceptionController {
             throw new RuntimeException("系统忙，请稍后再试", e);
         }
     }
-    
+
+    /**
+     * 比如有这么一个会抛出受检异常的方法 readFile()
+     */
     private void readFile() throws IOException {
         Files.readAllLines(Paths.get("a_file"));
     }
