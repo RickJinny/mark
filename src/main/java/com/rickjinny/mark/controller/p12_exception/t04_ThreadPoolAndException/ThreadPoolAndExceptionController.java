@@ -6,9 +6,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
@@ -70,5 +73,49 @@ public class ThreadPoolAndExceptionController {
         Thread.setDefaultUncaughtExceptionHandler((thread, throwable) -> log.error("Thread {} got exception", thread, throwable));
     }
 
+    @RequestMapping(value = "/submit")
+    public void submit() throws InterruptedException {
+        String prefix = "test";
+        ExecutorService threadPool = Executors.newFixedThreadPool(1,
+                new ThreadFactoryBuilder().setNameFormat(prefix + "%d").build());
 
+        IntStream.rangeClosed(1, 10).forEach(i -> threadPool.submit(() -> {
+            if (i == 5) {
+                throw new RuntimeException("error");
+            }
+            log.info("I am done: {}", i);
+        }));
+
+        threadPool.shutdown();
+        threadPool.awaitTermination(1, TimeUnit.HOURS);
+    }
+
+    /**
+     * 我们把 submit 返回的 Future 放到了 List 中，随后遍历 List 来捕获所有任务的异常。
+     * 这么做确实合乎情理，既然是以 submit 方式提交任务，那么我们应该关心任务的执行结果，否则应该以 execute 提交任务。
+     */
+    @RequestMapping(value = "/submitRight")
+    public void submitRight() throws InterruptedException {
+        String prefix = "test";
+        ExecutorService threadPool = Executors.newFixedThreadPool(1,
+                new ThreadFactoryBuilder().setNameFormat(prefix + "%d").build());
+
+        List<? extends Future<?>> tasks = IntStream.rangeClosed(1, 10).mapToObj(i -> threadPool.submit(() -> {
+            if (i == 5) {
+                throw new RuntimeException("error");
+            }
+            log.info("I am done: {}", i);
+        })).collect(Collectors.toList());
+
+        tasks.forEach(task -> {
+            try {
+                task.get();
+            } catch (Exception e) {
+                log.error("got Exception", e);
+            }
+        });
+
+        threadPool.shutdown();
+        threadPool.awaitTermination(1, TimeUnit.HOURS);
+    }
 }
