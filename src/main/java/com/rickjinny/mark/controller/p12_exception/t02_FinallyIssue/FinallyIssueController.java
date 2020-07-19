@@ -1,6 +1,7 @@
 package com.rickjinny.mark.controller.p12_exception.t02_FinallyIssue;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -71,5 +72,18 @@ public class FinallyIssueController {
             }
         }
         throw e;
+    }
+
+    /**
+     * 使用传统的 try - finally 语句，在 try 中调用 read 方法，在 finally 中调用 close 方法。
+     */
+    @GetMapping(value = "/useResourceWrong")
+    public void useResourceWrong() throws Exception {
+        TestResource testResource = new TestResource();
+        try {
+            testResource.read();
+        } finally {
+            testResource.close();
+        }
     }
 }
