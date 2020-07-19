@@ -76,6 +76,7 @@ public class FinallyIssueController {
 
     /**
      * 使用传统的 try - finally 语句，在 try 中调用 read 方法，在 finally 中调用 close 方法。
+     * 结果：同样出现了 finally 中的异常覆盖了 try 中异常的问题。
      */
     @GetMapping(value = "/useResourceWrong")
     public void useResourceWrong() throws Exception {
@@ -84,6 +85,16 @@ public class FinallyIssueController {
             testResource.read();
         } finally {
             testResource.close();
+        }
+    }
+
+    /**
+     * 改为 try - with - resources 模式
+     */
+    @GetMapping(value = "/useResourceRight")
+    public void useResourceRight() throws Exception {
+        try (TestResource testResource = new TestResource()) {
+            testResource.read();
         }
     }
 }
