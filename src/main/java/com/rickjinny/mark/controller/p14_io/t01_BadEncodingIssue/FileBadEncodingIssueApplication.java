@@ -55,7 +55,7 @@ public class FileBadEncodingIssueApplication {
      */
     private static void right1() throws IOException {
         char[] chars = new char[10];
-        String content = "";
+        String content = StringUtils.EMPTY;
         try (FileInputStream fileInputStream = new FileInputStream("hello.txt");
              InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream, Charset.forName("GBK"))) {
             int count;
