@@ -13,6 +13,10 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+/**
+ * 文件IO：实现高效正确的文件读写并非易事
+ * 第一、文件读写需要确保字符编码一致
+ */
 @Slf4j
 public class FileBadEncodingIssueApplication {
 
