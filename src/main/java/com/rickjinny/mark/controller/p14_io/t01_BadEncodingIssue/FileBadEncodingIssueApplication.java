@@ -45,6 +45,10 @@ public class FileBadEncodingIssueApplication {
         log.info("bytes:{}", Hex.encodeHexString(Files.readAllBytes(Paths.get("hello2.txt"))).toUpperCase());
     }
 
+    /**
+     * 上面的 FileReader 是以当前机器的默认字符集来读取文件的，如果希望指定字符集的话，需要直接使用 InputStreamReader 和 FileInputStream。
+     *
+     */
     private static void right1() throws IOException {
         char[] chars = new char[10];
         String content = "";
@@ -58,13 +62,19 @@ public class FileBadEncodingIssueApplication {
         log.info("result:{}", content);
     }
 
-
-
-
+    /**
+     * 从 JDK1.7 推出的 Files 类的 readAllLines 方法，可以很方便地用一行代码完成文件内容读取。
+     * 
+     */
+    private static void right2() throws IOException {
+        log.info("result: {}", Files.readAllLines(Paths.get("hello.txt"), Charset.forName("GBK"))
+                .stream().findFirst().orElse(""));
+    }
 
     public static void main(String[] args) throws IOException {
 //        init();
 //        wrong();
-        right1();
+//        right1();
+        right2();
     }
 }
