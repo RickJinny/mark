@@ -64,7 +64,9 @@ public class FileBadEncodingIssueApplication {
 
     /**
      * 从 JDK1.7 推出的 Files 类的 readAllLines 方法，可以很方便地用一行代码完成文件内容读取。
-     * 
+     *
+     * 这种方式有个问题：读取超出内存大小的大文件时会出现 OOM。为什么呢？
+     * 打开 readAllLines 方法的源码可以看到，readAllLines 读取文件所有内容后，放到一个 List<String> 中返回，如果内存无法容纳这个 List，就会 OOM。
      */
     private static void right2() throws IOException {
         log.info("result: {}", Files.readAllLines(Paths.get("hello.txt"), Charset.forName("GBK"))
