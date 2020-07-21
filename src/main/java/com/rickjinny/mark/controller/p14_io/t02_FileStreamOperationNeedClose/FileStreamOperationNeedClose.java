@@ -13,6 +13,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.LongAdder;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 @Slf4j
 public class FileStreamOperationNeedClose {
@@ -75,7 +76,23 @@ public class FileStreamOperationNeedClose {
         log.info("total : {}", longAdder.longValue());
     }
 
-    public static void main(String[] args) {
+    /**
+     * 在 JDK 文档中有提到，注意使用 try - with - resource 方式来配合，确保流的 close 方法可以调用释放资源。
+     * 修复的方法：使用 try 来包裹 Stream 即可。
+     */
+    private static void right() {
+        LongAdder longAdder = new LongAdder();
+        IntStream.rangeClosed(1, 1000000).forEach(i -> {
+            try (Stream<String> lines = Files.lines(Paths.get("demo.txt"))) {
+                lines.forEach(line -> longAdder.increment());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+        log.info("total : {}", longAdder.longValue());
+    }
 
+    public static void main(String[] args) throws IOException {
+        linesTest();
     }
 }
