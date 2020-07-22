@@ -1,10 +1,10 @@
 package com.rickjinny.mark.controller.p14_io.t03_FileBufferPerformance;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.StopWatch;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
+import java.nio.channels.FileChannel;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -55,6 +55,9 @@ public class FileBufferPerformance {
      *
      * 修改后，使用 100 字节作为缓冲区，使用 FileInputStream 的 byte[] 的重载来一次性读取一定字节的数据，同时使用 FileOutputStream 的
      * byte[] 的重载实现一次性从缓冲区写入一定字节的数据到文件。
+     *
+     * 仅仅使用了 100 个字节的缓冲区作为过渡，完成 35M 文件的复制耗时缩短到了 26 秒，是无缓冲时性能的 7 倍；如果把缓冲区放大到 1000 字节，耗时
+     * 可以进一步缩短到 342 毫秒。可以看到，在进行文件 IO 处理的时候，使用合适的缓冲区可以明显提高性能。
      */
     private static void bufferOperationWith100Buffer() throws IOException {
         Files.deleteIfExists(Paths.get("dest.txt"));
@@ -66,5 +69,106 @@ public class FileBufferPerformance {
                 fileOutputStream.write(buffer, 0, len);
             }
         }
+    }
+
+    /**
+     * 实现文件读写，还要自己 new 一个缓冲区出来，太麻烦了，不是有一个 BufferedInputStream 和 BufferedOutputStream 可以
+     * 实现输入输出流的缓冲处理吗？
+     * 是的，它们在内部实现了一个默认 8KB 大小的缓冲区。但是，在使用 BufferedInputStream 和 BufferedOutputStream 时，我还
+     * 是建议你再使用一个缓冲进行读写，不要因为它们实现了内部缓冲就进行逐字节的操作。
+     *
+     * 接下来，我们来比较下面三种方式读写一个字节的性能:
+     * 1、直接使用 BufferedInputStream 和 BufferedOutputStream;
+     * 2、额外使用一个 8KB 缓冲，使用 BufferedInputStream 和 BufferedOutputStream;
+     * 3、直接使用 FileInputStream 和 FileOutputStream，再使用一个 8KB 的缓冲
+     */
+
+    /**
+     * 使用 BufferedInputStream 和 BufferedOutputStream
+     *
+     * 耗时：1.4秒
+     */
+    private static void bufferedStreamByteOperation() throws IOException {
+        Files.deleteIfExists(Paths.get("dest.txt"));
+        try (BufferedInputStream bufferedInputStream = new BufferedInputStream(new FileInputStream("src.txt"));
+             BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(new FileOutputStream("dest.txt"))) {
+            int i;
+            while ((i = bufferedInputStream.read()) != -1) {
+                bufferedOutputStream.write(i);
+            }
+        }
+    }
+
+    /**
+     * 额外使用一个 8KB 缓冲，再使用 BufferedInputStream 和 BufferedOutputStream
+     *
+     * 耗时：0.11秒
+     */
+    private static void bufferedStreamBufferOperation() throws IOException {
+        Files.deleteIfExists(Paths.get("dest.txt"));
+        try (BufferedInputStream bufferedInputStream = new BufferedInputStream(new FileInputStream("src.txt"));
+             BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(new FileOutputStream("dest.txt"))) {
+            byte[] buffer = new byte[8192];
+            int len = 0;
+            while ((len = bufferedInputStream.read(buffer)) != -1) {
+                bufferedOutputStream.write(buffer, 0, len);
+            }
+        }
+    }
+
+    /**
+     * 直接使用 FileInputStream 和 FileOutputStream，再使用一个 8KB 的缓冲
+     *
+     * 耗时：0.11秒
+     */
+    private static void largerBufferOperation() throws IOException {
+        Files.deleteIfExists(Paths.get("dest.txt"));
+        try (FileInputStream fileInputStream = new FileInputStream("src.txt");
+             FileOutputStream fileOutputStream = new FileOutputStream("dest.txt")) {
+            byte[] buffer = new byte[8192];
+            int len = 0;
+            while ((len = fileInputStream.read(buffer)) != -1) {
+                fileOutputStream.write(buffer, 0, len);
+            }
+        }
+    }
+
+    /**
+     * 最高效的方法：
+     *
+     * 对于类似文件复制操作，如果希望有更高的性能，可以使用 FileChannel 的 transferTo 方法进行流的复制。
+     * 在一些操作系统（比如高版本的 Linux 和 Unix）上，可以实现 DMA（直接内存访问），也就是数据从磁盘经过总线直接发送到目标文件，
+     * 无需经过内存和 CPU 进行数据中转。
+     */
+    private static void fileChannelOperation() throws IOException {
+        Files.deleteIfExists(Paths.get("dest.txt"));
+        FileChannel in = FileChannel.open(Paths.get("src.txt"), StandardOpenOption.READ);
+        FileChannel out = FileChannel.open(Paths.get("dest.txt"), StandardOpenOption.CREATE, StandardOpenOption.WRITE);
+        in.transferTo(0, in.size(), out);
+    }
+
+    public static void main(String[] args) throws IOException {
+
+        StopWatch stopWatch = new StopWatch();
+        init();
+        stopWatch.start("perByteOperation");
+        perByteOperation();
+        stopWatch.stop();
+        stopWatch.start("bufferOperationWith100Buffer");
+        bufferOperationWith100Buffer();
+        stopWatch.stop();
+        stopWatch.start("bufferedStreamByteOperation");
+        bufferedStreamByteOperation();
+        stopWatch.stop();
+        stopWatch.start("bufferedStreamBufferOperation");
+        bufferedStreamBufferOperation();
+        stopWatch.stop();
+        stopWatch.start("largerBufferOperation");
+        largerBufferOperation();
+        stopWatch.stop();
+        stopWatch.start("fileChannelOperation");
+        fileChannelOperation();
+        stopWatch.stop();
+        log.info(stopWatch.prettyPrint());
     }
 }
