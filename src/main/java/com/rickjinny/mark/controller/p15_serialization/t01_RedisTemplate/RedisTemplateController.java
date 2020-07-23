@@ -31,6 +31,9 @@ public class RedisTemplateController {
     @Autowired
     private RedisTemplate<String, User> userRedisTemplate;
 
+    @Autowired
+    private RedisTemplate<String, Long> countRedisTemplate;
+
     /**
      * 在应用初始化完成后，向 Redis 设置两组数据：
      * 第一次使用 RedisTemplate 设置 Key 为 redisTemplate、Value 为 User 对象；
@@ -82,5 +85,30 @@ public class RedisTemplateController {
         User userFromRedis = userRedisTemplate.opsForValue().get(user.getName());
         log.info("userRedisTemplate get {} {}", userFromRedis, userFromRedis.getClass());
         log.info("stringRedisTemplate get {}", stringRedisTemplate.opsForValue().get(user.getName()));
+    }
+
+    @RequestMapping(value = "/wrong2")
+    public void wrong2() {
+        String key = "testCounter";
+        countRedisTemplate.opsForValue().set(key, 1L);
+        log.info("{} {}", countRedisTemplate.opsForValue().get(key),
+                countRedisTemplate.opsForValue().get(key) instanceof Long);
+        Long l1 = getLongFromRedis(key);
+        countRedisTemplate.opsForValue().set(key, Integer.MAX_VALUE + 1L);
+        log.info("{} {}", countRedisTemplate.opsForValue().get(key),
+                countRedisTemplate.opsForValue().get(key) instanceof Long);
+        Long l2 = getLongFromRedis(key);
+        log.info("{} {}", l1, l2);
+    }
+
+    private Long getLongFromRedis(String key) {
+        Object o = countRedisTemplate.opsForValue().get(key);
+        if (o instanceof Integer) {
+            return ((Integer) o).longValue();
+        }
+        if (o instanceof Long) {
+            return (Long) o;
+        }
+        return null;
     }
 }
