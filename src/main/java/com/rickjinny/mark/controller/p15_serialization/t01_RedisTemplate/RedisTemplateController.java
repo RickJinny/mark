@@ -28,6 +28,9 @@ public class RedisTemplateController {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @Autowired
+    private RedisTemplate<String, User> userRedisTemplate;
+
     /**
      * 在应用初始化完成后，向 Redis 设置两组数据：
      * 第一次使用 RedisTemplate 设置 Key 为 redisTemplate、Value 为 User 对象；
@@ -66,5 +69,18 @@ public class RedisTemplateController {
         User userFromStringRedisTemplate = objectMapper.readValue(stringRedisTemplate.opsForValue().get("stringRedisTemplate"),
                 User.class);
         log.info("stringRedisTemplate get {}", userFromStringRedisTemplate);
+    }
+
+    /**
+     * 直接注入类型为 RedisTemplate<String, User> 的 userRedisTemplate 字段。
+     * 使用 userRedisTemplate 存入一个 User 对象，再分别使用 userRedisTemplate 和  StringRedisTemplate 取出这个对象。
+     */
+    @RequestMapping(value = "/right2")
+    public void right2() {
+        User user = new User("haha", 36);
+        userRedisTemplate.opsForValue().set(user.getName(), user);
+        User userFromRedis = userRedisTemplate.opsForValue().get(user.getName());
+        log.info("userRedisTemplate get {} {}", userFromRedis, userFromRedis.getClass());
+        log.info("stringRedisTemplate get {}", stringRedisTemplate.opsForValue().get(user.getName()));
     }
 }
