@@ -52,6 +52,12 @@ public class JsonIgnorePropertiesController {
         RED, BLUE
     }
 
+    /**
+     * 使用 UserWrong 类型作为入参传入，其中只有一个 name 属性。
+     * 从异常信息中可以看到，反序列化的时候，原始数据多了一个 version 属性。
+     * 原因：自定义 ObjectMapper 启用 WRITE_ENUMS_USING_INDEX 序列化功能特性时，覆盖了 SpringBoot 自动创建的 ObjectMapper;
+     * 而这个自动创建的 ObjectMapper 设置过 FAIL_ON_UNKNOWN_PROPERTIES 反序列化特性为 false ，以确保出现未知字段时不要抛出异常。
+     */
     @PostMapping(value = "/wrong")
     public UserWrong wrong(@RequestBody UserWrong user) {
         return user;
