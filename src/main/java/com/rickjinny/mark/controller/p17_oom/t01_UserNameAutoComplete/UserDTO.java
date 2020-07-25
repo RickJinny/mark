@@ -14,6 +14,9 @@ public class UserDTO {
     @EqualsAndHashCode.Exclude
     private String payload;
 
+    /**
+     * 对于每一个用户对象 UserDTO, 除了用户名，我们还加入了 10K 左右的数据模拟其用户信息。
+     */
     public UserDTO(String name) {
         this.name = name;
         this.payload = IntStream.rangeClosed(1, 10_000)
