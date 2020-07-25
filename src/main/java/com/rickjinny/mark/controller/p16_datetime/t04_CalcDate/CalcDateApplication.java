@@ -117,7 +117,13 @@ public class CalcDateApplication {
         Boolean query = LocalDate.now().query(CalcDateApplication::isFamilyBirthday);
         System.out.println("查询是否是今天要举办生日: " + query);
 
-
+        /**
+         * Java8 虽然简单，但是容易采坑。
+         * Java8 中有一个专门的类 Period 定义了日期间隔，通过 Period.between 得到了两个 LocalDate 的差，返回的是两个日期差几年零几个月零几天。
+         * 如果希望得知两个日期之间差几天，直接调用 Period 的 getDays() 方法得到的只是最后的 "零几天"，而不是算总的间隔天数。
+         *
+         * 比如：计算2019年12月12日和2019年10月1日的日期间隔，很明显日期差是2个月零11天，但获取 getDays 方法得到的结果只是11天，而不是72天。
+         */
         System.out.println("计算日期差");
         LocalDate today = LocalDate.of(2019, 12, 12);
         LocalDate specifyDate = LocalDate.of(2019, 10, 1);
