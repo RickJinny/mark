@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ThreadLocalRandom;
@@ -45,6 +46,32 @@ public class UserNameAutoCompleteService {
                 String key = userEntity.getName().substring(0, i + 1);
                 autoCompleteIndex.computeIfAbsent(key, s -> new ArrayList<>())
                         .add(new UserDTO(userEntity.getName()));
+            }
+        });
+        log.info("autoCompleteIndex size:{} count:{}", autoCompleteIndex.size(),
+                autoCompleteIndex.entrySet().stream().map(item -> item.getValue().size()).reduce(0, Integer::sum));
+    }
+
+    /**
+     * 解决方案：把所有的 UserDTO 先加入 HashSet 中，因为 UserDTO 以 name 为标识唯一性，所以重复用户名会被过滤掉，最终加入
+     * HashSet 的 UserDTO 就不足 1 万个。
+     * 有了 HashSet 来缓存所有可能的 UserDTO 信息，我们再构建自动完成索引 autoCompleteIndex 这个 HashMap 时，就可以直接从 HashSet 获取所有
+     * 用户信息来构建了。这样一来，同一个用户名前缀的不同组合（比如用户名为 abc 的用户，a、ab 和 abc 三个 key）关联到 UserDTO 是同一份。
+     */
+    public void right() {
+        // 先保存 10000 个用户名随机的用户到数据库中
+        userRepository.saveAll(LongStream.rangeClosed(1, 10000).mapToObj(i ->
+                new UserEntity(i, randomName())).collect(Collectors.toList()));
+
+        HashSet<UserDTO> cache = userRepository.findAll().stream()
+                .map(item -> new UserDTO(item.getName()))
+                .collect(Collectors.toCollection(HashSet::new));
+
+        cache.stream().forEach(userDTO -> {
+            int length = userDTO.getName().length();
+            for (int i = 0; i < length; i++) {
+                String key = userDTO.getName().substring(0, i + 1);
+                autoCompleteIndex.computeIfAbsent(key, s -> new ArrayList<>()).add(userDTO);
             }
         });
         log.info("autoCompleteIndex size:{} count:{}", autoCompleteIndex.size(),
