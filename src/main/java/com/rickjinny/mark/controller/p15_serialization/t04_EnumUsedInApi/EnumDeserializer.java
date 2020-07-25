@@ -31,7 +31,7 @@ public class EnumDeserializer extends JsonDeserializer<Enum> implements Contextu
     public Enum deserialize(JsonParser jsonParser, DeserializationContext context)
             throws IOException, JsonProcessingException {
         // 找枚举中带有 @JsonValue 注解的字段，这个字段是我们反序列化的基准字段
-        Optional<Field> valueFieldOpt = Arrays.asList(targetClass.getDeclaredField()).stream()
+        Optional<Field> valueFieldOpt = Arrays.asList(targetClass.getDeclaredFields()).stream()
                 .filter(m -> m.isAnnotationPresent(JsonValue.class))
                 .findFirst();
 
