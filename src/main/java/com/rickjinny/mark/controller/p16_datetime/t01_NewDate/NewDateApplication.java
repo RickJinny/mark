@@ -1,5 +1,9 @@
 package com.rickjinny.mark.controller.p16_datetime.t01_NewDate;
 
+import java.time.LocalDateTime;
+import java.time.Month;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
@@ -42,9 +46,26 @@ public class NewDateApplication {
         System.out.println(calendar2.getTime());
     }
 
+    /**
+     * 更好的处理方法
+     *
+     * 结果是
+     * 2019-12-31T10:20:30
+     * 2019-12-31T10:20:30-05:00[America/New_York]
+     */
+    private static void better() {
+        System.out.println("better");
+        LocalDateTime localDateTime = LocalDateTime.of(2019, Month.DECEMBER, 31, 10, 20, 30);
+        System.out.println(localDateTime);
+
+        ZonedDateTime zonedDateTime = ZonedDateTime.of(localDateTime, ZoneId.of("America/New_York"));
+        System.out.println(zonedDateTime);
+    }
+
     public static void main(String[] args) {
         wrong1();
         right1();
         right2();
+        better();
     }
 }
