@@ -36,6 +36,9 @@ public class WeakHashMapOOMController {
      * 往 WeakHashMap 类型的 cache 中，添加 200 万个 Entry，然后使用
      * Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate 发起一个定时任务，
      * 每隔 1 秒输出缓存中的 Entry 个数。
+     *
+     * 输出的结果 cache size 始终是 200 万，即使我们通过 JvisualVM 进行手动 GC 还是这样。
+     * 这就说明，这些 Entry 无法通过 GC 回收。如果你把 200万改为 1000 万，就可以在日志中看到 OOM 错误。
      */
     @RequestMapping(value = "/wrong")
     public void wrong() {
