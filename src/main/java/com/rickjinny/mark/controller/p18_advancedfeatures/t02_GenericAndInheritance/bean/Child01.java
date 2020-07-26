@@ -1,4 +1,4 @@
-package com.rickjinny.mark.controller.p18_advancedfeatures.t02_GenericAndInheritance;
+package com.rickjinny.mark.controller.p18_advancedfeatures.t02_GenericAndInheritance.bean;
 
 /**
  * 子类 Child01 的实现是这样的：继承父类，但是没有父类泛型参数；定义了一个参数为 String 的 setValue 方法，

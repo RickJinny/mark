@@ -1,4 +1,4 @@
-package com.rickjinny.mark.controller.p18_advancedfeatures.t02_GenericAndInheritance;
+package com.rickjinny.mark.controller.p18_advancedfeatures.t02_GenericAndInheritance.bean;
 
 public class Child02 extends Parent<String> {
 

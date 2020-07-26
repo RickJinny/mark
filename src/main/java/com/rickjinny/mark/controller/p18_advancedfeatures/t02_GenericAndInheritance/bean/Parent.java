@@ -1,4 +1,4 @@
-package com.rickjinny.mark.controller.p18_advancedfeatures.t02_GenericAndInheritance;
+package com.rickjinny.mark.controller.p18_advancedfeatures.t02_GenericAndInheritance.bean;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -25,6 +25,8 @@ public class Parent<T> {
      * 设置 value 值
      */
     public void setValue(T value) {
+        System.out.println("Parent.setValue called");
         this.value = value;
+        updateCount.incrementAndGet();
     }
 }
