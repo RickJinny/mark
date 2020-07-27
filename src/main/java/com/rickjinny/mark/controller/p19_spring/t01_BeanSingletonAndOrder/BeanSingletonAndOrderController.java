@@ -27,7 +27,9 @@ public class BeanSingletonAndOrderController {
 
     @RequestMapping(value = "/test2")
     public void test2() {
-        log.info("============================");
+        /**
+         * 如果不希望每次走代理的话，每次直接从 Application 中获取 Bean。
+         */
         applicationContext.getBeansOfType(SayService.class).values().forEach(SayService::say);
     }
 }
