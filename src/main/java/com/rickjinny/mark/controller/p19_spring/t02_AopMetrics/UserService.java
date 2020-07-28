@@ -14,6 +14,7 @@ public class UserService {
     private UserRepository userRepository;
 
     @Transactional
+    @Metrics // 应用方法监控
     public void createUser(UserEntity entity) {
         userRepository.save(entity);
         if (entity.getName().contains("test")) {
