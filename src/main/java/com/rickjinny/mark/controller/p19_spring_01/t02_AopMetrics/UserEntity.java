@@ -1,4 +1,4 @@
-package com.rickjinny.mark.controller.p19_spring.t02_AopMetrics;
+package com.rickjinny.mark.controller.p19_spring_01.t02_AopMetrics;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;

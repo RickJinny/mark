@@ -1,4 +1,4 @@
-package com.rickjinny.mark.controller.p19_spring.t01_BeanSingletonAndOrder;
+package com.rickjinny.mark.controller.p19_spring_01.t01_BeanSingletonAndOrder;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;

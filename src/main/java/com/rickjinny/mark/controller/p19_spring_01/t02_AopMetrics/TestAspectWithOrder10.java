@@ -1,4 +1,4 @@
-package com.rickjinny.mark.controller.p19_spring.t02_AopMetrics;
+package com.rickjinny.mark.controller.p19_spring_01.t02_AopMetrics;
 
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
@@ -22,17 +22,17 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class TestAspectWithOrder10 {
 
-    @Before("execution(* com.rickjinny.mark.controller.p19_spring.t02_AopMetrics.MetricsController.*())")
+    @Before("execution(* com.rickjinny.mark.controller.p19_spring_01.t02_AopMetrics.MetricsController.*())")
     public void before(JoinPoint joinPoint) {
         log.info("TestAspectWithOrder10 @Before");
     }
 
-    @After("execution(* com.rickjinny.mark.controller.p19_spring.t02_AopMetrics.MetricsController.*())")
+    @After("execution(* com.rickjinny.mark.controller.p19_spring_01.t02_AopMetrics.MetricsController.*())")
     public void after(JoinPoint joinPoint) {
         log.info("TestAspectWithOrder10 @After");
     }
 
-    @Around("execution(* com.rickjinny.mark.controller.p19_spring.t02_AopMetrics.MetricsController.*())")
+    @Around("execution(* com.rickjinny.mark.controller.p19_spring_01.t02_AopMetrics.MetricsController.*())")
     public Object around(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
         log.info("TestAspectWithOrder10 @Around before");
         Object object = proceedingJoinPoint.proceed();

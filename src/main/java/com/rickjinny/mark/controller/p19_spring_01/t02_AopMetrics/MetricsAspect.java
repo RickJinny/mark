@@ -1,4 +1,4 @@
-package com.rickjinny.mark.controller.p19_spring.t02_AopMetrics;
+package com.rickjinny.mark.controller.p19_spring_01.t02_AopMetrics;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -51,7 +51,7 @@ public class MetricsAspect {
     /**
      * @annotation 指示器实现对标记了 Metrics 注解的方法进行匹配
      */
-    @Pointcut("within(@com.rickjinny.mark.controller.p19_spring.t02_AopMetrics.Metrics *)")
+    @Pointcut("within(@com.rickjinny.mark.controller.p19_spring_01.t02_AopMetrics.Metrics *)")
     public void withMetricsAnnotation() {
 
     }

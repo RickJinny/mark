@@ -1,4 +1,4 @@
-package com.rickjinny.mark.controller.p19_spring.t02_AopMetrics;
+package com.rickjinny.mark.controller.p19_spring_01.t02_AopMetrics;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
