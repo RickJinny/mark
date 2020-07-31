@@ -28,7 +28,7 @@ import java.util.stream.IntStream;
 public class RedisVsMysqlAppController {
 
     // 模拟 10万条数据存到 Redis 和 MySQL
-    private static final int ROWS = 100_000;
+    public static final int ROWS = 100_000;
 
     public static final String PAYLOAD = IntStream.rangeClosed(1, 100).mapToObj(__ -> "a").collect(Collectors.joining(""));
 
