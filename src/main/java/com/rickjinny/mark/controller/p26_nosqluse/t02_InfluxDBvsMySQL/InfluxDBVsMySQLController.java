@@ -92,7 +92,9 @@ public class InfluxDBVsMySQLController {
     }
 
     /**
-     * 初始化 InfluxDB
+     * 初始化 InfluxDB。
+     *
+     * InfluxDB 批量插入 1000万条数据仅用了 54秒，相当于每秒插入 18万条数据，速度相当快；MySQL的批量插入，速度也挺快达到了每秒 4.8 万。
      */
     private void initInfluxDB() {
         long begin = System.currentTimeMillis();
