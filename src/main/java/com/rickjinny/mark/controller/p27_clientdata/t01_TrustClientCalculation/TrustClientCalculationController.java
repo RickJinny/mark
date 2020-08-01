@@ -1,5 +1,7 @@
 package com.rickjinny.mark.controller.p27_clientdata.t01_TrustClientCalculation;
 
+import com.rickjinny.mark.controller.p27_clientdata.t01_TrustClientCalculation.bean.Item;
+import com.rickjinny.mark.controller.p27_clientdata.t01_TrustClientCalculation.bean.Order;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,7 +23,7 @@ public class TrustClientCalculationController {
     @PostMapping(value = "/rightOrder")
     public void rightOrder(@RequestBody Order order) {
         // 根据商品id，重新查询商品
-        Item item = DB.getItem(order.getItemId());
+        Item item = DBUtils.getItem(order.getItemId());
         // 客户端传入的和服务端查询到的商品单价不匹配的时候，给予友好提示
         if (!item.getItemPrice().equals(order.getItemPrice())) {
             throw new RuntimeException("您选购的商品价格有变换，请重新下单!");

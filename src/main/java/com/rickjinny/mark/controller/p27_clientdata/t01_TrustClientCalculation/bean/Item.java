@@ -1,4 +1,4 @@
-package com.rickjinny.mark.controller.p27_clientdata.t01_TrustClientCalculation;
+package com.rickjinny.mark.controller.p27_clientdata.t01_TrustClientCalculation.bean;
 
 import lombok.Data;
 
