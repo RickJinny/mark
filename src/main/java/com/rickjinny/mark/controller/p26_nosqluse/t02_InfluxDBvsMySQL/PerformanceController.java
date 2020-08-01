@@ -9,6 +9,14 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * 对 1000 万数据进行一个统计，查找最近 60 天的数据，按照 1 小时的时间粒度聚合，统计 value 列的最大值、最小值和平均值，并将统计结果绘制成曲线图。
+ * 查询结果：调用接口，可以得到 MySQL 查询一次耗时 29s 左右，而 InfluxDB 耗时 980ms。
+ *
+ * 在按照时间区间聚合的案例上，我们看到了 InfluxDB 的性能优势，我们肯定不能把 InfluxDB 当作普通数据库，原因如下：
+ * 第一、InfluxDB 不支持数据更新操作，毕竟时间数据只能随着时间产生新数据，肯定无法对过去的数据做修改。
+ * 第二、从数据结构上说，时间序列数据，数据没有单一的主键标识，必须包含时间戳，数据只能和时间戳进行关联，不适合普通业务数据。
+ */
 @RestController
 @RequestMapping(value = "/performance")
 @Slf4j
