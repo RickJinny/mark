@@ -3,10 +3,13 @@ package com.rickjinny.mark.controller.p26_nosqluse.t03_ElasticSearchVsMySQL;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
+import org.springframework.data.elasticsearch.core.query.UpdateQuery;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.stream.IntStream;
 
 /**
  * 分别调用mysql接口和es接口进行测试，结果为：
@@ -52,5 +55,37 @@ public class PerformanceController {
         long begin = System.currentTimeMillis();
         Object result = newsESRepository.countByCateIdAndContentContainingAndContentContaining(cateId, keyword1, keyword2);
         log.info("took {} ms result {}", System.currentTimeMillis() - begin, result);
+    }
+
+    /**
+     * ES 这种以索引为核心的数据库，也不是万能的，频繁更新就是一大问题。
+     * 验证一下 JdbcTemplate + SQL 语句
+     */
+    public void mysql2(@RequestParam(value = "id", defaultValue = "400_000") Long id) {
+        long begin = System.currentTimeMillis();
+        // 对于 MySQL，使用 JdbcTemplate + SQL 语句，实现直接更新某个 category 字段，更新 1000 次
+        IntStream.rangeClosed(1, 1000).forEach(i -> {
+            jdbcTemplate.update("update `new` set category = ? where  id = ?", new Object[]{"test" + i, id});
+        });
+        log.info("mysql took {} ms result {}", System.currentTimeMillis() - begin, newsMySQLRepository.findById(id));
+    }
+
+    /**
+     * 验证一下 ElasticsearchTemplate + 自定义 UpdateQuery
+     */
+    @RequestMapping(value = "/es2")
+    public void es2(@RequestParam(value = "id", defaultValue = "400_000") Long id) {
+        long start = System.currentTimeMillis();
+        IntStream.rangeClosed(1, 1000).forEach(i -> {
+            // 对于 ES, 通过 ElasticsearchTemplate + 自定义UpdateQuery，实现UpdateQuery实现文档的部分更新
+            UpdateQuery updateQuery;
+            try {
+                //
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+//            elasticsearchRestTemplate.update(updateQuery);
+        });
     }
 }
