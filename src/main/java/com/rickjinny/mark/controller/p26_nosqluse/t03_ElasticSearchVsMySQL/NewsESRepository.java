@@ -10,6 +10,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface NewsESRepository extends ElasticsearchRepository<News, Long> {
 
+    /**
+     * ES: 搜索分类等于 cateId 参数，且内容同时包含关键字 keyword1 和 keyword2，计算符合条件的新闻总数量
+     */
     Long countByCateIdAndContentContainingAndContentContaining(Integer cateId, String keyword1, String keyword2);
 
 }
