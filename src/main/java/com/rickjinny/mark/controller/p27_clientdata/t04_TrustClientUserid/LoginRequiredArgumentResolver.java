@@ -7,15 +7,26 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
+/**
+ * 自定义 LoginRequiredArgumentResolver 类，实现 HandlerMethodArgumentResolver 类
+ */
 @Slf4j
 public class LoginRequiredArgumentResolver implements HandlerMethodArgumentResolver {
 
-
+    /**
+     * supportsParameter 方法用于解析哪些参数。
+     */
     @Override
     public boolean supportsParameter(MethodParameter methodParameter) {
+        // 匹配参数上具有 @LongRequired 注解的参数
         return methodParameter.hasParameterAnnotation(LongRequired.class);
     }
 
+    /**
+     * resolveArgument 方法用来实现解析本身。
+     * 在这里，尝试从 Session 中获取当前用户的标识，如果无法取到的话提示非法调用的错误，如果获取到则返回 userId。
+     * 这样 Controller 中的 userId 参数就可以自动赋值了。
+     */
     @Override
     public Object resolveArgument(MethodParameter methodParameter,
                                   ModelAndViewContainer modelAndViewContainer,
