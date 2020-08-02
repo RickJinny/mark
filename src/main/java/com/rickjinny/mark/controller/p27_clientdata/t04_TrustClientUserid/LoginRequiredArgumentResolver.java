@@ -32,7 +32,9 @@ public class LoginRequiredArgumentResolver implements HandlerMethodArgumentResol
                                   ModelAndViewContainer modelAndViewContainer,
                                   NativeWebRequest nativeWebRequest,
                                   WebDataBinderFactory webDataBinderFactory) throws Exception {
+        // 从参数上获得注解
         LongRequired longRequired = methodParameter.getParameterAnnotation(LongRequired.class);
+        // 根据注解中的 Session Key，从 session 中查询用户信息
         Object object = nativeWebRequest.getAttribute(longRequired.sessionKey(), NativeWebRequest.SCOPE_REQUEST);
         if (object == null) {
             log.error("接口 {} 非法调用。", methodParameter.getMethod().toString());
