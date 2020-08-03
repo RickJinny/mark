@@ -8,6 +8,7 @@ import org.springframework.web.method.HandlerMethod;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @RequestMapping(value = "/sqlInject")
 @RestController
@@ -61,5 +62,41 @@ public class SqlInjectController {
     @PostMapping(value = "/jdbcRight")
     public void jdbcRight(@RequestParam("name") String name) {
         log.info("{}", jdbcTemplate.queryForList("select id, name from userdata where name like ?", "%" + name + "%"));
+    }
+
+    /**
+     * 使用 "${}" 只是占位符
+     */
+    @PostMapping(value = "/myBatisWrong")
+    public List myBatisWrong(@RequestParam("name") String name) {
+        return userDataMapper.findByNameWrong(name);
+    }
+
+    /**
+     * 对于 MyBatis 来说，同样需要使用参数化的方式来写 SQL 语句。
+     * 在 MyBatis 中，使用 "#{}" 会为参数带上单引号，会导致 like 语法错误。
+     * 正确的做法是：使用 "#{}" 来参数化 name 参数，对于 like 操作可以使用 concat 函数来拼接 % 符号。
+     */
+    @PostMapping(value = "/myBatisRight")
+    public List myBatisRight(@RequestParam("name") String name) {
+        return userDataMapper.findByNameRight(name);
+    }
+
+    /**
+     * 又比如 in 子句，因为涉及到多个元素的拼接，可能会选择使用 "${}"，因为使用 "#{}" 会把输入当做一个字符串来对待。
+     * 但是，这样直接把外部传入的内容替换到 In 内部，也会有注入漏洞。
+     */
+    @PostMapping(value = "/myBatisWrong2")
+    public List myBatisWrong2(@RequestParam("names") String names) {
+        return userDataMapper.findByNamesWrong(names);
+    }
+
+    /**
+     * 修改方式：给 MyBatis 传入一个 List，然后使用其 foreach 标签来拼接出 in 中的内容，
+     * 并确保 in 中的每一项都是使用 "#{}" 来注入参数。
+     */
+    @PostMapping(value = "/myBatisRight2")
+    public List myBatisRight2(@RequestParam("name") List<String> names) {
+        return userDataMapper.findByNamesRight(names);
     }
 }
