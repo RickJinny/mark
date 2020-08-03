@@ -20,6 +20,9 @@ public class SqlInjectController {
     @Autowired
     private UserDataMapper userDataMapper;
 
+    /**
+     * 实现一个 ExceptionHandler 来屏蔽异常，看看能否解决注入问题
+     */
     @ExceptionHandler
     public void handle(HttpServletRequest request, HandlerMethod method, Exception e) {
         log.warn(String.format("访问 %s -> %s 出现异常!", request.getRequestURI(), method.toString(), e));
