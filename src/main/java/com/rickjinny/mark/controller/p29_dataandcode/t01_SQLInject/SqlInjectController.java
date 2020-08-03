@@ -54,4 +54,12 @@ public class SqlInjectController {
         // 采用拼接 SQL 的方式把姓名参数拼接到 LIKE 子句中
         log.info("{}", jdbcTemplate.queryForList("select id, name from userdata where name like '%' + name + '%'"));
     }
+
+    /**
+     * 正确的做法：在 SQL 中使用 "?" 作为参数占位符，然后提供参数值。
+     */
+    @PostMapping(value = "/jdbcRight")
+    public void jdbcRight(@RequestParam("name") String name) {
+        log.info("{}", jdbcTemplate.queryForList("select id, name from userdata where name like ?", "%" + name + "%"));
+    }
 }
