@@ -11,6 +11,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.PropertyPermission;
 
+/**
+ * 使用 SecurityManager 配合 AccessControlContext, 来构建一个脚本运行的沙箱环境。
+ * 脚本能执行的所有操作权限，是通过 setPermissions 方法精细化设置的。
+ */
 @Slf4j
 public class ScriptingSandbox {
 
@@ -45,6 +49,9 @@ public class ScriptingSandbox {
                 new ReflectPermission("suppressAccessChecks")));
     }
 
+    /**
+     * 设置执行上下文的权限
+     */
     public void setPermissions(List<Permission> permissionCollection) {
         Permissions permissions = new Permissions();
         if (permissionCollection != null) {
