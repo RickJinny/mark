@@ -53,4 +53,11 @@ public class CodeInjectController {
         }
         return null;
     }
+
+    @RequestMapping(value = "/right2")
+    public Object right2(@RequestParam("name") String name) {
+        // 使用沙箱执行脚本
+        ScriptingSandbox scriptingSandbox = new ScriptingSandbox(scriptEngine);
+        return scriptingSandbox.eval(String.format("var name = '%s'; name == 'admin' ? 1 : 0", name));
+    }
 }
