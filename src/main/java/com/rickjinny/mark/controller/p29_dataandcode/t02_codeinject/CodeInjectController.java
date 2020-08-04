@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
+import javax.script.SimpleBindings;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 2、小心动态执行代码时，代码注入漏洞
@@ -31,6 +34,20 @@ public class CodeInjectController {
         try {
             // 通过 eval 动态执行 JavaScript 脚本，这里 name 参数通过字符串拼接的方式混入 JavaScript 代码
             return scriptEngine.eval(String.format("var name = '%s'; name == 'admin' ? 1 : 0", name));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @RequestMapping(value = "/right")
+    public Object right(@RequestParam("name") String name) {
+        try {
+            // 外部传入的参数
+            Map<String, Object> param = new HashMap<>();
+            param.put("name", name);
+            // name 参数作为绑定传给 eval 方法，而不是拼接 JavaScript 代码
+            return scriptEngine.eval("name == 'admin' ? 1 : 0", new SimpleBindings(param));
         } catch (Exception e) {
             e.printStackTrace();
         }
