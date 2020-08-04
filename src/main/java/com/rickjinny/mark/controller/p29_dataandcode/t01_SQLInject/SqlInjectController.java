@@ -10,6 +10,9 @@ import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
+/**
+ * 1、SQL 注入能干的是事情比你想象的更多
+ */
 @RequestMapping(value = "/sqlInject")
 @RestController
 @Slf4j
