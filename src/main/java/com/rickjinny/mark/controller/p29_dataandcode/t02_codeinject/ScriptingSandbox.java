@@ -42,8 +42,7 @@ public class ScriptingSandbox {
                 new RuntimePermission("accessClassInPackage.jdk.internal.org.objectweb.*"),
                 new RuntimePermission("accessClassInPackage.jdk.nashorn.internal.*"),
                 new RuntimePermission("accessDeclaredMembers"),
-                new ReflectPermission("suppressAccessChecks")
-        ));
+                new ReflectPermission("suppressAccessChecks")));
     }
 
     public void setPermissions(List<Permission> permissionCollection) {
