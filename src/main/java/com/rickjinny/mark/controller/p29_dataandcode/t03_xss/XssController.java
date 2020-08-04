@@ -3,12 +3,11 @@ package com.rickjinny.mark.controller.p29_dataandcode.t03_xss;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 @Slf4j
 @RestController
@@ -41,5 +40,30 @@ public class XssController {
         userRepository.save(user);
         // 保存完成后，重定向到首页
         return "redirect:/xss";
+    }
+
+    @PutMapping
+    public void put(@RequestBody User user) {
+        userRepository.save(user);
+    }
+
+    @ResponseBody
+    @RequestMapping("/query")
+    public User query() {
+        return userRepository.findById(1L).orElse(new User());
+    }
+
+    @RequestMapping(value = "/readCookie")
+    @ResponseBody
+    public String readCookie(@CookieValue("test") String cookieValue) {
+        return cookieValue;
+    }
+
+    @RequestMapping(value = "/writeCookie")
+    @ResponseBody
+    public void writeCookie(@RequestParam("httpOnly") boolean httpOnly, HttpServletResponse response) {
+        Cookie cookie = new Cookie("test", "haha");
+        cookie.setHttpOnly(httpOnly);
+        response.addCookie(cookie);
     }
 }
