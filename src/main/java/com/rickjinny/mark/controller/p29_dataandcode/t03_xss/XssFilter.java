@@ -1,10 +1,19 @@
 package com.rickjinny.mark.controller.p29_dataandcode.t03_xss;
 
 
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
+
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
+/**
+ * 自定义过滤器
+ */
+@Component
+@Order(Ordered.HIGHEST_PRECEDENCE)
 public class XssFilter implements Filter {
 
     @Override
