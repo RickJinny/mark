@@ -15,4 +15,6 @@ public class UserData {
     private String name;
 
     private String salt;
+
+    private String password;
 }
