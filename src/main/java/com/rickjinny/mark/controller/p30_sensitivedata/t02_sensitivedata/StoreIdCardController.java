@@ -19,7 +19,8 @@ public class StoreIdCardController {
     private static final String KEY = "secretkey1234567";
 
     /**
-     * 测试 ECB 模式
+     * 测试 ECB 模式：
+     * ECB 模式虽然简单，但是不安全，不推荐使用。
      */
     @RequestMapping(value = "/ecb")
     public void ecb() throws Exception {
@@ -36,6 +37,8 @@ public class StoreIdCardController {
 
     /**
      * 测试逻辑
+     * 两个相同明文分组产生的密文，就是两个相同的密文分组叠在一起。
+     * 在不知道密钥的情况下，我们操纵密文实现了对明文数据的修改，对调了发送方账户和接收方账号。
      */
     private void test(Cipher cipher, AlgorithmParameterSpec parameterSpec) throws Exception {
         // 初始化 Cipher
