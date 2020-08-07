@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.UUID;
+
 @RestController
 @Slf4j
 @RequestMapping(value = "/storePassword")
@@ -29,6 +31,9 @@ public class StorePasswordController {
         return userRepository.save(userData);
     }
 
+    /**
+     * 不能在代码中写死盐，且盐需要有一定的长度
+     */
     @RequestMapping("/wrong2")
     public UserData wrong2(@RequestParam(value = "name", defaultValue = "haha") String name,
                            @RequestParam(value = "password", defaultValue = "abcd") String password) {
@@ -36,6 +41,36 @@ public class StorePasswordController {
         userData.setId(1L);
         userData.setName(name);
         userData.setPassword(DigestUtils.md5Hex("salt" + password));
+        return userRepository.save(userData);
+    }
+
+    @RequestMapping(value = "/wrong3")
+    public UserData wrong3(@RequestParam(value = "name", defaultValue = "haha") String name,
+                           @RequestParam(value = "password", defaultValue = "123456") String password) {
+        UserData userData = new UserData();
+        userData.setId(1L);
+        userData.setName(name);
+        userData.setPassword(DigestUtils.md5Hex(name + password));
+        return userRepository.save(userData);
+    }
+
+    @RequestMapping(value = "/wrong4")
+    public UserData wrong4(@RequestParam(value = "name", defaultValue = "haha") String name,
+                           @RequestParam(value = "password", defaultValue = "123456") String password) {
+        UserData userData = new UserData();
+        userData.setId(1L);
+        userData.setName(name);
+        userData.setPassword(DigestUtils.md5Hex(DigestUtils.md5Hex(password)));
+        return userRepository.save(userData);
+    }
+
+    public UserData right(@RequestParam(value = "name", defaultValue = "haha") String name,
+                          @RequestParam(value = "password", defaultValue = "123456") String password) {
+        UserData userData = new UserData();
+        userData.setId(1L);
+        userData.setName(name);
+        userData.setSalt(UUID.randomUUID().toString());
+        userData.setPassword(DigestUtils.md5Hex(userData.getSalt() + password));
         return userRepository.save(userData);
     }
 }
