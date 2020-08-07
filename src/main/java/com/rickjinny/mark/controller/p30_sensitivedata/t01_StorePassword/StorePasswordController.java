@@ -29,11 +29,13 @@ public class StorePasswordController {
         return userRepository.save(userData);
     }
 
-
-
-
-
-
-
-
+    @RequestMapping("/wrong2")
+    public UserData wrong2(@RequestParam(value = "name", defaultValue = "haha") String name,
+                           @RequestParam(value = "password", defaultValue = "abcd") String password) {
+        UserData userData = new UserData();
+        userData.setId(1L);
+        userData.setName(name);
+        userData.setPassword(DigestUtils.md5Hex("salt" + password));
+        return userRepository.save(userData);
+    }
 }
