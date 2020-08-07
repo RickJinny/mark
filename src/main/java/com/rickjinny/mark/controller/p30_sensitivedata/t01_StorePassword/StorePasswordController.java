@@ -73,4 +73,16 @@ public class StorePasswordController {
         userData.setPassword(DigestUtils.md5Hex(userData.getSalt() + password));
         return userRepository.save(userData);
     }
+
+    @RequestMapping(value = "/better")
+    public UserData better(@RequestParam(value = "name", defaultValue = "haha") String name,
+                           @RequestParam(value = "password", defaultValue = "123456") String password) {
+        UserData userData = new UserData();
+        userData.setId(1L);
+        userData.setName(name);
+        userData.setPassword(passwordEncoder.encode(password));
+        userRepository.save(userData);
+        log.info("match ? {}", passwordEncoder.matches(password, userData.getPassword()));
+        return userData;
+    }
 }
