@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.crypto.Cipher;
+import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.security.spec.AlgorithmParameterSpec;
 
@@ -17,6 +18,9 @@ public class StoreIdCardController {
 
     // 密钥
     private static final String KEY = "secretkey1234567";
+
+    // 初始化向量
+    private static final String initVector = "abcdefg";
 
     /**
      * 测试 ECB 模式：
@@ -73,5 +77,16 @@ public class StoreIdCardController {
         // 尝试解密
         System.out.println("原始明文: " + new String(ByteUtils.concatAll(sender, receiver, money)));
         System.out.println("操作密文: " + new String(cipher.doFinal(hack)));
+    }
+
+    /**
+     * CBC 模式
+     * 对于敏感数据保存，可以选择使用 AES + 合适的模式 进行加密。
+     */
+    @RequestMapping(value = "/cbc")
+    public void cbc() throws Exception {
+        Cipher cipher = Cipher.getInstance("AES/CBC/NoPadding");
+        IvParameterSpec ivParameterSpec = new IvParameterSpec(initVector.getBytes("UTF-8"));
+        test(cipher, ivParameterSpec);
     }
 }
