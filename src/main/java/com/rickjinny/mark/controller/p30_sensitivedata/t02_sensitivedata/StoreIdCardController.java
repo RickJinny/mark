@@ -135,6 +135,9 @@ public class StoreIdCardController {
         return userRepository.save(userData);
     }
 
+    /**
+     * 解密
+     */
     @RequestMapping(value = "/read")
     public void read(@RequestParam(value = "aad", required = false) String aad) throws Exception {
         UserData userData = userRepository.findById(1L).get();
