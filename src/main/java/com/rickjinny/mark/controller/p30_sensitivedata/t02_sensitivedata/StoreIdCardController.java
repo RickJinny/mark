@@ -1,9 +1,14 @@
 package com.rickjinny.mark.controller.p30_sensitivedata.t02_sensitivedata;
 
+import com.rickjinny.mark.controller.p30_sensitivedata.t02_sensitivedata.bean.CipherResult;
+import com.rickjinny.mark.controller.p30_sensitivedata.t02_sensitivedata.bean.UserData;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Hex;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.util.ByteUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.crypto.Cipher;
@@ -21,6 +26,12 @@ public class StoreIdCardController {
 
     // 初始化向量
     private static final String initVector = "abcdefg";
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private CipherService cipherService;
 
     /**
      * 测试 ECB 模式：
@@ -88,5 +99,60 @@ public class StoreIdCardController {
         Cipher cipher = Cipher.getInstance("AES/CBC/NoPadding");
         IvParameterSpec ivParameterSpec = new IvParameterSpec(initVector.getBytes("UTF-8"));
         test(cipher, ivParameterSpec);
+    }
+
+    @RequestMapping(value = "/wrong")
+    public UserData wrong(@RequestParam(value = "name", defaultValue = "haha") String name,
+                          @RequestParam(value = "idcard", defaultValue = "1234") String idCard) {
+        UserData userData = new UserData();
+        userData.setId(1L);
+        userData.setName(name);
+        userData.setIdCard(idCard);
+        return userRepository.save(userData);
+    }
+
+    /**
+     * 正确的加密
+     */
+    @RequestMapping(value = "/right")
+    public UserData right(@RequestParam(value = "name", defaultValue = "haha") String name,
+                          @RequestParam(value = "idcard", defaultValue = "30001000") String idCard,
+                          @RequestParam(value = "aad", required = false) String aad) throws Exception {
+        UserData userData = new UserData();
+        userData.setId(1L);
+        // 脱敏姓名
+        userData.setName(chineseName(name));
+        // 脱敏身份证
+        userData.setIdCard(idCard(idCard));
+        // 加密姓名
+        CipherResult cipherResultName = cipherService.encrypt(name, aad);
+        userData.setNameCipherId(cipherResultName.getId());
+        userData.setNameCipherText(cipherResultName.getCipherText());
+        // 加密身份证
+        CipherResult cipherResultIdCard = cipherService.encrypt(idCard, aad);
+        userData.setIdCardCipherId(cipherResultIdCard.getId());
+        userData.setNameCipherText(cipherResultName.getCipherText());
+        return userRepository.save(userData);
+    }
+
+    /**
+     * 脱敏姓名
+     */
+    private static String chineseName(String chineseName) {
+        String name = StringUtils.left(chineseName, 1);
+        return StringUtils.rightPad(name, StringUtils.length(chineseName), "*");
+    }
+
+    /**
+     * 脱敏身份证
+     */
+    private static String idCard(String idCard) {
+        String num = StringUtils.right(idCard, 4);
+        return StringUtils.leftPad(num, StringUtils.length(idCard), "*");
+    }
+
+    public static void main(String[] args) {
+        System.out.println(chineseName("张哈哈哈"));
+        System.out.println(idCard("111223311111"));
     }
 }
