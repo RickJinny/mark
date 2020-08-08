@@ -2,6 +2,7 @@ package com.rickjinny.mark.controller.p30_sensitivedata.t03_RsavsAes;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
+import org.springframework.util.StopWatch;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,6 +13,9 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.security.*;
 import java.util.Arrays;
+import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @RestController
 @Slf4j
@@ -117,5 +121,19 @@ public class RsaVsAesController {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static void main(String[] args) {
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start("RSA");
+        IntStream.rangeClosed(1, count).parallel().forEach(i -> rsa((UUID.randomUUID().toString() + IntStream.rangeClosed(1, 64)
+                .mapToObj(__ -> "a").collect(Collectors.joining(""))).getBytes()));
+        stopWatch.stop();
+
+        stopWatch.start("aes");
+        IntStream.rangeClosed(1, count).parallel().forEach(i -> aes((UUID.randomUUID().toString() +
+                IntStream.rangeClosed(1, 64).mapToObj(__ -> "a").collect(Collectors.joining(""))).getBytes()));
+        stopWatch.stop();
+        System.out.println(stopWatch.prettyPrint());
     }
 }
