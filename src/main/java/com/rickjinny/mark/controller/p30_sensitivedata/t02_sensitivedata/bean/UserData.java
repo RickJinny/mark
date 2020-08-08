@@ -1,4 +1,4 @@
-package com.rickjinny.mark.controller.p30_sensitivedata.t02_sensitivedata;
+package com.rickjinny.mark.controller.p30_sensitivedata.t02_sensitivedata.bean;
 import lombok.Data;
 
 import javax.persistence.Entity;
