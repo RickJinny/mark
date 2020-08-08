@@ -135,6 +135,13 @@ public class StoreIdCardController {
         return userRepository.save(userData);
     }
 
+    @RequestMapping(value = "/read")
+    public void read(@RequestParam(value = "aad", required = false) String aad) throws Exception {
+        UserData userData = userRepository.findById(1L).get();
+        log.info("name : {}, idCard: {}", cipherService.decrypt(userData.getNameCipherId(), userData.getNameCipherText(), aad),
+                cipherService.decrypt(userData.getIdCardCipherId(), userData.getIdCardCipherText(), aad));
+    }
+
     /**
      * 脱敏姓名
      */
