@@ -107,7 +107,7 @@ public class IntAndStringEqualController {
     }
 
     public static void main(String[] args) {
-//        intCompare();
+        intCompare();
         stringCompare();
     }
 }
