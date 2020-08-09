@@ -2,6 +2,7 @@ package com.rickjinny.mark.controller.p08_equals.t01_IntAndStringEqual;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -51,6 +52,18 @@ public class IntAndStringEqualController {
         Integer i = 128;
         int j = 128;
         System.out.println(i == j); // true
+    }
+
+    /**
+     * 订单状态枚举和 OrderQuery 的 status 都是包装类型，所以通过 == 判等肯定是有问题的。
+     * 第一、枚举是 CREATE(1000, "已创建")，容易让人误解 status 值是基本类型；
+     * 第二、Integer 有缓存机制存在，所以使用 == 判等并不是所有情况下都有问题，当枚举值超过 127 时就会出现问题。
+     */
+    @RequestMapping(value = "/enumCompare")
+    public void enumCompare(@RequestParam OrderQuery orderQuery) {
+        StatusEnum statusEnum = StatusEnum.DELIVERED;
+        log.info("orderQuery : {}, statusEnum : {}, result : {}", orderQuery, statusEnum,
+                statusEnum.status == orderQuery.getStatus());
     }
 
     public static void main(String[] args) {
