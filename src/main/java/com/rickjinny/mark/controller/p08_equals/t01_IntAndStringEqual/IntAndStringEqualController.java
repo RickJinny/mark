@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/intAndStringEqual")
 public class IntAndStringEqualController {
 
+    /**
+     * int、Integer 类型判等
+     */
     public static void intCompare() {
         /**
          * 1、使用 == 对两个值为 127 的，直接赋值的 Integer 对象判等。
@@ -55,6 +58,43 @@ public class IntAndStringEqualController {
     }
 
     /**
+     * String 类型判等
+     */
+    public static void stringCompare() {
+        /**
+         * 1、对两个 String 类型值为 1，使用 == 判等。
+         * 常量池机制
+         */
+        String a = "1";
+        String b = "1";
+        System.out.println(a == b); // true
+
+        /**
+         * 2、对两个 new 出来的值都为 2 的 String，使用 == 判等。
+         * new 出来是两个不同的对象。
+         */
+        String c = new String("2");
+        String d = new String("2");
+        System.out.println(c == d); // false
+
+        /**
+         * 3、对两个 new 出来值都为 3 的 String 先进行 intern 操作，再使用 == 判等。
+         * 使用 intern 方法会走常量池机制，所以为true
+         */
+        String e = new String("3").intern();
+        String f = new String("3").intern();
+        System.out.println(e == f); // true
+
+        /**
+         * 4、对两个 new 出来的值都为 4 的 String 通过 equals 判等。
+         * equals 是判断内容，所以是true.
+         */
+        String g = new String("4");
+        String h = new String("4");
+        System.out.println(g.equals(h)); // true
+    }
+
+    /**
      * 订单状态枚举和 OrderQuery 的 status 都是包装类型，所以通过 == 判等肯定是有问题的。
      * 第一、枚举是 CREATE(1000, "已创建")，容易让人误解 status 值是基本类型；
      * 第二、Integer 有缓存机制存在，所以使用 == 判等并不是所有情况下都有问题，当枚举值超过 127 时就会出现问题。
@@ -67,6 +107,7 @@ public class IntAndStringEqualController {
     }
 
     public static void main(String[] args) {
-        intCompare();
+//        intCompare();
+        stringCompare();
     }
 }
