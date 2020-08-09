@@ -4,6 +4,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+
 @RestController
 @Slf4j
 @RequestMapping(value = "/rounding")
@@ -22,7 +26,38 @@ public class RoundingController {
         System.out.println(String.format("%.1f", num2)); // 3.3
     }
 
+    /**
+     * 使用 DecimalFormat 来格式化字符串。
+     * 结果输出分别是 3.35 和 3.34。
+     * 结论：使用 DecimalFormat 来精确控制舍入方式，double 和 float 的问题也可能产生意想不到的结果。
+     * 所以浮点数的字符串格式化也要通过 BigDecimal 进行。
+     */
+    private static void wrong2() {
+        double num1 = 3.35;
+        double num2 = 3.35f;
+
+        DecimalFormat format = new DecimalFormat("#.##");
+        format.setRoundingMode(RoundingMode.DOWN);
+        System.out.println(format.format(num1)); // 3.35
+
+        format.setRoundingMode(RoundingMode.DOWN);
+        System.out.println(format.format(num2)); // 3.34
+    }
+
+    /**
+     * 浮点数的字符串格式化也要通过 BigDecimal 进行。
+     */
+    private static void right() {
+        BigDecimal num1 = new BigDecimal("3.35");
+        BigDecimal num2 = num1.setScale(1, BigDecimal.ROUND_DOWN);
+        System.out.println(num2); // 3.3
+        BigDecimal num3 = num1.setScale(1, BigDecimal.ROUND_HALF_UP);
+        System.out.println(num3); // 3.4
+    }
+
     public static void main(String[] args) {
-        wrong1();
+//        wrong1();
+//        wrong2();
+        right();
     }
 }
