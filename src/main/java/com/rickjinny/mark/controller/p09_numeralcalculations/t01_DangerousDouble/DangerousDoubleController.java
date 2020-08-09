@@ -70,9 +70,33 @@ public class DangerousDoubleController {
         System.out.println(new BigDecimal("31.9").divide(new BigDecimal("100")));
     }
 
+    /**
+     * BigDecimal 有 scale 和 precision 的概念：
+     * scale 表示小数点右边的位数；precision表示精度。
+     */
+    private static void testScale() {
+        BigDecimal b1 = new BigDecimal("100");
+        BigDecimal b2 = new BigDecimal(String.valueOf(100d));
+        BigDecimal b3 = new BigDecimal(String.valueOf(100));
+        BigDecimal b4 = BigDecimal.valueOf(100d);
+        BigDecimal b5 = new BigDecimal(Double.toString(100));
+
+        print(b1); //scale 0 precision 3 result 401.500
+        print(b2); //scale 1 precision 4 result 401.5000
+        print(b3); //scale 0 precision 3 result 401.500
+        print(b4); //scale 1 precision 4 result 401.5000
+        print(b5); //scale 1 precision 4 result 401.5000
+    }
+
+    private static void print(BigDecimal bigDecimal) {
+        log.info("scale {}, precision {}, result {}", bigDecimal.scale(), bigDecimal.precision(),
+                bigDecimal.multiply(new BigDecimal("4.015")));
+    }
+
     public static void main(String[] args) {
 //        wrong1();
 //        wrong2();
-        right();
+//        right();
+        testScale();
     }
 }
