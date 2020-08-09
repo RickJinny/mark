@@ -23,7 +23,20 @@ public class OverFlowIssueController {
         System.out.println(a + 1 == Long.MIN_VALUE); // true
     }
 
+    /**
+     * 使用 Math 类的 addExact 等 xxExact 方法进行数值运算，这些方法可以在数值溢出时主动抛出异常。
+     */
+    private static void right1() {
+        try {
+            long a = Long.MAX_VALUE;
+            System.out.println(Math.addExact(a, 1));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void main(String[] args) {
-        wrong1();
+//        wrong1();
+        right1();
     }
 }
