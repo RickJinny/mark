@@ -4,6 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigInteger;
+
 /**
  * 4、小心数值溢出问题
  */
@@ -35,8 +37,26 @@ public class OverFlowIssueController {
         }
     }
 
+    /**
+     * 使用大数类 BigInteger。
+     * BigDecimal 是处理浮点数的类型。
+     * BigInteger 是处理大数的类型。
+     * 通过 BigInteger 对 Long 的最大值加1，一点问题都没有，当尝试把结果转换为 Long 类型时，则会提示 BigInteger out of long range
+     */
+    private static void right2() {
+        BigInteger i = new BigInteger(String.valueOf(Long.MAX_VALUE));
+        System.out.println(i.add(BigInteger.ONE).toString());
+
+        try {
+            long l = i.add(BigInteger.ONE).longValueExact();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void main(String[] args) {
 //        wrong1();
-        right1();
+//        right1();
+        right2();
     }
 }
