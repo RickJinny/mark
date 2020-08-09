@@ -54,10 +54,25 @@ public class DangerousDoubleController {
         System.out.println(new BigDecimal(31.9).divide(new BigDecimal(100)));
     }
 
-    
+    /**
+     * 在使用 BigDecimal 表示和计算浮点数，且务必使用字符串的构造方法来初始化 BigDecimal
+     *
+     * 结果：
+     * 0.3
+     * 0.2
+     * 298.100
+     * 0.319
+     */
+    private static void right() {
+        System.out.println(new BigDecimal("0.1").add(new BigDecimal("0.2")));
+        System.out.println(new BigDecimal("1.0").subtract(new BigDecimal("0.8")));
+        System.out.println(new BigDecimal("2.981").multiply(new BigDecimal("100")));
+        System.out.println(new BigDecimal("31.9").divide(new BigDecimal("100")));
+    }
 
     public static void main(String[] args) {
 //        wrong1();
-        wrong2();
+//        wrong2();
+        right();
     }
 }
