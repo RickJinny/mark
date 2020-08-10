@@ -1,9 +1,12 @@
 package com.rickjinny.mark.controller.p08_equals.t02_equalsMethod;
 
 import com.rickjinny.mark.controller.p08_equals.t02_equalsMethod.bean.Point;
+import com.rickjinny.mark.controller.p08_equals.t02_equalsMethod.bean.PointWrong;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.HashSet;
 
 @RestController
 @Slf4j
@@ -15,7 +18,7 @@ public class EqualsMethodController {
      * point1 和 point3 的三个属性完全相同。
      * 分析：因为没有在 Point 类中实现自定义的 equals 方法，比较的是对象的引用。
      */
-    public static void wrong() {
+    public static void wrong1() {
         Point point1 = new Point(1, 2, "a");
         Point point2 = new Point(1, 2, "b");
         Point point3 = new Point(1, 2, "a");
@@ -23,7 +26,31 @@ public class EqualsMethodController {
         System.out.println(point1.equals(point3)); // false
     }
 
+    public static void wrong2() {
+        PointWrong p1 = new PointWrong(1, 2, "a");
+        try {
+            log.info("p1.equals(null) ? {}", p1.equals(null));
+        } catch (Exception e) {
+            log.error(e.toString());
+        }
+
+        Object object = new Object();
+        try {
+            log.info("p1.equals(expression) ? {}", p1.equals(object));
+        } catch (Exception e) {
+            log.error(e.toString());
+        }
+
+        PointWrong p2 = new PointWrong(1, 2, "b");
+        log.info("p1.equals(p2) ? {}", p1.equals(p2));
+
+        HashSet<PointWrong> points = new HashSet<>();
+        points.add(p1);
+        log.info("points.contains(p2) ? {}", points.contains(p2));
+    }
+
     public static void main(String[] args) {
-        wrong();
+//        wrong1();
+        wrong2();
     }
 }
