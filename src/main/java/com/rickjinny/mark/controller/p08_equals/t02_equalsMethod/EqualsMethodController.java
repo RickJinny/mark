@@ -13,6 +13,7 @@ public class EqualsMethodController {
     /**
      * 定义三个点 point1、point2、point3，其中 point1 和 point2 的描述属性不同,
      * point1 和 point3 的三个属性完全相同。
+     * 分析：因为没有在 Point 类中实现自定义的 equals 方法，比较的是对象的引用。
      */
     public static void wrong() {
         Point point1 = new Point(1, 2, "a");
