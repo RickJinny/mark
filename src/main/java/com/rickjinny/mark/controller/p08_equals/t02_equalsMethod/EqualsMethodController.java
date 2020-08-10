@@ -27,26 +27,35 @@ public class EqualsMethodController {
     }
 
     public static void wrong2() {
+        /**
+         * 比较一个 Point 对象和 null
+         */
         PointWrong p1 = new PointWrong(1, 2, "a");
         try {
-            log.info("p1.equals(null) ? {}", p1.equals(null));
+            log.info("p1.equals(null) ? {}", p1.equals(null)); // java.lang.NullPointerException
         } catch (Exception e) {
             log.error(e.toString());
         }
 
+        /**
+         * 比较一个 Object 对象和一个 Point 对象
+         */
         Object object = new Object();
         try {
-            log.info("p1.equals(expression) ? {}", p1.equals(object));
+            log.info("p1.equals(expression) ? {}", p1.equals(object)); // java.lang.ClassCastException
         } catch (Exception e) {
             log.error(e.toString());
         }
 
+        /**
+         * 比较两个 x 和 y 属性值相同的 Point 对象
+         */
         PointWrong p2 = new PointWrong(1, 2, "b");
-        log.info("p1.equals(p2) ? {}", p1.equals(p2));
+        log.info("p1.equals(p2) ? {}", p1.equals(p2)); // p1.equals(p2) ? true
 
         HashSet<PointWrong> points = new HashSet<>();
         points.add(p1);
-        log.info("points.contains(p2) ? {}", points.contains(p2));
+        log.info("points.contains(p2) ? {}", points.contains(p2)); // points.contains(p2) ? false
     }
 
     public static void main(String[] args) {
