@@ -1,4 +1,4 @@
-package com.rickjinny.mark.controller.p08_equals.t03_compareto;
+package com.rickjinny.mark.controller.p08_equals.t03_compareto.bean;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
