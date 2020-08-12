@@ -8,5 +8,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/lombokEquals")
 @Slf4j
 public class LombokEqualsController {
-    
+
+    public static void test1() {
+        Person person01 = new Person("wang", "001");
+        Person person02 = new Person("zhang", "001");
+        log.info("person01.equals(person02) ? {} ", person01.equals(person02)); //  person01.equals(person02) ? false
+    }
+
+    public static void main(String[] args) {
+        test1();
+    }
 }
