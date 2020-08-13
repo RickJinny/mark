@@ -4,7 +4,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * Lombok 的 @Data 注解会帮我们实现 equals 和 hashcode 方法，但是有继承关系时 Lombok 自动生成的方法可能就不是我们期望的了。
+ * Lombok 的 @Data 注解会帮我们实现 equals 和 hashcode 方法，
+ * 但是有继承关系时 Lombok 自动生成的方法可能就不是我们期望的了。
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
