@@ -59,8 +59,8 @@ public class AvoidNullPointerExceptionController {
     }
 
     public static void main(String[] args) {
-        FooService fooService = new FooService();
-        List<String> list = rightMethod(fooService, null, "a", "b");
-        System.out.println(list);
+        List<String> list = Collections.emptyList();
+        List<String> list1 = Optional.of(rightMethod(new FooService(), null, "a", "b")).orElse(Collections.emptyList());
+        System.out.println(list1);
     }
 }
