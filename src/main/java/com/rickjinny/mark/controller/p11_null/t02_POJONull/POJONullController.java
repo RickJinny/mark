@@ -36,7 +36,7 @@ public class POJONullController {
         UserEntity userEntity = userEntityRepository.findById(userDto.getId())
                 .orElseThrow(() -> new IllegalArgumentException("用户不存在"));
 
-        if (userDto.getName().isPresent()) {
+        if (userDto.getName() != null) {
             userEntity.setName(userDto.getName().orElse(""));
         }
         userEntity.setNickName("guest" + userEntity.getName());
