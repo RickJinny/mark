@@ -1,6 +1,5 @@
-package com.rickjinny.mark.controller.p11_null.avoidnullpointerexception;
+package com.rickjinny.mark.controller.p11_null.t01_AvoidNullPointerException;
 
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -53,16 +52,5 @@ public class AvoidNullPointerExceptionController {
                 .filter(barService -> "OK".equals(barService.bar()))
                 .ifPresent(result -> log.info("OK"));
         return new ArrayList<>();
-    }
-
-    class FooService {
-        @Getter
-        private BarService barService;
-    }
-
-    class BarService {
-        String bar() {
-            return "OK";
-        }
     }
 }
