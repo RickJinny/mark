@@ -25,6 +25,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query(nativeQuery = true, value = "select count(*) from `user`")
     Long right2();
 
-    @Query(nativeQuery = true, value = "select * from `user`where score is null;")
+    @Query(nativeQuery = true, value = "select * from `user` where score is null")
     List<User> right3();
 }
