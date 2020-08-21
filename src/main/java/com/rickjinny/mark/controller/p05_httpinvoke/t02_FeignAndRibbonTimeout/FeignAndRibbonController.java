@@ -20,7 +20,7 @@ public class FeignAndRibbonController {
         try {
             client.server();
         } catch (Exception e) {
-            log.warn("执行耗时: {}ms 错误: {}", System.currentTimeMillis() - begin, e.getMessage());
+            log.warn("执行耗时: {} ms 错误: {}", System.currentTimeMillis() - begin, e.getMessage());
         }
     }
 
