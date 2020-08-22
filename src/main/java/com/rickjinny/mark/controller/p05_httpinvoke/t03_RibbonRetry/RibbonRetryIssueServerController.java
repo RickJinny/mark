@@ -18,6 +18,7 @@ public class RibbonRetryIssueServerController {
     public void sendSmsWrong(@RequestParam("mobile") String mobile,
                              @RequestParam("message") String message,
                              HttpServletRequest request) throws InterruptedException {
+        // 输出调用参数后，休眠 2s
         log.info("{} is called. {} = {}", request.getRequestURL().toString(), mobile, message);
         TimeUnit.SECONDS.sleep(2);
     }
