@@ -46,7 +46,9 @@ public class RouteLimitController {
     }
 
     private int sendRequest(int count, Supplier<CloseableHttpClient> client) throws InterruptedException {
+        // 用于计数发送的请求个数
         AtomicInteger atomicInteger = new AtomicInteger();
+        // 使用 HttpClient 从 server 接口查询数据的任务提交到线程池并行处理
         ExecutorService threadPool = Executors.newCachedThreadPool();
         long beginTime = System.currentTimeMillis();
         IntStream.rangeClosed(1, count).forEach(i -> {
@@ -58,6 +60,7 @@ public class RouteLimitController {
                 }
             });
         });
+        // 等到 count 个任务全部执行完毕
         threadPool.shutdown();
         threadPool.awaitTermination(1, TimeUnit.HOURS);
         log.info("发送 {} 次请求，耗时 {} ms", atomicInteger.get(), System.currentTimeMillis() - beginTime);
