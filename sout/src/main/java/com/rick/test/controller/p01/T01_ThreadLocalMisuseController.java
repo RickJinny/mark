@@ -15,6 +15,12 @@ public class T01_ThreadLocalMisuseController {
 
     private static final ThreadLocal<Integer> currentUser = ThreadLocal.withInitial(() -> null);
 
+    /**
+     * {
+     *     "before": "http-nio-8080-exec-6:null",
+     *     "after": "http-nio-8080-exec-6:111"
+     * }
+     */
     @RequestMapping(value = "/wrong")
     public Map wrong(@RequestParam("userId") Integer userId) {
         // 设置用户信息之前先查询一次 ThreadLocal 中的用户信息
