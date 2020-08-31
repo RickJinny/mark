@@ -35,4 +35,19 @@ public class T01_ThreadLocalMisuseController {
         result.put("after", after);
         return result;
     }
+
+    @RequestMapping(value = "/right")
+    public Map<String, Object> right(@RequestParam("userId") Integer userId) {
+        String before = Thread.currentThread().getName() + ":" + currentUser.get();
+        currentUser.set(userId);
+        try {
+            String after = Thread.currentThread().getName() + ":" + currentUser.get();
+            Map<String, Object> result = new HashMap<>();
+            result.put("before", before);
+            result.put("after", after);
+            return result;
+        } finally {
+            currentUser.remove();
+        }
+    }
 }
