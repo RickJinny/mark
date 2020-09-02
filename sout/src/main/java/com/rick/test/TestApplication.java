@@ -1,6 +1,6 @@
 package com.rick.test;
 
-import com.rick.test.controller.p01.Utils;
+import com.rick.test.controller.p01_ThreadLocal.Utils;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
