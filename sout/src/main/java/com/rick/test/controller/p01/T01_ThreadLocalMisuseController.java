@@ -22,7 +22,7 @@ public class T01_ThreadLocalMisuseController {
      * }
      */
     @RequestMapping(value = "/wrong")
-    public Map wrong(@RequestParam("userId") Integer userId) {
+    public Map<String, Object> wrong(@RequestParam("userId") Integer userId) {
         // 设置用户信息之前先查询一次 ThreadLocal 中的用户信息
         String before = Thread.currentThread().getName() + ":" + currentUser.get();
         // 设置用户信息到 ThreadLocal
