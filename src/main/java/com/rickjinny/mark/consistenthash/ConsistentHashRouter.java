@@ -7,7 +7,9 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 public class ConsistentHashRouter<T extends Node> {
+
     private final SortedMap<Long, VirtualNode<T>> ring = new TreeMap<>();
+
     private final HashFunction hashFunction;
 
     public ConsistentHashRouter(Collection<T> pNodes, int vNodeCount) {
