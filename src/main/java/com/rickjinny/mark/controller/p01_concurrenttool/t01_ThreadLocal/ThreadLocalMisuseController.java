@@ -47,6 +47,7 @@ public class ThreadLocalMisuseController {
             result.put("after", after);
             return result;
         } finally {
+            // 在 finally 代码块中删除 ThreadLocal 中的数据，确保数据不串
             currentUser.remove();
         }
     }
