@@ -52,4 +52,26 @@ public class ConcurrentHashMapMisuseController {
         log.info("finish size : {}", concurrentHashMap.size());
         return "OK";
     }
+
+    @RequestMapping(value = "/right")
+    public String right() throws InterruptedException {
+        ConcurrentHashMap<String, Long> concurrentHashMap = getData(ITEM_COUNT - 100);
+        log.info("init size : {}", concurrentHashMap.size());
+
+        ForkJoinPool forkJoinPool = new ForkJoinPool(THREAD_COUNT);
+        forkJoinPool.execute(() -> IntStream.rangeClosed(1,10).parallel().forEach(i -> {
+            // 下面的这段复合逻辑需要锁一下这个 ConcurrentHashMap
+            synchronized (concurrentHashMap) {
+                int gap = ITEM_COUNT - concurrentHashMap.size();
+                log.info("gap size : {}", gap);
+                concurrentHashMap.putAll(getData(gap));
+            }
+        }));
+
+        forkJoinPool.shutdown();
+        forkJoinPool.awaitTermination(1, TimeUnit.HOURS);
+
+        log.info("finish size : {}", concurrentHashMap.size());
+        return "OK";
+    }
 }
