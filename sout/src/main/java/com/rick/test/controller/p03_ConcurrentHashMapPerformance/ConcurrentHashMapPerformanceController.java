@@ -72,10 +72,12 @@ public class ConcurrentHashMapPerformanceController {
         ForkJoinPool forkJoinPool = new ForkJoinPool(THREAD_COUNT);
         forkJoinPool.execute(() -> IntStream.rangeClosed(1, LOOP_COUNT).parallel().forEach(i -> {
             String key = "item" + ThreadLocalRandom.current().nextInt(ITEM_COUNT);
+            // 利用 computeIfAbsent() 方法来实例化 LongAdder，然后利用 LongAddr 来进行线程安全计数
             freqs.computeIfAbsent(key, k -> new LongAdder()).increment();
         }));
         forkJoinPool.shutdown();
         forkJoinPool.awaitTermination(1, TimeUnit.HOURS);
+        // 因为我们的 value 是 LongAddr 而不是 Long，所以需要做一次转换才能返回。
         return freqs.entrySet().stream().collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue().longValue()));
     }
 }
