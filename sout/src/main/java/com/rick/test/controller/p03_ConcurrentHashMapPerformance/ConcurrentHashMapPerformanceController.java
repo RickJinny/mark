@@ -19,8 +19,11 @@ import java.util.stream.IntStream;
 @RequestMapping(value = "/concurrentHashMapPerformance")
 @Slf4j
 public class ConcurrentHashMapPerformanceController {
+    // 循环次数
     private static int LOOP_COUNT = 10000000;
+    // 线程数量
     private static int THREAD_COUNT = 10;
+    // 元素数量
     private static int ITEM_COUNT = 10;
 
     @RequestMapping(value = "/good")
@@ -47,11 +50,14 @@ public class ConcurrentHashMapPerformanceController {
         ConcurrentHashMap<String, Long> freqs = new ConcurrentHashMap<>(ITEM_COUNT);
         ForkJoinPool forkJoinPool = new ForkJoinPool(THREAD_COUNT);
         forkJoinPool.execute(() -> IntStream.rangeClosed(1, LOOP_COUNT).parallel().forEach(i -> {
+            // 获得一个随机的 key
             String key = "item" + ThreadLocalRandom.current().nextInt(ITEM_COUNT);
             synchronized (freqs) {
                 if (freqs.containsKey(key)) {
+                    // key存在，则 +1
                     freqs.put(key, freqs.get(key) + 1);
                 } else {
+                    // key 不存在，则初始化为 1
                     freqs.put(key, 1L);
                 }
             }
