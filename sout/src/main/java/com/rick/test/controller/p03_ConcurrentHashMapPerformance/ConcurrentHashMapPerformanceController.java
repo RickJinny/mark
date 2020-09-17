@@ -32,7 +32,9 @@ public class ConcurrentHashMapPerformanceController {
         stopWatch.start("normalUse");
         Map<String, Long> normalUse = normalUse();
         stopWatch.stop();
+        // 校验元素数量
         Assert.isTrue(normalUse.size() == ITEM_COUNT, "normalUse size error");
+        // 校验累计总数
         Assert.isTrue(normalUse.entrySet().stream()
                         .mapToLong(item -> item.getValue()).reduce(0, Long::sum) == LOOP_COUNT, "normalUse count error");
 
