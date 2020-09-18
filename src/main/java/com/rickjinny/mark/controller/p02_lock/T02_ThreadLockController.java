@@ -1,4 +1,4 @@
-package com.rickjinny.mark.controller.p02;
+package com.rickjinny.mark.controller.p02_lock;
 
 import com.rickjinny.mark.bean.Data;
 import com.rickjinny.mark.bean.Product;
