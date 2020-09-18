@@ -1,4 +1,4 @@
-package com.rick.test.controller.p04_CopyOnWriteListMisuse;
+package com.rick.test.controller.p01_CopyOnWriteListMisuse;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StopWatch;

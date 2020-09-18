@@ -1,4 +1,4 @@
-package com.rick.test.controller.p03_ConcurrentHashMapPerformance;
+package com.rick.test.controller.p01_ConcurrentHashMapPerformance;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.Assert;
