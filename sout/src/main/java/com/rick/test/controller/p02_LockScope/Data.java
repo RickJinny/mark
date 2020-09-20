@@ -1,4 +1,4 @@
-package com.rick.test.controller.p02_lockscope;
+package com.rick.test.controller.p02_LockScope;
 
 import lombok.Getter;
 
