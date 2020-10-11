@@ -14,5 +14,6 @@ public class LockScopeController {
         Interesting interesting = new Interesting();
         new Thread(() -> interesting.add()).start();
         new Thread(() -> interesting.compare()).start();
+        
     }
 }
