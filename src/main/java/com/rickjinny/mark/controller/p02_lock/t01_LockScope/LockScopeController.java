@@ -1,4 +1,4 @@
-package com.rickjinny.mark.controller.p02_lock.t03_LockScope;
+package com.rickjinny.mark.controller.p02_lock.t01_LockScope;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestMapping;
