@@ -26,9 +26,11 @@ public class DeadLockController {
     }
 
     private boolean createOrder(List<Item> order) {
+        // 存放所有获得的锁
         List<ReentrantLock> locks = new ArrayList<>();
         for (Item item : order) {
             try {
+                // 获得锁 10s 超时
                 if (item.lock.tryLock(10, TimeUnit.SECONDS)) {
                     locks.add(item.lock);
                 } else {
@@ -40,6 +42,7 @@ public class DeadLockController {
             }
         }
 
+        // 锁全部拿到之后，执行扣减库存业务逻辑
         try {
             order.forEach(item -> item.remaining--);
         } finally {
