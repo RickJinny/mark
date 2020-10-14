@@ -1,4 +1,4 @@
-package com.rickjinny.mark.controller.p03;
+package com.rickjinny.mark.controller.p03_threadpool;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestMapping;
