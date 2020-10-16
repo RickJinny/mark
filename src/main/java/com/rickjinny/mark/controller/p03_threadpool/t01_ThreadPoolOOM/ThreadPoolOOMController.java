@@ -49,4 +49,23 @@ public class ThreadPoolOOMController {
             log.info("--------------------------------------------------------");
         }, 0, 1, TimeUnit.SECONDS);
     }
+
+    @RequestMapping(value = "/oom2")
+    public void oom2() throws InterruptedException {
+        ThreadPoolExecutor threadPool = (ThreadPoolExecutor) Executors.newCachedThreadPool();
+        printStats(threadPool);
+        for (int i = 0; i < 100000000; i++) {
+            threadPool.execute(() -> {
+                String payload = UUID.randomUUID().toString();
+                try {
+                    TimeUnit.HOURS.sleep(1);
+                } catch (Exception e) {
+                    //
+                }
+                log.info(payload);
+            });
+        }
+        threadPool.shutdown();
+        threadPool.awaitTermination(1, TimeUnit.HOURS);
+    }
 }
