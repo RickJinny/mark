@@ -5,9 +5,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.UUID;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -67,5 +69,39 @@ public class ThreadPoolOOMController {
         }
         threadPool.shutdown();
         threadPool.awaitTermination(1, TimeUnit.HOURS);
+    }
+
+    @RequestMapping("/right")
+    public int right() throws InterruptedException {
+        AtomicInteger atomicInteger = new AtomicInteger();
+        ThreadPoolExecutor threadPool = new ThreadPoolExecutor(
+                2, 5, 5, TimeUnit.HOURS,
+                new ArrayBlockingQueue<>(10), new ThreadPoolExecutor.AbortPolicy());
+        printStats(threadPool);
+        IntStream.rangeClosed(1, 20).forEach(i -> {
+            try {
+                TimeUnit.SECONDS.sleep(1);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            int id = atomicInteger.incrementAndGet();
+            try {
+                threadPool.submit(() -> {
+                    log.info("{} started", id);
+                    try {
+                        TimeUnit.SECONDS.sleep(10);
+                    } catch (Exception e) {
+                        //
+                    }
+                    log.info("{} finished", id);
+                });
+            } catch (Exception e) {
+                log.error("error submitting task {}", id, e);
+                atomicInteger.decrementAndGet();
+            }
+        });
+        TimeUnit.SECONDS.sleep(60);
+        return atomicInteger.intValue();
     }
 }
