@@ -69,11 +69,14 @@ public class ThreadPoolOOMController {
 
     @RequestMapping("/right")
     public int right() throws InterruptedException {
+        // 使用一个计数器跟踪完成的任务数
         AtomicInteger atomicInteger = new AtomicInteger();
+        // 创建一个具有 2 个核心线程、5个最大线程，使用容量为 10 的 ArrayBlockingQueue 阻塞队列作为工作队列的线程池，使用默认的 AbortPolicy 拒绝策略
         ThreadPoolExecutor threadPool = new ThreadPoolExecutor(
                 2, 5, 5, TimeUnit.HOURS,
                 new ArrayBlockingQueue<>(10), new ThreadPoolExecutor.AbortPolicy());
         printStats(threadPool);
+        // 每隔 1s 提交一次，一共提交 20 次任务
         IntStream.rangeClosed(1, 20).forEach(i -> {
             try {
                 TimeUnit.SECONDS.sleep(1);
@@ -85,6 +88,7 @@ public class ThreadPoolOOMController {
             try {
                 threadPool.submit(() -> {
                     log.info("{} started", id);
+                    // 每个任务耗时 10 秒
                     try {
                         TimeUnit.SECONDS.sleep(10);
                     } catch (Exception e) {
@@ -93,6 +97,7 @@ public class ThreadPoolOOMController {
                     log.info("{} finished", id);
                 });
             } catch (Exception e) {
+                // 提交出现异常的话，打印出错信息并为计数器减一
                 log.error("error submitting task {}", id, e);
                 atomicInteger.decrementAndGet();
             }
