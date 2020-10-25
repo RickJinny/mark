@@ -754,9 +754,4 @@ public class RedisClient {
         }
         return keyList;
     }
-
-    public static void main(String[] args) {
-        set("aaa", "bbb");
-        System.out.println(get("aaa"));
-    }
 }
