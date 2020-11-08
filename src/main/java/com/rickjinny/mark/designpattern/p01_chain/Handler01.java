@@ -1,4 +1,4 @@
-package com.rickjinny.mark.designpattern;
+package com.rickjinny.mark.designpattern.p01_chain;
 
 /**
  * 在当前处理者对象无法处理时，将执行权传给下一个处理者对象

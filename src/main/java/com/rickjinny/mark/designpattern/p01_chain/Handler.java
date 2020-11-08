@@ -1,4 +1,4 @@
-package com.rickjinny.mark.designpattern;
+package com.rickjinny.mark.designpattern.p01_chain;
 
 /**
  * 抽象处理者
