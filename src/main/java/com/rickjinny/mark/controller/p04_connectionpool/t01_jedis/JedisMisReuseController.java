@@ -2,12 +2,10 @@ package com.rickjinny.mark.controller.p04_connectionpool.t01_jedis;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.Assert;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.JedisPoolConfig;
 
 import javax.annotation.PostConstruct;
 import java.util.concurrent.TimeUnit;
@@ -84,5 +82,16 @@ public class JedisMisReuseController {
         }).start();
 
         TimeUnit.SECONDS.sleep(5);
+    }
+
+    public String timeout(@RequestParam("waitTimeout") int waitTimeout,
+                          @RequestParam("connTimeout") int connTimeout) {
+        JedisPoolConfig config = new JedisPoolConfig();
+        config.setMaxTotal(1);
+        config.setMaxWaitMillis(waitTimeout);
+        try (JedisPool jedisPool = new JedisPool(config, "127.0.0.1", 6379, connTimeout);
+             Jedis jedis = jedisPool.getResource()) {
+            return jedis.set("test", "test");
+        }
     }
 }
