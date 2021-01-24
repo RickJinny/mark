@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
  * 集合类
  */
 public class T040_List {
-    
+
     public static void main(String[] args) {
         /**
          * 不能直接使用 Arrays.asList 来转换基本类型数组。
