@@ -2,7 +2,7 @@ package com.rick.test.dao.model;
 
 import java.util.Date;
 
-public class TbUser {
+public class User {
     private Integer id;
 
     private Integer userId;
