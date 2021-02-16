@@ -1,8 +1,8 @@
 package com.rick.test.service.impl;
 
+import com.rick.service.UserService;
 import com.rick.test.dao.dao.UserDao;
-import com.rick.test.dao.model.User;
-import com.rick.test.service.UserService;
+import com.rick.vo.UserVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +15,7 @@ public class UserServiceImpl implements UserService {
     private UserDao userDao;
 
     @Override
-    public List<User> getUserList(List<Integer> userIds) {
+    public List<UserVO> getUserList(List<Integer> userIds) {
         return userDao.getUserList(userIds);
     }
 }

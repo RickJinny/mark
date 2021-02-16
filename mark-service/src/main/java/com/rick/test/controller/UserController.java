@@ -1,8 +1,8 @@
 package com.rick.test.controller;
 
 import com.google.common.collect.Lists;
-import com.rick.test.dao.model.User;
-import com.rick.test.service.UserService;
+import com.rick.service.UserService;
+import com.rick.vo.UserVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,7 +27,7 @@ public class UserController {
 
     @RequestMapping(value = "/getUsers")
     @ResponseBody
-    public List<User> getUsers(Integer userId) {
+    public List<UserVO> getUsers(Integer userId) {
         try {
             return userService.getUserList(Lists.newArrayList(userId));
         } catch (Exception e) {

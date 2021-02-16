@@ -6,17 +6,17 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class UserServiceTest {
+public class UserService01Test {
 
-    private UserService userService;
+    private UserService01 userService01;
 
     public void setUp() {
-        userService = new UserService(new UserDao());
+        userService01 = new UserService01(new UserDao());
     }
 
     @Test
     public void testQueryUserCount() {
-        int count = userService.queryUserCount();
+        int count = userService01.queryUserCount();
         assertEquals(0, count);
     }
 
