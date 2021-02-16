@@ -1,4 +1,4 @@
-package com.rick.test.controller.p02_DeadLock;
+package com.rick.test.controller.exe.p02_DeadLock;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;

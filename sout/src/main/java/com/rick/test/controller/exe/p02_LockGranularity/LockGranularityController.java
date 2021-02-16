@@ -1,4 +1,4 @@
-package com.rick.test.controller.p02_LockGranularity;
+package com.rick.test.controller.exe.p02_LockGranularity;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -1,4 +1,4 @@
-package com.rick.test.controller.p02_LockScope;
+package com.rick.test.controller.exe.p02_LockScope;
 
 import lombok.extern.slf4j.Slf4j;
 

@@ -1,4 +1,4 @@
-package com.rick.test.controller.java.p010_list;
+package com.rick.test.controller.exe.p10_list;
 
 import com.alibaba.fastjson.JSON;
 

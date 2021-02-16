@@ -1,4 +1,4 @@
-package com.rick.test.controller.p01_ConcurrentHashMapMisuse;
+package com.rick.test.controller.exe.p01_ConcurrentHashMapMisuse;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestMapping;

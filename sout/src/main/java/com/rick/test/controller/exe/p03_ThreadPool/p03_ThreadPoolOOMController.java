@@ -1,4 +1,4 @@
-package com.rick.test.controller;
+package com.rick.test.controller.exe.p03_ThreadPool;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestMapping;
