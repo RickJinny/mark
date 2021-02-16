@@ -1,4 +1,4 @@
-package com.rick.test.statemachine;
+package com.rick.test.util.statemachine;
 
 /**
  * 订单状态改变事件

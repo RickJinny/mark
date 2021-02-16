@@ -1,4 +1,4 @@
-package com.rick.test.statemachine;
+package com.rick.test.util.statemachine;
 
 import org.springframework.messaging.Message;
 import org.springframework.statemachine.annotation.OnTransition;

@@ -1,4 +1,4 @@
-package com.rick.test.statemachine;
+package com.rick.test.util.statemachine;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.statemachine.StateMachineContext;

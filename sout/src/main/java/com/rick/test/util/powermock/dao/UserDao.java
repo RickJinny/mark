@@ -1,6 +1,6 @@
-package com.rick.test.powermock.dao;
+package com.rick.test.util.powermock.dao;
 
-import com.rick.test.powermock.model.User;
+import com.rick.test.util.powermock.model.User;
 
 public class UserDao {
 

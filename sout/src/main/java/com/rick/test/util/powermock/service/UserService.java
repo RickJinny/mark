@@ -1,7 +1,7 @@
-package com.rick.test.powermock.service;
+package com.rick.test.util.powermock.service;
 
-import com.rick.test.powermock.dao.UserDao;
-import com.rick.test.powermock.model.User;
+import com.rick.test.util.powermock.dao.UserDao;
+import com.rick.test.util.powermock.model.User;
 
 public class UserService {
 
