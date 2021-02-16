@@ -6,6 +6,7 @@ import com.rick.test.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -19,11 +20,13 @@ public class UserController {
     private UserService userService;
 
     @RequestMapping(value = "/test")
+    @ResponseBody
     public String test() {
         return "success";
     }
 
     @RequestMapping(value = "/getUsers")
+    @ResponseBody
     public List<User> getUsers(Integer userId) {
         try {
             return userService.getUserList(Lists.newArrayList(userId));

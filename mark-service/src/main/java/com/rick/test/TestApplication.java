@@ -10,7 +10,6 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 public class TestApplication {
 
     public static void main(String[] args) {
-//        Utils.loadPropertySource(TestApplication.class, "tomcat.properties");
         SpringApplication.run(TestApplication.class, args);
     }
 }
