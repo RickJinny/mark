@@ -1,4 +1,4 @@
-package com.rick.test.common;
+package com.rick.common;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;

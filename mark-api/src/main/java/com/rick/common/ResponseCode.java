@@ -1,4 +1,4 @@
-package com.rick.test.common;
+package com.rick.common;
 
 public enum ResponseCode {
 
