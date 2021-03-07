@@ -161,6 +161,12 @@
             </exclusions>
             <version>4.1.0</version>
         </dependency>
+        <!-- 阿里巴巴资源池 -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+            <version>1.0.9</version>
+        </dependency>
     </dependencies>
 
     <build>
