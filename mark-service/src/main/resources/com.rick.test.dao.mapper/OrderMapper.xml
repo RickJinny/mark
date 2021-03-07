@@ -4,8 +4,9 @@
   <resultMap id="BaseResultMap" type="com.rick.test.dao.model.Order">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="order_id" jdbcType="BIGINT" property="orderId" />
-    <result column="price" jdbcType="DECIMAL" property="price" />
+    <result column="product_id" jdbcType="INTEGER" property="productId" />
     <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
     <result column="status" jdbcType="INTEGER" property="status" />
   </resultMap>
   <sql id="Example_Where_Clause">
@@ -67,7 +68,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, order_id, price, user_id, status
+    id, order_id, product_id, user_id, price, status
   </sql>
   <select id="selectByExample" parameterType="com.rick.test.dao.model.OrderExample" resultMap="BaseResultMap">
     select
@@ -100,10 +101,12 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.rick.test.dao.model.Order">
-    insert into tb_order (id, order_id, price, 
-      user_id, status)
-    values (#{id,jdbcType=BIGINT}, #{orderId,jdbcType=BIGINT}, #{price,jdbcType=DECIMAL}, 
-      #{userId,jdbcType=BIGINT}, #{status,jdbcType=INTEGER})
+    insert into tb_order (id, order_id, product_id, 
+      user_id, price, status
+      )
+    values (#{id,jdbcType=BIGINT}, #{orderId,jdbcType=BIGINT}, #{productId,jdbcType=INTEGER}, 
+      #{userId,jdbcType=BIGINT}, #{price,jdbcType=DECIMAL}, #{status,jdbcType=INTEGER}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.rick.test.dao.model.Order">
     insert into tb_order
@@ -114,11 +117,14 @@
       <if test="orderId != null">
         order_id,
       </if>
-      <if test="price != null">
-        price,
+      <if test="productId != null">
+        product_id,
       </if>
       <if test="userId != null">
         user_id,
+      </if>
+      <if test="price != null">
+        price,
       </if>
       <if test="status != null">
         status,
@@ -131,11 +137,14 @@
       <if test="orderId != null">
         #{orderId,jdbcType=BIGINT},
       </if>
-      <if test="price != null">
-        #{price,jdbcType=DECIMAL},
+      <if test="productId != null">
+        #{productId,jdbcType=INTEGER},
       </if>
       <if test="userId != null">
         #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=DECIMAL},
       </if>
       <if test="status != null">
         #{status,jdbcType=INTEGER},
@@ -157,11 +166,14 @@
       <if test="record.orderId != null">
         order_id = #{record.orderId,jdbcType=BIGINT},
       </if>
-      <if test="record.price != null">
-        price = #{record.price,jdbcType=DECIMAL},
+      <if test="record.productId != null">
+        product_id = #{record.productId,jdbcType=INTEGER},
       </if>
       <if test="record.userId != null">
         user_id = #{record.userId,jdbcType=BIGINT},
+      </if>
+      <if test="record.price != null">
+        price = #{record.price,jdbcType=DECIMAL},
       </if>
       <if test="record.status != null">
         status = #{record.status,jdbcType=INTEGER},
@@ -175,8 +187,9 @@
     update tb_order
     set id = #{record.id,jdbcType=BIGINT},
       order_id = #{record.orderId,jdbcType=BIGINT},
-      price = #{record.price,jdbcType=DECIMAL},
+      product_id = #{record.productId,jdbcType=INTEGER},
       user_id = #{record.userId,jdbcType=BIGINT},
+      price = #{record.price,jdbcType=DECIMAL},
       status = #{record.status,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -188,11 +201,14 @@
       <if test="orderId != null">
         order_id = #{orderId,jdbcType=BIGINT},
       </if>
-      <if test="price != null">
-        price = #{price,jdbcType=DECIMAL},
+      <if test="productId != null">
+        product_id = #{productId,jdbcType=INTEGER},
       </if>
       <if test="userId != null">
         user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="price != null">
+        price = #{price,jdbcType=DECIMAL},
       </if>
       <if test="status != null">
         status = #{status,jdbcType=INTEGER},
@@ -203,8 +219,9 @@
   <update id="updateByPrimaryKey" parameterType="com.rick.test.dao.model.Order">
     update tb_order
     set order_id = #{orderId,jdbcType=BIGINT},
-      price = #{price,jdbcType=DECIMAL},
+      product_id = #{productId,jdbcType=INTEGER},
       user_id = #{userId,jdbcType=BIGINT},
+      price = #{price,jdbcType=DECIMAL},
       status = #{status,jdbcType=INTEGER}
     where id = #{id,jdbcType=BIGINT}
   </update>

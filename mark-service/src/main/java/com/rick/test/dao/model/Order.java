@@ -7,9 +7,11 @@ public class Order {
 
     private Long orderId;
 
-    private BigDecimal price;
+    private Integer productId;
 
     private Long userId;
+
+    private BigDecimal price;
 
     private Integer status;
 
@@ -29,12 +31,12 @@ public class Order {
         this.orderId = orderId;
     }
 
-    public BigDecimal getPrice() {
-        return price;
+    public Integer getProductId() {
+        return productId;
     }
 
-    public void setPrice(BigDecimal price) {
-        this.price = price;
+    public void setProductId(Integer productId) {
+        this.productId = productId;
     }
 
     public Long getUserId() {
@@ -43,6 +45,14 @@ public class Order {
 
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 
     public Integer getStatus() {
