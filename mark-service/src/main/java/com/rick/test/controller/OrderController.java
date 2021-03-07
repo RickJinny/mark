@@ -6,10 +6,7 @@ import com.rick.vo.CreateOrderRequest;
 import com.rick.vo.CreateOrderResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
@@ -21,7 +18,7 @@ public class OrderController {
 
     @ResponseBody
     @PostMapping(value = "/createOrder")
-    public ServerResponse<CreateOrderResponse> createOrder(CreateOrderRequest request) {
+    public ServerResponse<CreateOrderResponse> createOrder(@RequestBody CreateOrderRequest request) {
         return orderService.createOrder(request);
     }
 }

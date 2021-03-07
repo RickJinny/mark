@@ -1,6 +1,7 @@
 package com.rick.test.dao.dao;
 
 import com.rick.test.dao.mapper.OrderMapper;
+import com.rick.test.dao.model.Order;
 import com.rick.vo.CreateOrderRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -14,6 +15,10 @@ public class OrderDao {
 
     @Transactional(rollbackFor = Exception.class)
     public int addOrder(CreateOrderRequest orderParam) {
-        return 0;
+        Order order = new Order();
+        order.setUserId(order.getUserId());
+        order.setPrice(orderParam.getPrice());
+        order.setProductId(orderParam.getProductId());
+        return orderMapper.insert(order);
     }
 }

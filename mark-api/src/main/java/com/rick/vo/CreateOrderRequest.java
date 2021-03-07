@@ -11,7 +11,7 @@ public class CreateOrderRequest {
     private Long userId;
 
     // 商品id
-    private Long productId;
+    private Integer productId;
 
     // 商品价格
     private BigDecimal price;
