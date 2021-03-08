@@ -19,6 +19,7 @@ public class OrderDao {
         order.setUserId(order.getUserId());
         order.setPrice(orderParam.getPrice());
         order.setProductId(orderParam.getProductId());
+        order.setOrderId(10L);
         return orderMapper.insert(order);
     }
 }
