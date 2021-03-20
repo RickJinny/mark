@@ -16,10 +16,10 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public ServerResponse<CreateOrderResponse> createOrder(CreateOrderRequest request) {
-        int rowCount = orderDao.addOrder(request);
-        if (rowCount > 0) {
-            return ServerResponse.createBySuccess();
+        Long orderId = orderDao.addOrder(request);
+        if (orderId == null) {
+            return ServerResponse.createByErrorMessage("创建订单失败");
         }
-        return null;
+        return ServerResponse.createBySuccess(CreateOrderResponse.builder().orderId(orderId).build());
     }
 }

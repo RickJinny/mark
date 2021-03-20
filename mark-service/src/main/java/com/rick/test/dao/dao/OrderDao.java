@@ -15,13 +15,18 @@ public class OrderDao {
     private OrderMapper orderMapper;
 
     @Transactional(rollbackFor = Exception.class)
-    public int addOrder(CreateOrderRequest orderParam) {
+    public Long addOrder(CreateOrderRequest orderParam) {
         Order order = new Order();
         order.setUserId(order.getUserId());
         order.setPrice(orderParam.getPrice());
         order.setProductId(orderParam.getProductId());
-        order.setOrderId(getOrderId());
-        return orderMapper.insert(order);
+        Long orderId = getOrderId();
+        order.setOrderId(orderId);
+        int rowCount = orderMapper.insertSelective(order);
+        if (rowCount > 0) {
+            return orderId;
+        }
+        return null;
     }
 
     public Long getOrderId() {
