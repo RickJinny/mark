@@ -8,6 +8,8 @@
     <result column="user_id" jdbcType="BIGINT" property="userId" />
     <result column="price" jdbcType="DECIMAL" property="price" />
     <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -68,7 +70,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, order_id, product_id, user_id, price, status
+    id, order_id, product_id, user_id, price, status, create_time, update_time
   </sql>
   <select id="selectByExample" parameterType="com.rick.test.dao.model.OrderExample" resultMap="BaseResultMap">
     select
@@ -102,11 +104,11 @@
   </delete>
   <insert id="insert" parameterType="com.rick.test.dao.model.Order">
     insert into tb_order (id, order_id, product_id, 
-      user_id, price, status
-      )
+      user_id, price, status, 
+      create_time, update_time)
     values (#{id,jdbcType=BIGINT}, #{orderId,jdbcType=BIGINT}, #{productId,jdbcType=INTEGER}, 
-      #{userId,jdbcType=BIGINT}, #{price,jdbcType=DECIMAL}, #{status,jdbcType=INTEGER}
-      )
+      #{userId,jdbcType=BIGINT}, #{price,jdbcType=DECIMAL}, #{status,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.rick.test.dao.model.Order">
     insert into tb_order
@@ -129,6 +131,12 @@
       <if test="status != null">
         status,
       </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -148,6 +156,12 @@
       </if>
       <if test="status != null">
         #{status,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -178,6 +192,12 @@
       <if test="record.status != null">
         status = #{record.status,jdbcType=INTEGER},
       </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -190,7 +210,9 @@
       product_id = #{record.productId,jdbcType=INTEGER},
       user_id = #{record.userId,jdbcType=BIGINT},
       price = #{record.price,jdbcType=DECIMAL},
-      status = #{record.status,jdbcType=INTEGER}
+      status = #{record.status,jdbcType=INTEGER},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -213,6 +235,12 @@
       <if test="status != null">
         status = #{status,jdbcType=INTEGER},
       </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -222,7 +250,9 @@
       product_id = #{productId,jdbcType=INTEGER},
       user_id = #{userId,jdbcType=BIGINT},
       price = #{price,jdbcType=DECIMAL},
-      status = #{status,jdbcType=INTEGER}
+      status = #{status,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>
