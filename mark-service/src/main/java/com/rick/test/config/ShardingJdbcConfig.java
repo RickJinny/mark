@@ -18,7 +18,6 @@ import java.util.Properties;
 @Configuration
 public class ShardingJdbcConfig {
 
-
     /**
      * 定义数据源
      */
@@ -59,6 +58,4 @@ public class ShardingJdbcConfig {
         properties.put("sql.show", "true");
         return ShardingDataSourceFactory.createDataSource(createDataSourceMap(), shardingRuleConfiguration, properties);
     }
-
-
 }
