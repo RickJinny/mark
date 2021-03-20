@@ -41,8 +41,8 @@ public class ShardingJdbcConfig {
     }
 
     public TableRuleConfiguration getOrderTableRuleConfiguration() {
-        TableRuleConfiguration result = new TableRuleConfiguration("tb_order", "db01.tb_order_$->{1..8}");
-        result.setTableShardingStrategyConfig(new InlineShardingStrategyConfiguration("order_id", "tb_order_$->{order_id % 2 + 1}"));
+        TableRuleConfiguration result = new TableRuleConfiguration("tb_order", "db01.tb_order_$->{0..7}");
+        result.setTableShardingStrategyConfig(new InlineShardingStrategyConfiguration("order_id", "tb_order_$->{order_id % 8}"));
         result.setKeyGeneratorConfig(getKeyGeneratorConfiguration());
         return result;
     }

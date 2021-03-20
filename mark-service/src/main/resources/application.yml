@@ -25,11 +25,11 @@ spring:
     sharding:
       tables:
         t_order:
-          actualDataNodes: db01.t_order_$‐>{1..8}
+          actualDataNodes: db01.t_order_$‐>{0..7}
           tableStrategy:
             inline:
               shardingColumn: order_id
-              algorithmExpression: t_order_$‐>{order_id % 2 + 1}
+              algorithmExpression: t_order_$‐>{order_id % 8}
           keyGenerator:
             type: SNOWFLAKE
             column: order_id
