@@ -2,6 +2,7 @@ package com.rick.test.dao.dao;
 
 import com.rick.test.dao.mapper.OrderMapper;
 import com.rick.test.dao.model.Order;
+import com.rick.test.util.SnowFlake;
 import com.rick.vo.CreateOrderRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -19,7 +20,12 @@ public class OrderDao {
         order.setUserId(order.getUserId());
         order.setPrice(orderParam.getPrice());
         order.setProductId(orderParam.getProductId());
-        order.setOrderId(10L);
+        order.setOrderId(getOrderId());
         return orderMapper.insert(order);
+    }
+
+    public Long getOrderId() {
+        SnowFlake idWorker = new SnowFlake(1, 1);
+        return idWorker.nextId();
     }
 }
