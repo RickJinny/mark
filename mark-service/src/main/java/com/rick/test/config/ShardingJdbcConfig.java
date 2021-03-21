@@ -33,7 +33,7 @@ public class ShardingJdbcConfig {
     private static DataSource createDataSourceMap(String dataSourceName) {
         DruidDataSource dataSource = new DruidDataSource();
         dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-        dataSource.setUrl(String.format("jdbc:mysql://192.168.0.117:3306/%s?useUnicode=true", dataSourceName));
+        dataSource.setUrl("jdbc:mysql://192.168.0.117:3306/" + dataSourceName + "?useUnicode=true");
         dataSource.setUsername("root");
         dataSource.setPassword("123456");
         return dataSource;

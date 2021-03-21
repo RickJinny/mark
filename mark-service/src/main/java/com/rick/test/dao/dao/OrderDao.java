@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
+
 @Component
 public class OrderDao {
 
@@ -22,6 +24,8 @@ public class OrderDao {
         order.setProductId(orderParam.getProductId());
         Long orderId = getOrderId();
         order.setOrderId(orderId);
+        order.setCreateTime(new Date());
+        order.setUpdateTime(new Date());
         int rowCount = orderMapper.insertSelective(order);
         if (rowCount > 0) {
             return orderId;

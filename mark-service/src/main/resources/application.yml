@@ -34,7 +34,7 @@ spring:
           database-strategy:
             inline:
               sharding-column: user_id
-              algorithm-expression: db0$->{user_id % 2 + 1}
+              algorithm-expression: db$->{user_id % 2 + 1}
           actualDataNodes: db01.t_order_$‐>{0..7}
           tableStrategy:
             inline:
