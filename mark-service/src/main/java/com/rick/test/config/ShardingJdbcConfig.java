@@ -21,26 +21,22 @@ public class ShardingJdbcConfig {
     /**
      * 定义数据源
      */
-    public Map<String, DataSource> createDataSourceMap() {
-        // 数据源1
-        DruidDataSource dataSource01 = new DruidDataSource();
-        dataSource01.setDriverClassName("com.mysql.jdbc.Driver");
-        dataSource01.setUrl("jdbc:mysql://192.168.0.117:3306/benz_01?useUnicode=true");
-        dataSource01.setUsername("root");
-        dataSource01.setPassword("123456");
-
-        // 数据源2
-        DruidDataSource dataSource02 = new DruidDataSource();
-        dataSource02.setDriverClassName("com.mysql.jdbc.Driver");
-        dataSource02.setUrl("jdbc:mysql://192.168.0.117:3306/benz_02?useUnicode=true");
-        dataSource02.setUsername("root");
-        dataSource02.setPassword("123456");
-
+    public static Map<String, DataSource> createDataSourceMap() {
         Map<String, DataSource> result = new HashMap<>();
-        result.put("db01", dataSource01);
-        result.put("db02", dataSource02);
-
+        // 数据源1
+        result.put("db01", createDataSourceMap("benz_01"));
+        // 数据源2
+        result.put("db02", createDataSourceMap("benz_02"));
         return result;
+    }
+
+    private static DataSource createDataSourceMap(String dataSourceName) {
+        DruidDataSource dataSource = new DruidDataSource();
+        dataSource.setDriverClassName("com.mysql.jdbc.Driver");
+        dataSource.setUrl(String.format("jdbc:mysql://192.168.0.117:3306/%s?useUnicode=true", dataSourceName));
+        dataSource.setUsername("root");
+        dataSource.setPassword("123456");
+        return dataSource;
     }
 
     /**
@@ -52,10 +48,13 @@ public class ShardingJdbcConfig {
     }
 
     public TableRuleConfiguration getOrderTableRuleConfiguration() {
-        TableRuleConfiguration result = new TableRuleConfiguration("tb_order", "db01.tb_order_$->{0..7}");
-        result.setTableShardingStrategyConfig(new InlineShardingStrategyConfiguration("order_id", "tb_order_$->{order_id % 8}"));
-        result.setKeyGeneratorConfig(getKeyGeneratorConfiguration());
-        return result;
+        // 配置 tb_order 表规则
+        TableRuleConfiguration tableRuleConfiguration = new TableRuleConfiguration("tb_order", "db0${1..2}.tb_order_$->{0..7}");
+        // 配置数据库表分片策略
+        tableRuleConfiguration.setDatabaseShardingStrategyConfig(new InlineShardingStrategyConfiguration("user_id", "db0${user_id % 2 + 1 }"));
+        tableRuleConfiguration.setTableShardingStrategyConfig(new InlineShardingStrategyConfiguration("order_id", "tb_order_$->{order_id % 8}"));
+        tableRuleConfiguration.setKeyGeneratorConfig(getKeyGeneratorConfiguration());
+        return tableRuleConfiguration;
     }
 
     /**
@@ -63,10 +62,12 @@ public class ShardingJdbcConfig {
      */
     @Bean
     public DataSource getShardingDataSource() throws SQLException {
+        // 配置分片规则
         ShardingRuleConfiguration shardingRuleConfiguration = new ShardingRuleConfiguration();
         shardingRuleConfiguration.getTableRuleConfigs().add(getOrderTableRuleConfiguration());
         Properties properties = new Properties();
         properties.put("sql.show", "true");
+        // 创建数据源
         return ShardingDataSourceFactory.createDataSource(createDataSourceMap(), shardingRuleConfiguration, properties);
     }
 }
