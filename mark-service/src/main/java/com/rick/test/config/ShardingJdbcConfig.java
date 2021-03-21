@@ -19,7 +19,7 @@ import java.util.Properties;
 public class ShardingJdbcConfig {
 
     /**
-     * 定义数据源
+     * 创建数据源
      */
     public static Map<String, DataSource> createDataSourceMap() {
         Map<String, DataSource> result = new HashMap<>();
