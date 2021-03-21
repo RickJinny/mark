@@ -25,14 +25,14 @@ public class ShardingJdbcConfig {
         // 数据源1
         DruidDataSource dataSource01 = new DruidDataSource();
         dataSource01.setDriverClassName("com.mysql.jdbc.Driver");
-        dataSource01.setUrl("jdbc:mysql://192.168.0.117:3306/benz?useUnicode=true");
+        dataSource01.setUrl("jdbc:mysql://192.168.0.117:3306/benz_01?useUnicode=true");
         dataSource01.setUsername("root");
         dataSource01.setPassword("123456");
 
         // 数据源2
         DruidDataSource dataSource02 = new DruidDataSource();
         dataSource02.setDriverClassName("com.mysql.jdbc.Driver");
-        dataSource02.setUrl("jdbc:mysql://192.168.0.117:3306/benz?useUnicode=true");
+        dataSource02.setUrl("jdbc:mysql://192.168.0.117:3306/benz_02?useUnicode=true");
         dataSource02.setUsername("root");
         dataSource02.setPassword("123456");
 
