@@ -22,13 +22,24 @@ public class ShardingJdbcConfig {
      * 定义数据源
      */
     public Map<String, DataSource> createDataSourceMap() {
-        DruidDataSource druidDataSource = new DruidDataSource();
-        druidDataSource.setDriverClassName("com.mysql.jdbc.Driver");
-        druidDataSource.setUrl("jdbc:mysql://192.168.0.117:3306/benz?useUnicode=true");
-        druidDataSource.setUsername("root");
-        druidDataSource.setPassword("123456");
+        // 数据源1
+        DruidDataSource dataSource01 = new DruidDataSource();
+        dataSource01.setDriverClassName("com.mysql.jdbc.Driver");
+        dataSource01.setUrl("jdbc:mysql://192.168.0.117:3306/benz?useUnicode=true");
+        dataSource01.setUsername("root");
+        dataSource01.setPassword("123456");
+
+        // 数据源2
+        DruidDataSource dataSource02 = new DruidDataSource();
+        dataSource02.setDriverClassName("com.mysql.jdbc.Driver");
+        dataSource02.setUrl("jdbc:mysql://192.168.0.117:3306/benz?useUnicode=true");
+        dataSource02.setUsername("root");
+        dataSource02.setPassword("123456");
+
         Map<String, DataSource> result = new HashMap<>();
-        result.put("db01", druidDataSource);
+        result.put("db01", dataSource01);
+        result.put("db02", dataSource02);
+
         return result;
     }
 
