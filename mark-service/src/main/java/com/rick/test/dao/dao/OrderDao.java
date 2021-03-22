@@ -2,13 +2,16 @@ package com.rick.test.dao.dao;
 
 import com.rick.test.dao.mapper.OrderMapper;
 import com.rick.test.dao.model.Order;
+import com.rick.test.dao.model.OrderExample;
 import com.rick.test.util.SnowFlake;
 import com.rick.vo.CreateOrderRequest;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 
 @Component
 public class OrderDao {
@@ -31,6 +34,16 @@ public class OrderDao {
             return orderId;
         }
         return null;
+    }
+
+    public Order getOrder(Long orderId) {
+        OrderExample orderExample = new OrderExample();
+        orderExample.createCriteria().andOrderIdEqualTo(orderId);
+        List<Order> orderList = orderMapper.selectByExample(orderExample);
+        if (CollectionUtils.isEmpty(orderList)) {
+            return null;
+        }
+        return orderList.get(0);
     }
 
     public Long getOrderId() {
