@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
+
 @Component
 public class DictDao {
 
@@ -20,6 +22,8 @@ public class DictDao {
         dict.setDictType(addDictRequest.getDictType());
         dict.setDictCode(addDictRequest.getDictCode());
         dict.setDictValue(addDictRequest.getDictValue());
+        dict.setCreateTime(new Date());
+        dict.setUpdateTime(new Date());
         int rowCount = dictMapper.insertSelective(dict);
         if (rowCount > 0) {
             return dict;

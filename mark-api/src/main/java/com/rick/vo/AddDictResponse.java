@@ -5,4 +5,6 @@ import lombok.Data;
 @Data
 public class AddDictResponse {
 
+    private Long dictId;
+
 }
