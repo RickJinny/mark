@@ -8,6 +8,7 @@ import com.rick.vo.CreateUserResponse;
 import com.rick.vo.UserVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -42,7 +43,7 @@ public class UserController {
 
     @RequestMapping(value = "/createUser")
     @ResponseBody
-    public ServerResponse<CreateUserResponse> createUser(CreateUserRequest request) {
+    public ServerResponse<CreateUserResponse> createUser(@RequestBody CreateUserRequest request) {
         return userService.createUser(request);
     }
 }
