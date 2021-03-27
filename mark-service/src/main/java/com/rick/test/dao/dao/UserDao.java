@@ -4,11 +4,14 @@ import com.google.common.collect.Lists;
 import com.rick.test.dao.mapper.UserMapper;
 import com.rick.test.dao.model.User;
 import com.rick.test.dao.model.UserExample;
+import com.rick.vo.CreateUserRequest;
 import com.rick.vo.UserVO;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,8 +32,23 @@ public class UserDao {
         return userList.stream().map(user -> {
             UserVO userVO = new UserVO();
             userVO.setUserId(user.getUserId());
-            userVO.setUserName(user.getFullName());
+            userVO.setUserName(user.getUserName());
             return userVO;
         }).collect(Collectors.toList());
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public User addUser(CreateUserRequest request) {
+        User user = new User();
+        user.setUserId(request.getUserId());
+        user.setUserName(request.getUserName());
+        user.setUserType(request.getUserType());
+        user.setCreateTime(new Date());
+        user.setUpdateTime(new Date());
+        int rowCount = userMapper.insertSelective(user);
+        if (rowCount > 0) {
+            return user;
+        }
+        return null;
     }
 }

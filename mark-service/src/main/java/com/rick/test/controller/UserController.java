@@ -1,7 +1,10 @@
 package com.rick.test.controller;
 
 import com.google.common.collect.Lists;
+import com.rick.common.ServerResponse;
 import com.rick.service.UserService;
+import com.rick.vo.CreateUserRequest;
+import com.rick.vo.CreateUserResponse;
 import com.rick.vo.UserVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +30,7 @@ public class UserController {
 
     @RequestMapping(value = "/getUsers")
     @ResponseBody
-    public List<UserVO> getUsers(Integer userId) {
+    public List<UserVO> getUsers(Long userId) {
         try {
             return userService.getUserList(Lists.newArrayList(userId));
         } catch (Exception e) {
@@ -35,5 +38,11 @@ public class UserController {
 
         }
         return null;
+    }
+
+    @RequestMapping(value = "/createUser")
+    @ResponseBody
+    public ServerResponse<CreateUserResponse> createUser(CreateUserRequest request) {
+        return userService.createUser(request);
     }
 }
