@@ -67,6 +67,7 @@ public class ShardingJdbcConfig {
         // 配置分片规则
         ShardingRuleConfiguration shardingRuleConfiguration = new ShardingRuleConfiguration();
         shardingRuleConfiguration.getTableRuleConfigs().add(getOrderTableRuleConfiguration());
+        shardingRuleConfiguration.getBroadcastTables().add("tb_dict");
         Properties properties = new Properties();
         properties.put("sql.show", "true");
         // 创建数据源
