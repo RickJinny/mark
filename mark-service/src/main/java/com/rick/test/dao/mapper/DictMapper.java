@@ -2,9 +2,8 @@ package com.rick.test.dao.mapper;
 
 import com.rick.test.dao.model.Dict;
 import com.rick.test.dao.model.DictExample;
-import org.apache.ibatis.annotations.Param;
-
 import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 public interface DictMapper {
     long countByExample(DictExample example);

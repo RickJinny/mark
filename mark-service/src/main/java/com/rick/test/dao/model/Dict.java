@@ -1,5 +1,7 @@
 package com.rick.test.dao.model;
 
+import java.util.Date;
+
 public class Dict {
     private Long id;
 
@@ -10,6 +12,10 @@ public class Dict {
     private String dictCode;
 
     private String dictValue;
+
+    private Date createTime;
+
+    private Date updateTime;
 
     public Long getId() {
         return id;
@@ -49,5 +55,21 @@ public class Dict {
 
     public void setDictValue(String dictValue) {
         this.dictValue = dictValue == null ? null : dictValue.trim();
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 }
