@@ -67,6 +67,7 @@ public class ShardingJdbcConfig {
         // 配置分片规则
         ShardingRuleConfiguration shardingRuleConfiguration = new ShardingRuleConfiguration();
         shardingRuleConfiguration.getTableRuleConfigs().add(getOrderTableRuleConfiguration());
+        // 每个库都有公共表 tb_dict，所以这里应该配置一个广播，通知每个库都进行存取数据
         shardingRuleConfiguration.getBroadcastTables().add("tb_dict");
         Properties properties = new Properties();
         properties.put("sql.show", "true");
