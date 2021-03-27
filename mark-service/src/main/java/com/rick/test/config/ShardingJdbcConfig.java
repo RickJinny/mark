@@ -27,6 +27,8 @@ public class ShardingJdbcConfig {
         result.put("db01", createDataSourceMap("benz_01"));
         // 数据源2
         result.put("db02", createDataSourceMap("benz_02"));
+        // 数据源3
+        result.put("db03", createDataSourceMap("user_db"));
         return result;
     }
 
