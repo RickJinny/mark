@@ -14,7 +14,7 @@
 
         <!--数据库链接URL，用户名、密码 -->
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://192.168.0.117:3306/benz"
+                        connectionURL="jdbc:mysql://192.168.0.117:3306/user_db"
                         userId="root"
                         password="123456">
         </jdbcConnection>
@@ -32,7 +32,7 @@
         <!-- 生成映射文件的包名和位置-->
         <sqlMapGenerator targetPackage="com.rick.test.dao.mapper" targetProject="src/main/resources">
             <!-- enableSubPackages:是否让schema作为包的后缀 -->
-            <property name="enableSubPackages" value="true" />
+            <property name="enableSubPackages" value="false" />
         </sqlMapGenerator>
 
         <!-- 生成DAO的包名和位置-->
@@ -42,7 +42,7 @@
 
 
         <!-- 要生成的表 tableName是数据库中的表名或视图名 domainObjectName是实体类名-->
-        <table tableName="tb_order" domainObjectName="Order">
+        <table tableName="tb_user" domainObjectName="User">
         </table>
 
         <!-- 需要生成的实体类对应的表名，多个实体类复制多份该配置即可 -->

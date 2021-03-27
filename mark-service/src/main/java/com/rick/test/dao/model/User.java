@@ -1,65 +1,43 @@
 package com.rick.test.dao.model;
 
-import java.util.Date;
-
 public class User {
-    private Integer id;
+    private Long id;
 
-    private Integer userId;
+    private Long userId;
 
-    private String userName;
+    private String fullName;
 
-    private Byte userLevel;
+    private Byte userType;
 
-    private Date createTime;
-
-    private Date updateTime;
-
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public Integer getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(Integer userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName == null ? null : userName.trim();
+    public void setFullName(String fullName) {
+        this.fullName = fullName == null ? null : fullName.trim();
     }
 
-    public Byte getUserLevel() {
-        return userLevel;
+    public Byte getUserType() {
+        return userType;
     }
 
-    public void setUserLevel(Byte userLevel) {
-        this.userLevel = userLevel;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
+    public void setUserType(Byte userType) {
+        this.userType = userType;
     }
 }
