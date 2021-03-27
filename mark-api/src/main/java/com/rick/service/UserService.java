@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface UserService {
 
-    List<UserVO> getUserList(List<Integer> userIds);
+    List<UserVO> getUserList(List<Long> userIds);
 
 }

@@ -18,7 +18,7 @@ public class UserDao {
     @Autowired
     private UserMapper userMapper;
 
-    public List<UserVO> getUserList(List<Integer> userIds) {
+    public List<UserVO> getUserList(List<Long> userIds) {
         UserExample example = new UserExample();
         example.createCriteria().andUserIdIn(userIds);
         List<User> userList = userMapper.selectByExample(example);
@@ -29,7 +29,7 @@ public class UserDao {
         return userList.stream().map(user -> {
             UserVO userVO = new UserVO();
             userVO.setUserId(user.getUserId());
-            userVO.setUserName(user.getUserName());
+            userVO.setUserName(user.getFullName());
             return userVO;
         }).collect(Collectors.toList());
     }

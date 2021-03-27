@@ -15,7 +15,7 @@ public class UserServiceImpl implements UserService {
     private UserDao userDao;
 
     @Override
-    public List<UserVO> getUserList(List<Integer> userIds) {
+    public List<UserVO> getUserList(List<Long> userIds) {
         return userDao.getUserList(userIds);
     }
 }
