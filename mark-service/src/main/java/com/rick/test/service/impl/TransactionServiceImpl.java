@@ -27,7 +27,7 @@ public class TransactionServiceImpl implements TransactionService {
 
         // 制造出错
         int x = 1;
-        if (x == 3) {
+        if (x == 1) {
             throw new RuntimeException("出错啦!");
         }
         // 转入钱
@@ -45,7 +45,7 @@ public class TransactionServiceImpl implements TransactionService {
 
         Account selectAccount = accounts.get(0);
         Account account = new Account();
-        account.setMoney(selectAccount.getMoney() - money);
+        account.setMoney(selectAccount.getMoney() + money);
         AccountExample updateExample = new AccountExample();
         updateExample.createCriteria().andNameEqualTo(name);
         accountMapper.updateByExampleSelective(account, updateExample);
@@ -61,7 +61,7 @@ public class TransactionServiceImpl implements TransactionService {
         }
         Account selectAccount = accounts.get(0);
         Account account = new Account();
-        account.setMoney(selectAccount.getMoney() + money);
+        account.setMoney(selectAccount.getMoney() - money);
         AccountExample updateExample = new AccountExample();
         updateExample.createCriteria().andNameEqualTo(name);
         accountMapper.updateByExampleSelective(account, updateExample);

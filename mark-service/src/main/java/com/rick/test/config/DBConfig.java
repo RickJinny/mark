@@ -1,5 +1,8 @@
 package com.rick.test.config;
 
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
@@ -8,26 +11,14 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class DBConfig {
 
-//    @Value("${spring.datasource.driver-class-name}")
-//    private String driver ;
-//
-//    @Value("${spring.datasource.url}")
-//    private String url;
-//
-//    @Value("${spring.datasource.username}")
-//    private String username;
-//
-//    @Value("${spring.datasource.password}")
-//    private String password;
-//
-//    @Bean
-//    public HikariDataSource dataSource() {
-//        HikariConfig config = new HikariConfig();
-//        config.setDriverClassName(driver);
-//        config.setJdbcUrl(url);
-//        config.setUsername(username);
-//        config.setPassword(password);
-//        HikariDataSource dataSource = new HikariDataSource(config);
-//        return dataSource;
-//    }
+    @Bean
+    public HikariDataSource dataSource() {
+        HikariConfig config = new HikariConfig();
+        config.setDriverClassName("com.mysql.jdbc.Driver");
+        config.setJdbcUrl("jdbc:mysql://192.168.0.117:3306/user_db?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf8&autoReconnect=true&allowMultiQueries=true");
+        config.setUsername("root");
+        config.setPassword("123456");
+        HikariDataSource dataSource = new HikariDataSource(config);
+        return dataSource;
+    }
 }
