@@ -20,7 +20,7 @@ public class TransactionController {
         try {
             transactionService.transfer(fromName, toName, money);
         } catch (Exception e) {
-            log.error("transfer error, errorMsg: {}.", e.getMessage(), e);
+            log.error("transfer error", e);
         }
         return "OK";
     }
