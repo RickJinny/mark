@@ -21,6 +21,19 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    public void transfer(String fromName, String toName, Integer money) {
+        // 转出钱
+        transferOut(fromName, money);
+
+        // 制造出错
+        int x = 1;
+        if (x == 3) {
+            throw new RuntimeException("出错啦!");
+        }
+        // 转入钱
+        transferIn(toName, money);
+    }
+
     public void transferIn(String name, Integer money) {
         AccountExample example = new AccountExample();
         example.createCriteria().andNameEqualTo(name);
@@ -38,8 +51,6 @@ public class TransactionServiceImpl implements TransactionService {
         accountMapper.updateByExampleSelective(account, updateExample);
     }
 
-    @Override
-    @Transactional(rollbackFor = Exception.class)
     public void transferOut(String name, Integer money) {
         AccountExample example = new AccountExample();
         example.createCriteria().andNameEqualTo(name);

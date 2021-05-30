@@ -16,16 +16,11 @@ public class TransactionController {
 
     @RequestMapping(value = "/transfer")
     public String transfer(String fromName, String toName, Integer money) {
-        // 转出钱
-        transactionService.transferOut(fromName, money);
-
-        // 制造出错
-        int x = 1;
-        if (x == 3) {
-            throw new RuntimeException("出错啦!");
+        try {
+            transactionService.transfer(fromName, toName, money);
+        } catch (Exception e) {
+            log.error("transfer error, errorMsg: {}.", e.getMessage(), e);
         }
-        // 转入钱
-        transactionService.transferIn(toName, money);
         return "OK";
     }
 
