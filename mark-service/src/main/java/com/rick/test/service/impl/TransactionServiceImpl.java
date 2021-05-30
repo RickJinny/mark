@@ -25,8 +25,9 @@ public class TransactionServiceImpl implements TransactionService {
         List<Account> accounts = accountMapper.selectByExample(example);
         if (CollectionUtils.isEmpty(accounts)) {
             log.warn("account name: {},  not exist!", name);
-            return;
+            throw new RuntimeException(name + "账户不存在");
         }
+
         Account selectAccount = accounts.get(0);
         Account account = new Account();
         account.setMoney(selectAccount.getMoney() - money);
@@ -42,7 +43,7 @@ public class TransactionServiceImpl implements TransactionService {
         List<Account> accounts = accountMapper.selectByExample(example);
         if (CollectionUtils.isEmpty(accounts)) {
             log.warn("account name: {},  not exist!", name);
-            return;
+            throw new RuntimeException(name + "账户不存在");
         }
         Account selectAccount = accounts.get(0);
         Account account = new Account();
