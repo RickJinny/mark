@@ -7,6 +7,7 @@ import com.rick.test.dao.model.AccountExample;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -19,6 +20,7 @@ public class TransactionServiceImpl implements TransactionService {
     private AccountMapper accountMapper;
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void transferIn(String name, Integer money) {
         AccountExample example = new AccountExample();
         example.createCriteria().andNameEqualTo(name);
@@ -37,6 +39,7 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void transferOut(String name, Integer money) {
         AccountExample example = new AccountExample();
         example.createCriteria().andNameEqualTo(name);
