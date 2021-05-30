@@ -1,6 +1,6 @@
 package com.rick.test.controller;
 
-import com.rick.service.TransactionService;
+import com.rick.test.service.impl.TransactionServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class TransactionController {
 
     @Autowired
-    private TransactionService transactionService;
+    private TransactionServiceImpl transactionService;
 
     @PostMapping(value = "/transfer")
     public String transfer(String fromName, String toName, Integer money) {
         try {
-            transactionService.transfer(fromName, toName, money);
+            transactionService.testTransactionalPropagation(fromName, toName, money);
         } catch (Exception e) {
             log.error("transfer error", e);
         }

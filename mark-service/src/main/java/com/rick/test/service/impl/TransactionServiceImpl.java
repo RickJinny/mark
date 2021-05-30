@@ -6,7 +6,9 @@ import com.rick.test.dao.model.Account;
 import com.rick.test.dao.model.AccountExample;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
@@ -18,6 +20,9 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Resource
     private AccountMapper accountMapper;
+
+    @Autowired
+    private TransactionServiceImpl transactionService;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -66,4 +71,37 @@ public class TransactionServiceImpl implements TransactionService {
         updateExample.createCriteria().andNameEqualTo(name);
         accountMapper.updateByExampleSelective(account, updateExample);
     }
+
+
+    /**
+     * 2、事务传播特性测试
+     */
+    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
+    public void testTransactionalPropagation(String fromName, String toName, Integer money) {
+        // 转出钱
+        transferOut(fromName, money);
+        try {
+            transactionService.testSecond(toName, money);
+        } catch (Exception e) {
+            log.error("error", e);
+            e.printStackTrace();
+        }
+
+        int x = 1;
+        if (x == 1) {
+            throw new RuntimeException("first 出错了!");
+        }
+
+    }
+
+    @Transactional(rollbackFor = Exception.class, propagation = Propagation.NESTED)
+    public void testSecond(String toName, Integer money) {
+        // 转入钱
+        transferIn(toName, money);
+        int x = 1;
+        if (x == 2) {
+            throw new RuntimeException("second 出错啦!");
+        }
+    }
+
 }
