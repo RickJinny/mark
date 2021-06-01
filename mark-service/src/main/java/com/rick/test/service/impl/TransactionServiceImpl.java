@@ -88,18 +88,18 @@ public class TransactionServiceImpl implements TransactionService {
         }
 
         int x = 1;
-        if (x == 1) {
+        if (x == 2) {
             throw new RuntimeException("first 出错了!");
         }
 
     }
 
-    @Transactional(rollbackFor = Exception.class, propagation = Propagation.NESTED)
+    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public void testSecond(String toName, Integer money) {
         // 转入钱
         transferIn(toName, money);
         int x = 1;
-        if (x == 2) {
+        if (x == 1) {
             throw new RuntimeException("second 出错啦!");
         }
     }
