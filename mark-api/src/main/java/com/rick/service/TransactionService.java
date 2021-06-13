@@ -1,5 +1,7 @@
 package com.rick.service;
 
+import com.rick.vo.AddAccountRequest;
+
 public interface TransactionService {
 
     /**
@@ -9,4 +11,6 @@ public interface TransactionService {
      * @param money 转账金额
      */
     void transfer(String fromName, String toName, Integer money);
+
+    void addAccount(AddAccountRequest addAccountRequest);
 }

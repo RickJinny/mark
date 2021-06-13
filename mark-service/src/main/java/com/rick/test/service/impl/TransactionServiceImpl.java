@@ -2,8 +2,11 @@ package com.rick.test.service.impl;
 
 import com.rick.service.TransactionService;
 import com.rick.test.dao.mapper.AccountMapper;
+import com.rick.test.dao.mapper.UserMapper;
 import com.rick.test.dao.model.Account;
 import com.rick.test.dao.model.AccountExample;
+import com.rick.test.dao.model.User;
+import com.rick.vo.AddAccountRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Random;
 
 @Service
 @Slf4j
@@ -20,6 +24,9 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Resource
     private AccountMapper accountMapper;
+
+    @Resource
+    private UserMapper userMapper;
 
     @Autowired
     private TransactionServiceImpl transactionService;
@@ -37,6 +44,26 @@ public class TransactionServiceImpl implements TransactionService {
         }
         // 转入钱
         transferIn(toName, money);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void addAccount(AddAccountRequest addAccountRequest) {
+        User user = new User();
+        user.setUserId(new Random(5).nextLong());
+        user.setUserName(addAccountRequest.getUserName());
+        user.setUserType(addAccountRequest.getUserType().byteValue());
+        userMapper.insertSelective(user);
+
+        Account account = new Account();
+        account.setName(addAccountRequest.getUserName());
+        account.setMoney(1000);
+        accountMapper.insertSelective(account);
+
+        int x = 1;
+        if (x == 1) {
+            throw new RuntimeException("出错了!");
+        }
     }
 
     public void transferIn(String name, Integer money) {
