@@ -15,7 +15,7 @@ public class DBConfig {
     public HikariDataSource dataSource() {
         HikariConfig config = new HikariConfig();
         config.setDriverClassName("com.mysql.jdbc.Driver");
-        config.setJdbcUrl("jdbc:mysql://192.168.0.117:3306/user_db?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf8&autoReconnect=true&allowMultiQueries=true");
+        config.setJdbcUrl("jdbc:mysql://192.168.0.121:3306/user_db?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf8&autoReconnect=true&allowMultiQueries=true");
         config.setUsername("root");
         config.setPassword("123456");
         HikariDataSource dataSource = new HikariDataSource(config);
