@@ -216,6 +216,7 @@
                 <includes>
                     <include>**/*.xml</include>
                 </includes>
+                <filtering>false</filtering>
             </resource>
 
             <!-- 将resources目录下的配置文件编译进classes文件 -->
@@ -224,6 +225,7 @@
                 <includes>
                     <include>**/*.*</include>
                 </includes>
+                <filtering>false</filtering>
             </resource>
         </resources>
     </build>
