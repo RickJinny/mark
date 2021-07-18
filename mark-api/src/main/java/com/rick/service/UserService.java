@@ -1,8 +1,8 @@
 package com.rick.service;
 
 import com.rick.common.ServerResponse;
-import com.rick.vo.CreateUserRequest;
-import com.rick.vo.CreateUserResponse;
+import com.rick.request.CreateUserRequest;
+import com.rick.response.CreateUserResponse;
 import com.rick.vo.UserVO;
 
 import java.util.List;

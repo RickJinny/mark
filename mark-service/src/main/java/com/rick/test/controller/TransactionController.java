@@ -1,7 +1,7 @@
 package com.rick.test.controller;
 
 import com.rick.service.TransactionService;
-import com.rick.vo.AddAccountRequest;
+import com.rick.request.AddAccountRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

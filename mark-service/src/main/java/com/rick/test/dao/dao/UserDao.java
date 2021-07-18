@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import com.rick.test.dao.mapper.UserMapper;
 import com.rick.test.dao.model.User;
 import com.rick.test.dao.model.UserExample;
-import com.rick.vo.CreateUserRequest;
+import com.rick.request.CreateUserRequest;
 import com.rick.vo.UserVO;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;

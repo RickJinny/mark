@@ -2,8 +2,8 @@ package com.rick.test.controller;
 
 import com.rick.common.ServerResponse;
 import com.rick.service.DictService;
-import com.rick.vo.AddDictRequest;
-import com.rick.vo.AddDictResponse;
+import com.rick.request.AddDictRequest;
+import com.rick.response.AddDictResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;

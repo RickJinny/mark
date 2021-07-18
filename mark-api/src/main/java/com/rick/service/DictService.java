@@ -1,8 +1,8 @@
 package com.rick.service;
 
 import com.rick.common.ServerResponse;
-import com.rick.vo.AddDictRequest;
-import com.rick.vo.AddDictResponse;
+import com.rick.request.AddDictRequest;
+import com.rick.response.AddDictResponse;
 
 public interface DictService {
 

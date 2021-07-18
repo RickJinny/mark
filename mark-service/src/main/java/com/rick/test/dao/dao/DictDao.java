@@ -2,7 +2,7 @@ package com.rick.test.dao.dao;
 
 import com.rick.test.dao.mapper.DictMapper;
 import com.rick.test.dao.model.Dict;
-import com.rick.vo.AddDictRequest;
+import com.rick.request.AddDictRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;

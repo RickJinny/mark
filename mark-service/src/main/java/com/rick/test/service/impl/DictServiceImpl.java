@@ -4,8 +4,8 @@ import com.rick.common.ServerResponse;
 import com.rick.service.DictService;
 import com.rick.test.dao.dao.DictDao;
 import com.rick.test.dao.model.Dict;
-import com.rick.vo.AddDictRequest;
-import com.rick.vo.AddDictResponse;
+import com.rick.request.AddDictRequest;
+import com.rick.response.AddDictResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

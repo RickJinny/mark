@@ -1,6 +1,6 @@
 package com.rick.service;
 
-import com.rick.vo.AddAccountRequest;
+import com.rick.request.AddAccountRequest;
 
 public interface TransactionService {
 
