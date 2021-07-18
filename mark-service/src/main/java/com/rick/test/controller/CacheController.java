@@ -22,4 +22,9 @@ public class CacheController {
     public ServerResponse<List<UserInfoVO>> getUserInfos(Long id) {
         return cacheService.getUserInfos(id);
     }
+
+    @RequestMapping(value = "/getUserInfos/all")
+    public ServerResponse<List<UserInfoVO>> getAllUserInfos() {
+        return cacheService.getAllUserInfos();
+    }
 }

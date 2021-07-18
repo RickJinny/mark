@@ -9,4 +9,6 @@ public interface CacheService {
 
     ServerResponse<List<UserInfoVO>> getUserInfos(Long id);
 
+    ServerResponse<List<UserInfoVO>> getAllUserInfos();
+
 }
