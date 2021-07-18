@@ -17,6 +17,9 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 import javax.annotation.Resource;
 import java.lang.reflect.Method;
 
+/**
+ * Redis Cache 配置
+ */
 @Configuration
 @EnableCaching
 public class RedisConfig extends CachingConfigurerSupport {
@@ -66,12 +69,17 @@ public class RedisConfig extends CachingConfigurerSupport {
         return new SimpleCacheErrorHandler();
     }
 
+    /**
+     * 配置了 CacheManager
+     */
     @Bean
     @Override
     public CacheManager cacheManager() {
+        // 往里面塞了一个序列化器，用的是 GenericJackson2JsonRedisSerializer
         RedisCacheConfiguration cacheConfiguration = RedisCacheConfiguration.defaultCacheConfig()
                 .disableCachingNullValues()
-                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer()));
+                .serializeValuesWith(RedisSerializationContext.SerializationPair
+                        .fromSerializer(new GenericJackson2JsonRedisSerializer()));
         return RedisCacheManager.builder(redisConnectionFactory).cacheDefaults(cacheConfiguration).build();
     }
 }
