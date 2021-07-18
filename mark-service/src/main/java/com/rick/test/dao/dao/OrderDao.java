@@ -4,7 +4,7 @@ import com.rick.test.dao.mapper.OrderMapper;
 import com.rick.test.dao.model.Order;
 import com.rick.test.dao.model.OrderExample;
 import com.rick.test.util.SnowFlake;
-import com.rick.vo.CreateOrderRequest;
+import com.rick.request.CreateOrderRequest;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

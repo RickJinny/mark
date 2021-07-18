@@ -1,4 +1,4 @@
-package com.rick.vo;
+package com.rick.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateUserResponse {
+public class CreateOrderResponse {
 
-    private Long userId;
+    private Long orderId;
+
 }

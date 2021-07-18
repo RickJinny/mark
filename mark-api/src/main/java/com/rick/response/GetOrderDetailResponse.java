@@ -1,4 +1,4 @@
-package com.rick.vo;
+package com.rick.response;
 
 import lombok.Data;
 

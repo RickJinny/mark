@@ -1,4 +1,4 @@
-package com.rick.vo;
+package com.rick.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,8 +9,12 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateOrderResponse {
+public class CreateUserRequest {
 
-    private Long orderId;
+    private Long userId;
+
+    private String userName;
+
+    private Byte userType;
 
 }

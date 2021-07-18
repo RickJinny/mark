@@ -1,6 +1,6 @@
 package com.rick.service;
 
-import com.rick.vo.AddProductRequest;
+import com.rick.request.AddProductRequest;
 
 public interface ProductService {
 

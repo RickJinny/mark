@@ -6,7 +6,7 @@ import com.rick.test.dao.mapper.UserMapper;
 import com.rick.test.dao.model.Account;
 import com.rick.test.dao.model.AccountExample;
 import com.rick.test.dao.model.User;
-import com.rick.vo.AddAccountRequest;
+import com.rick.request.AddAccountRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -2,7 +2,7 @@ package com.rick.test.controller;
 
 import com.rick.common.ServerResponse;
 import com.rick.service.ProductService;
-import com.rick.vo.AddProductRequest;
+import com.rick.request.AddProductRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;

@@ -3,7 +3,7 @@ package com.rick.test.service.impl;
 import com.rick.service.ProductService;
 import com.rick.test.dao.dao.ProductDao;
 import com.rick.test.dao.model.Product;
-import com.rick.vo.AddProductRequest;
+import com.rick.request.AddProductRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
