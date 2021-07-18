@@ -2,8 +2,10 @@ package com.rick.vo;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 @Data
-public class UserInfoVO {
+public class UserInfoVO implements Serializable {
 
     private Long id;
 

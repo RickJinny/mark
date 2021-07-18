@@ -2,6 +2,7 @@ package com.rick.test.config;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -11,13 +12,25 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class DBConfig {
 
+    @Value("${spring.datasource.driver-class-name}")
+    private String driverClassName;
+
+    @Value("${spring.datasource.url}")
+    private String url;
+
+    @Value("${spring.datasource.username}")
+    private String userName;
+
+    @Value("${spring.datasource.password}")
+    private String password;
+
     @Bean
     public HikariDataSource dataSource() {
         HikariConfig config = new HikariConfig();
-        config.setDriverClassName("com.mysql.jdbc.Driver");
-        config.setJdbcUrl("jdbc:mysql://192.168.0.121:3306/user_db?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf8&autoReconnect=true&allowMultiQueries=true");
-        config.setUsername("root");
-        config.setPassword("123456");
+        config.setDriverClassName(driverClassName);
+        config.setJdbcUrl(url);
+        config.setUsername(userName);
+        config.setPassword(password);
         HikariDataSource dataSource = new HikariDataSource(config);
         return dataSource;
     }
