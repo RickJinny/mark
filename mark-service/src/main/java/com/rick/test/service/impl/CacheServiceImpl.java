@@ -29,6 +29,7 @@ public class CacheServiceImpl implements CacheService {
             if (CollectionUtils.isNotEmpty(userInfos)) {
                 userInfoList = userInfos.stream().map(userInfo -> {
                     UserInfoVO userInfoVO = new UserInfoVO();
+                    userInfoVO.setId(userInfo.getId());
                     userInfoVO.setName(userInfo.getName());
                     userInfoVO.setAge(userInfo.getAge());
                     return userInfoVO;
