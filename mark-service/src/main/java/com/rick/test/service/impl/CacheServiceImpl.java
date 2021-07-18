@@ -22,10 +22,10 @@ public class CacheServiceImpl implements CacheService {
     private UserInfoDao userInfoDao;
 
     @Override
-    public ServerResponse<List<UserInfoVO>> getUserInfos() {
+    public ServerResponse<List<UserInfoVO>> getUserInfos(Long id) {
         List<UserInfoVO> userInfoList = Lists.newArrayList();
         try {
-            List<UserInfo> userInfos = userInfoDao.getUserInfos();
+            List<UserInfo> userInfos = userInfoDao.getUserInfos(id);
             if (CollectionUtils.isNotEmpty(userInfos)) {
                 userInfoList = userInfos.stream().map(userInfo -> {
                     UserInfoVO userInfoVO = new UserInfoVO();

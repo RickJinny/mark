@@ -14,8 +14,12 @@ public class UserInfoDao {
     @Autowired
     private UserInfoMapper userInfoMapper;
 
-    public List<UserInfo> getUserInfos() {
+    public List<UserInfo> getUserInfos(Long id) {
         UserInfoExample userInfoExample = new UserInfoExample();
+        UserInfoExample.Criteria criteria = userInfoExample.createCriteria();
+        if (id != null) {
+            criteria.andIdEqualTo(id);
+        }
         return userInfoMapper.selectByExample(userInfoExample);
     }
 

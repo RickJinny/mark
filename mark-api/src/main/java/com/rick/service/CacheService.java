@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface CacheService {
 
-    ServerResponse<List<UserInfoVO>> getUserInfos();
+    ServerResponse<List<UserInfoVO>> getUserInfos(Long id);
 
 }
