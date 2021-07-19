@@ -1,8 +1,13 @@
 package com.rick.test.dao.model;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
 import java.io.Serializable;
 import java.util.Date;
 
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserInfo implements Serializable {
     private Long id;
 
