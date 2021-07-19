@@ -25,6 +25,7 @@ public class CacheServiceImpl implements CacheService {
     @Override
     @Cacheable(key = "#id", value = "userCache")
     public ServerResponse<List<UserInfoVO>> getUserInfos(Long id) {
+        log.info("getUserInfos from DB, id: {}", id);
         List<UserInfoVO> userInfoList = Lists.newArrayList();
         try {
             List<UserInfo> userInfos = userInfoDao.getUserInfos(id);
