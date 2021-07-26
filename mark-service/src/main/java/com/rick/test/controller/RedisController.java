@@ -1,7 +1,10 @@
 package com.rick.test.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.rick.common.ServerResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -11,13 +14,18 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisCluster;
 import redis.clients.jedis.JedisPool;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 @Slf4j
 @RestController
 @RequestMapping(value = "/redis")
 public class RedisController {
+
+    @Autowired
+    private RedisTemplate<Object, Object> redisTemplate;
 
     @ResponseBody
     @PostMapping(value = "/testRedis")
@@ -62,6 +70,18 @@ public class RedisController {
         log.info("result: {}", result);
         jedisCluster.close();
         return ServerResponse.createBySuccess(result);
+    }
+
+    @ResponseBody
+    @PostMapping(value = "/testRedisTemplate")
+    public ServerResponse<String> testRedisTemplate() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("111", "hello");
+        map.put("222", 000);
+
+        redisTemplate.opsForHash().putAll("hash", map);
+        Map<Object, Object> hash = redisTemplate.opsForHash().entries("hash");
+        return ServerResponse.createBySuccess(JSON.toJSONString(hash));
     }
 
 }

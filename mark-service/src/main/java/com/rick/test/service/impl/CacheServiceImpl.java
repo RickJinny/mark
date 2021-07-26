@@ -9,7 +9,6 @@ import com.rick.vo.UserInfoVO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,7 +22,7 @@ public class CacheServiceImpl implements CacheService {
     private UserInfoDao userInfoDao;
 
     @Override
-    @Cacheable(key = "#id", value = "userCache")
+//    @Cacheable(key = "#id", value = "userCache")
     public ServerResponse<List<UserInfoVO>> getUserInfos(Long id) {
         log.info("getUserInfos from DB, id: {}", id);
         List<UserInfoVO> userInfoList = Lists.newArrayList();
@@ -46,7 +45,7 @@ public class CacheServiceImpl implements CacheService {
     }
 
     @Override
-    @Cacheable(key = "methodName", value = "userCache")
+//    @Cacheable(key = "methodName", value = "userCache")
     public ServerResponse<List<UserInfoVO>> getAllUserInfos() {
         List<UserInfoVO> userInfoList = Lists.newArrayList();
         try {
