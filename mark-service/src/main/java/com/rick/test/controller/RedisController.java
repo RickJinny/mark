@@ -36,10 +36,19 @@ public class RedisController {
         stringType(jedis);
         // 第二种类型: Hash
         hashType(jedis);
+        // 第三种类型: list
+        listType(jedis);
 
         // 关闭连接
         jedis.close();
         return ServerResponse.createBySuccess("success");
+    }
+
+    /**
+     * 第三种类型：list
+     */
+    private void listType(Jedis jedis) {
+
     }
 
     /**
