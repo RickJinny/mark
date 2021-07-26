@@ -34,7 +34,8 @@ public class RedisController {
         Jedis jedis = new Jedis("192.168.0.121", 6379);
         // 第一种类型: String
         stringType(jedis);
-
+        // 第二种类型: Hash
+        hashType(jedis);
 
         // 关闭连接
         jedis.close();
@@ -42,9 +43,32 @@ public class RedisController {
     }
 
     /**
+     * 第二种类型：Hash
+     */
+    private void hashType(Jedis jedis) {
+        System.out.println("------------Hash------------------");
+        jedis.hset("user", "name", "zhangsan");
+        jedis.hset("user", "age", "28");
+        jedis.hset("user", "name", "lisi");
+        jedis.hset("user", "age", "36");
+
+        Map<String, String> map = jedis.hgetAll("user");
+        log.info("hashType user: {}", JSON.toJSONString(map));
+
+        String names = jedis.hget("user", "name");
+        log.info("hashType user name: {}", names);
+
+        String ages = jedis.hget("user", "age");
+        log.info("hashType user age: {}", ages);
+        
+        System.out.println("------------Hash------------------");
+    }
+
+    /**
      * 第一种类型: String
      */
     private void stringType(Jedis jedis) {
+        System.out.println("------------String------------------");
         jedis.set("key01", "Hello World!");
         String key01Value = jedis.get("key01");
         log.info("string set key01: {}", key01Value);
@@ -64,6 +88,8 @@ public class RedisController {
         jedis.decrBy("counter01", 100);
         String counter01Value4 = jedis.get("counter01");
         log.info("string decrBy counter01: {}", counter01Value4);
+
+        System.out.println("------------String------------------");
 
     }
 
