@@ -32,13 +32,39 @@ public class RedisController {
     public ServerResponse<String> testRedis() {
         // 和 Redis 服务创建连接，参数为 Redis 服务器，所在机器的 ip 和 Redis 的端口号
         Jedis jedis = new Jedis("192.168.0.121", 6379);
-        // 向 Redis 中 set 值
-        jedis.set("testRedis_time", String.valueOf(System.currentTimeMillis()));
-        String result = jedis.get("testRedis_time");
-        log.info("result: {}", result);
+        // 第一种类型: String
+        stringType(jedis);
+
+
         // 关闭连接
         jedis.close();
-        return ServerResponse.createBySuccess(result);
+        return ServerResponse.createBySuccess("success");
+    }
+
+    /**
+     * 第一种类型: String
+     */
+    private void stringType(Jedis jedis) {
+        jedis.set("key01", "Hello World!");
+        String key01Value = jedis.get("key01");
+        log.info("string set key01: {}", key01Value);
+
+        jedis.incr("counter01");
+        String counter01Value = jedis.get("counter01");
+        log.info("string incr counter01: {}", counter01Value);
+
+        jedis.incrBy("counter01", 200);
+        String counter01Value2 = jedis.get("counter01");
+        log.info("string incrBy counter01: {}", counter01Value2);
+
+        jedis.decr("counter01");
+        String counter01Value3 = jedis.get("counter01");
+        log.info("string decr counter01: {}", counter01Value3);
+
+        jedis.decrBy("counter01", 100);
+        String counter01Value4 = jedis.get("counter01");
+        log.info("string decrBy counter01: {}", counter01Value4);
+
     }
 
     @ResponseBody
