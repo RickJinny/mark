@@ -14,10 +14,7 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisCluster;
 import redis.clients.jedis.JedisPool;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @Slf4j
 @RestController
@@ -48,7 +45,12 @@ public class RedisController {
      * 第三种类型：list
      */
     private void listType(Jedis jedis) {
+        System.out.println("------------List------------------");
+        jedis.lpush("mykey01", "111", "222", "333", "hello", "world");
+        List<String> myPush = jedis.lrange("mykey01", 0, 3);
+        log.info("listType mykey01: {}", JSON.toJSONString(myPush));
 
+        System.out.println("------------List------------------");
     }
 
     /**
