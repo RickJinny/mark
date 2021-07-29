@@ -49,7 +49,9 @@ public class RedisController {
         jedis.lpush("mykey01", "111", "222", "333", "hello", "world");
         List<String> myPush = jedis.lrange("mykey01", 0, 3);
         log.info("listType mykey01: {}", JSON.toJSONString(myPush));
-
+        jedis.lpush("mykey02", "100", "200", "300", "hello", "world");
+        String mykey02Value = jedis.rpop("mykey02");
+        log.info("listType mykey02 value: {}", mykey02Value);
         System.out.println("------------List------------------");
     }
 
