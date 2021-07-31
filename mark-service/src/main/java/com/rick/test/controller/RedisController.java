@@ -29,6 +29,8 @@ public class RedisController {
     public ServerResponse<String> testRedis() {
         // 和 Redis 服务创建连接，参数为 Redis 服务器，所在机器的 ip 和 Redis 的端口号
         Jedis jedis = new Jedis("192.168.0.121", 6379);
+        // 清除一下
+        jedis.flushAll();
         // 第一种类型: String
         stringType(jedis);
         // 第二种类型: Hash
@@ -60,6 +62,9 @@ public class RedisController {
      */
     private void hashType(Jedis jedis) {
         System.out.println("------------Hash------------------");
+        jedis.hset("user01", "name", "wangxiaoer");
+        log.info("hashType user01: {}", JSON.toJSONString(jedis.hgetAll("user01")));
+
         jedis.hset("user", "name", "zhangsan");
         jedis.hset("user", "age", "28");
         jedis.hset("user", "name", "lisi");
