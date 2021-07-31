@@ -48,13 +48,59 @@ public class RedisController {
      */
     private void listType(Jedis jedis) {
         System.out.println("------------List------------------");
-        jedis.lpush("mykey01", "111", "222", "333", "hello", "world");
-        List<String> myPush = jedis.lrange("mykey01", 0, 3);
-        log.info("listType mykey01: {}", JSON.toJSONString(myPush));
-        jedis.lpush("mykey02", "100", "200", "300", "hello", "world");
-        String mykey02Value = jedis.rpop("mykey02");
-        log.info("listType mykey02 value: {}", mykey02Value);
+        // 第一个、从头部加入元素: lpush listName value01
+        jedis.lpush("userList", "xiaowang01");
+        // 第二个、从尾部加入元素: rpush listName value01
+        jedis.rpush("userList", "zhangsan");
+        // 第三个、获取所有元素: lrange listName 0 -1
+        List<String> userList = jedis.lrange("userList", 0, -1);
+        log.info("获取所有元素 userList: {}", JSON.toJSONString(userList));
+        // 第四个、删除元素: lrem key_name count value
+        jedis.lrem("userList", 0, "zhangsan");
+        log.info("获取所有元素 userList: {}", JSON.toJSONString(jedis.lrange("userList", 0, -1)));
+        // 第五个、清空列表: ltrim listName 1 0
+        jedis.ltrim("userList", 1, 0);
+        log.info("获取所有元素 userList: {}", JSON.toJSONString(jedis.lrange("userList", 0, -1)));
+        // 第六个、从 list 头部删除元素，并返回该元素: lpop listName
+        jedis.lpush("userList", "wang01", "wang02", "wang03");
+        jedis.lpop("userList");
+        log.info("获取所有元素 userList: {}", JSON.toJSONString(jedis.lrange("userList", 0, -1)));
+        // 第七个、从 list 尾部删除元素，并返回该元素: rpop listName
+        jedis.rpop("userList");
+        log.info("获取所有元素 userList: {}", JSON.toJSONString(jedis.lrange("userList", 0, -1)));
+        Long count = jedis.llen("userList");
+        log.info("userList 元素的长度: {}", count);
+        // 第八个、返回指定下标的元素: lindex listName <index> // 会遍历整个列表，效率不高。
+        log.info("获取所有元素 userList: {}", JSON.toJSONString(jedis.lrange("userList", 0, -1)));
+        String user1 = jedis.lindex("userList", 1);
+        log.info("获取 userList 的第 1 位元素: {}", user1);
+
+        // 第九个、lpush 和 rpop，组成一个队列结构
+        jedis.lpush("queue", "queue0001", "queue0002", "queue0003");
+        log.info("获取所有元素 queue: {}", JSON.toJSONString(jedis.lrange("queue", 0, -1)));
+        jedis.rpop("queue");
+        log.info("获取所有元素 queue: {}", JSON.toJSONString(jedis.lrange("queue", 0, -1)));
+        jedis.rpop("queue");
+        log.info("获取所有元素 queue: {}", JSON.toJSONString(jedis.lrange("queue", 0, -1)));
+        jedis.rpop("queue");
+        log.info("获取所有元素 queue: {}", JSON.toJSONString(jedis.lrange("queue", 0, -1)));
+        jedis.rpop("queue");
+        log.info("获取所有元素 queue: {}", JSON.toJSONString(jedis.lrange("queue", 0, -1)));
+
+        // 第十个、lpush 和 lpop，组成一个栈结构
+        jedis.lpush("stack", "stack001", "stack002", "stack003");
+        log.info("获取所有元素 stack: {}", JSON.toJSONString(jedis.lrange("stack", 0, -1)));
+        jedis.lpop("stack");
+        log.info("获取所有元素 stack: {}", JSON.toJSONString(jedis.lrange("stack", 0, -1)));
+        jedis.lpop("stack");
+        log.info("获取所有元素 stack: {}", JSON.toJSONString(jedis.lrange("stack", 0, -1)));
+        jedis.lpop("stack");
+        log.info("获取所有元素 stack: {}", JSON.toJSONString(jedis.lrange("stack", 0, -1)));
+        jedis.lpop("stack");
+        log.info("获取所有元素 stack: {}", JSON.toJSONString(jedis.lrange("stack", 0, -1)));
+
         System.out.println("------------List------------------");
+
     }
 
     /**
