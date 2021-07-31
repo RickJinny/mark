@@ -1,6 +1,7 @@
 package com.rick.test.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.google.common.collect.Maps;
 import com.rick.common.ServerResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,10 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import redis.clients.jedis.HostAndPort;
-import redis.clients.jedis.Jedis;
-import redis.clients.jedis.JedisCluster;
-import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.*;
 
 import java.util.*;
 
@@ -31,6 +29,7 @@ public class RedisController {
         Jedis jedis = new Jedis("192.168.0.121", 6379);
         // 清除一下
         jedis.flushAll();
+
         // 第一种类型: String
         stringType(jedis);
         // 第二种类型: Hash
@@ -39,10 +38,72 @@ public class RedisController {
         listType(jedis);
         // 第四种类型: set
         setType(jedis);
+        // 第五种类型：zset
+        zSetType(jedis);
 
         // 关闭连接
         jedis.close();
         return ServerResponse.createBySuccess("success");
+    }
+
+    /**
+     * 第五种类型：ZSet
+     */
+    private void zSetType(Jedis jedis) {
+        System.out.println("------------   ZSet  ------------------");
+        Map<String, Double> scoreMembers = Maps.newHashMap();
+        scoreMembers.put("xiaowang01", 30D);
+        scoreMembers.put("xiaowang02", 50D);
+        scoreMembers.put("xiaowang03", 80D);
+        scoreMembers.put("xiaowang04", 100D);
+        scoreMembers.put("xiaowang05", 300D);
+        // 第一、添加元素：zadd zsetName score1 value1 score2 value2 score3 value3 ......
+        jedis.zadd("userZSet", scoreMembers);
+        jedis.zadd("userZSet", 800, "xiaowang06");
+        Set<String> userZSet = jedis.zrange("userZSet", 0, -1);
+        log.info("userZSet: {}", JSON.toJSONString(userZSet));
+
+        // 第二、查看所有元素：zrange zsetName 0 -1
+        userZSet = jedis.zrange("userZSet", 0, -1);
+        log.info("查看所有元素 userZSet: {}", JSON.toJSONString(userZSet));
+
+        // 第三、查看所有元素，按 score 逆序排列：zrevrange zsetName 0 -1
+        Set<String> userZSet1 = jedis.zrevrange("userZSet", 0, -1);
+        log.info("userZSet 逆序: {}", JSON.toJSONString(userZSet1));
+
+        // 第四、元素数量：zcard zsetName
+        Long userZSetCount = jedis.zcard("userZSet");
+        userZSet = jedis.zrange("userZSet", 0, -1);
+        log.info("userZSet: {}", JSON.toJSONString(userZSet));
+        log.info("userZSet userZSetCount: {}", userZSetCount);
+
+        // 第五、获取指定 value 的分数：zscore zsetName value
+        Double xiaowang02Score = jedis.zscore("userZSet", "xiaowang02");
+        log.info("userZSet, xiaowang02Score: {}", xiaowang02Score);
+
+        // 第六、获取指定 value 的排名：zrank zsetName value（从 0 开始）
+        jedis.zrank("userZSet", "xiaowang03");
+        jedis.zrank("userZSet", "xiaowang05");
+        jedis.zrank("userZSet", "xiaowang01");
+        jedis.zrank("userZSet", "xiaowang04");
+        jedis.zrank("userZSet", "xiaowang02");
+        userZSet = jedis.zrange("userZSet", 0, -1);
+        log.info("userZSet: {}", JSON.toJSONString(userZSet));
+
+        // 第七、获取指定分值区间中的元素： zrangebyscore zsetName scoreStart scoreEnd
+        Set<String> userZSet2 = jedis.zrangeByScore("userZSet", 100, 800);
+        log.info("userZSet 100 分到 800 分之间: {}", JSON.toJSONString(userZSet2));
+
+        // 第八、获取指定分值区间中的元素，并且返回分数：zrangebyscore zsetName scoreStart scoreEnd withscores
+        Set<Tuple> userZSet3 = jedis.zrangeByScoreWithScores("userZSet", 100, 700);
+        log.info("userZSet3: {}", JSON.toJSONString(userZSet3));
+
+        // 第九、删除元素：zrem zsetName value
+        jedis.zrem("userZSet", "xiaowang03");
+        userZSet = jedis.zrange("userZSet", 0, -1);
+        log.info("userZSet: {}", JSON.toJSONString(userZSet));
+        
+        System.out.println("------------   ZSet  ------------------");
     }
 
     /**
