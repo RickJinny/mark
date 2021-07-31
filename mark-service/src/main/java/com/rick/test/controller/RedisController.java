@@ -37,10 +37,58 @@ public class RedisController {
         hashType(jedis);
         // 第三种类型: list
         listType(jedis);
+        // 第四种类型: set
+        setType(jedis);
 
         // 关闭连接
         jedis.close();
         return ServerResponse.createBySuccess("success");
+    }
+
+    /**
+     * 第四种类型：Set
+     */
+    private void setType(Jedis jedis) {
+        System.out.println("------------   Set  ------------------");
+        // 第一个、添加一个或多个指定的元素到集合的 key 中： sadd key member [member ...]
+        jedis.sadd("userSet", "xiaowang01", "xiaowang02", "xiaowang03");
+        Set<String> userSet = jedis.smembers("userSet");
+        log.info("sadd, userSet: {}", JSON.toJSONString(userSet));
+
+        // 第二个、在 key 集合中，移除指定的元素：srem key member [member ...]
+        jedis.srem("userSet", "xiaowang01");
+        userSet = jedis.smembers("userSet");
+        log.info("srem xiaowang01, userSet: {}", JSON.toJSONString(userSet));
+
+        // 第三个、返回集合存储的 key 的基数（集合元素的数量）：scard key
+        Long UserCount = jedis.scard("userSet");
+        userSet = jedis.smembers("userSet");
+        log.info("userSet: {}", JSON.toJSONString(userSet));
+        log.info("userSet, count: {}", UserCount);
+
+        // 第四个、返回成员 member 是否是存储的集合 key 的成员：sismember key member
+        Boolean xiaowang02Boolean = jedis.sismember("userSet", "xiaowang02");
+        Boolean xiaowang01Boolean = jedis.sismember("userSet", "xiaowang01");
+        userSet = jedis.smembers("userSet");
+        log.info("userSet: {}, xiaowang02 is exist : {} ", JSON.toJSONString(userSet), xiaowang02Boolean);
+        log.info("userSet: {}, xiaowang01 is exist : {} ", JSON.toJSONString(userSet), xiaowang01Boolean);
+
+        // 第五个、仅提供 key 参数，那么随机返回 key 集合中的一个元素：srandmember key [count]
+        userSet = jedis.smembers("userSet");
+        log.info("userSet srandmember before : {} ", JSON.toJSONString(userSet));
+        jedis.srandmember("userSet", 2);
+        userSet = jedis.smembers("userSet");
+        log.info("userSet srandmember after : {} ", JSON.toJSONString(userSet));
+
+        // 第六个、返回 key 集合所有的元素：smembers keys
+        userSet = jedis.smembers("userSet");
+        log.info("smembers userSet : {} ", JSON.toJSONString(userSet));
+
+        // 第七个、从存储在 key 的集合中移除并返回一个或多个随机元素：spop key [count]
+        jedis.spop("userSet", 2);
+        userSet = jedis.smembers("userSet");
+        log.info("smembers userSet : {} ", JSON.toJSONString(userSet));
+        System.out.println("------------   Set  ------------------");
     }
 
     /**
