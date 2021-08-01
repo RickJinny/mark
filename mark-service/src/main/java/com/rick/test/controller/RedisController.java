@@ -51,6 +51,7 @@ public class RedisController {
      */
     private void zSetType(Jedis jedis) {
         System.out.println("------------   ZSet  ------------------");
+        
         Map<String, Double> scoreMembers = Maps.newHashMap();
         scoreMembers.put("xiaowang01", 30D);
         scoreMembers.put("xiaowang02", 50D);
@@ -111,6 +112,7 @@ public class RedisController {
      */
     private void setType(Jedis jedis) {
         System.out.println("------------   Set  ------------------");
+
         // 第一个、添加一个或多个指定的元素到集合的 key 中： sadd key member [member ...]
         jedis.sadd("userSet", "xiaowang01", "xiaowang02", "xiaowang03");
         Set<String> userSet = jedis.smembers("userSet");
@@ -149,6 +151,7 @@ public class RedisController {
         jedis.spop("userSet", 2);
         userSet = jedis.smembers("userSet");
         log.info("smembers userSet : {} ", JSON.toJSONString(userSet));
+
         System.out.println("------------   Set  ------------------");
     }
 
@@ -157,6 +160,7 @@ public class RedisController {
      */
     private void listType(Jedis jedis) {
         System.out.println("------------List------------------");
+
         // 第一个、从头部加入元素: lpush listName value01
         jedis.lpush("userList", "xiaowang01");
         // 第二个、从尾部加入元素: rpush listName value01
@@ -217,6 +221,7 @@ public class RedisController {
      */
     private void hashType(Jedis jedis) {
         System.out.println("------------Hash------------------");
+
         jedis.hset("user01", "name", "wangxiaoer");
         log.info("hashType user01: {}", JSON.toJSONString(jedis.hgetAll("user01")));
 
@@ -242,6 +247,7 @@ public class RedisController {
      */
     private void stringType(Jedis jedis) {
         System.out.println("------------String------------------");
+
         jedis.set("key01", "Hello World!");
         String key01Value = jedis.get("key01");
         log.info("string set key01: {}", key01Value);
