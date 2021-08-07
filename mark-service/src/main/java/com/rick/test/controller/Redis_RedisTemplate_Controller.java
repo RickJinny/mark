@@ -4,10 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.rick.common.ServerResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.BoundHashOperations;
-import org.springframework.data.redis.core.HashOperations;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.data.redis.core.*;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -34,8 +31,65 @@ public class Redis_RedisTemplate_Controller {
         stringType();
         // Hash 类型相关操作
         hashType();
+        // Set 类型相关操作
+        setType();
 
         return ServerResponse.createBySuccess("success");
+    }
+
+    /**
+     * Set 类型相关操作
+     */
+    private void setType() {
+        System.out.println("-------------- RedisTemplate Set Type ------------------");
+        // 1、添加 Set 缓存
+        // 方式一: 通过 SetOperations 方式
+        SetOperations<String, String> setOperations = redisTemplate.opsForSet();
+        setOperations.add("set_01", "111", "222", "333", "444", "555");
+        Set<String> setKey01Value = setOperations.members("set_01");
+        log.info("setType set_01 value: {} ", JSON.toJSONString(setKey01Value));
+        // 方式二: 通过 BoundSetOperations 方式
+        BoundSetOperations<String, String> boundSetOperations = redisTemplate.boundSetOps("set_02");
+        boundSetOperations.add("set_02", "aaa", "bbb", "ccc", "ddd", "eee");
+        Set<String> setKey02Value = boundSetOperations.members();
+        log.info("setType set_02 value: {} ", JSON.toJSONString(setKey02Value));
+        // 方式三: 通过 redisTemplate.boundSetOps
+        redisTemplate.boundSetOps("set_03").add("1a1a", "2b2b", "3c3c", "4d4d", "5e5e");
+        Set<String> setKey03Value = redisTemplate.boundSetOps("set_03").members();
+        log.info("setType set_03 value: {} ", JSON.toJSONString(setKey03Value));
+
+        // 2、根据 key 获取 Set 中的所有值
+        // 通过 redisTemplate.boundSetOps 获取值
+        SetOperations<String, String> setOps = redisTemplate.opsForSet();
+        Set<String> value01 = setOps.members("set_01");
+        log.info("setType set_01 value01: {} ", JSON.toJSONString(value01));
+        // 通过 BoundSetOperations 获取值
+        BoundSetOperations<String, String> boundSetOps = redisTemplate.boundSetOps("set_02");
+        Set<String> value02 = boundSetOps.members();
+        log.info("setType set_02 value02: {} ", JSON.toJSONString(value02));
+        // 通过 redisTemplate.boundSetOps 获取值
+        Set<String> value03 = redisTemplate.boundSetOps("set_03").members();
+        log.info("setType set_03 value03: {} ", JSON.toJSONString(value03));
+
+        // 3、根据 value 从一个 set 中查询，是否存在
+        redisTemplate.opsForSet().isMember("set_01", "333");
+        redisTemplate.boundSetOps("set_01").isMember("333");
+
+        // 4、获取 Set 的长度
+        Long set01Size = redisTemplate.boundSetOps("set_01").size();
+        log.info("setType set_01 value size: {} ", set01Size);
+
+        // 5、设置过期时间
+        redisTemplate.expire("set_01", 1, TimeUnit.MINUTES);
+        redisTemplate.boundSetOps("set_01").expire(10, TimeUnit.MINUTES);
+
+        // 6、移除指定的元素
+        redisTemplate.boundSetOps("set_02").remove("aaa");
+
+        // 7、移除指定的 key
+        redisTemplate.delete("set_03");
+
+        System.out.println("-------------- RedisTemplate Set Type ------------------");
     }
 
     /**
@@ -43,8 +97,8 @@ public class Redis_RedisTemplate_Controller {
      */
     private void hashType() {
         System.out.println("-------------- RedisTemplate Hash Type ------------------");
-        // 1、添加缓存 (三种方式)
-        // 方式一: 通过 redisTemplate.opsForHash() 添加缓存
+        // 1、添加缓存
+        // 方式一: 通过 redisTemplate.opsForHash() 添加 Hash 缓存
         redisTemplate.opsForHash().put("user01", "name", "zhangsan01");
         redisTemplate.opsForHash().put("user01", "age", "20");
         Set<Object> user01HashKeySet = redisTemplate.opsForHash().keys("user01");
@@ -60,7 +114,7 @@ public class Redis_RedisTemplate_Controller {
         String user02Name = (String) hashOperations.get("user02", "name");
         String user02Age = (String) hashOperations.get("user02", "age");
         log.info("RedisTemplate Hash, user02: {}, user02Name: {}, user02Age: {} .", JSON.toJSONString(user02), user02Name, user02Age);
-        // 方式三: 通过 redisTemplate.boundHashOps() 添加缓存
+        // 方式三: 通过 redisTemplate.boundHashOps() 添加 Hash 缓存
         redisTemplate.boundHashOps("user03").put("name", "zhangsan03");
         redisTemplate.boundHashOps("user03").put("age", "22");
         Map<Object, Object> user03 = redisTemplate.boundHashOps("user03").entries();
@@ -71,7 +125,7 @@ public class Redis_RedisTemplate_Controller {
         log.info("RedisTemplate Hash, user03: {}, user03HashKeySet: {}, user03HashValueList: {}, user03Name: {}, user03Age: {}",
                 JSON.toJSONString(user03), JSON.toJSONString(user03HashKeySet), JSON.toJSONString(user03HashValueList), user03Name,
                 user03Age);
-        // 方式四: 通过  BoundHashOperations 添加缓存
+        // 方式四: 通过  BoundHashOperations 添加 Hash 缓存
         BoundHashOperations<String, Object, Object> boundHashOperations = redisTemplate.boundHashOps("user04");
         boundHashOperations.put("name", "zhangsan04");
         boundHashOperations.put("age", "23");
