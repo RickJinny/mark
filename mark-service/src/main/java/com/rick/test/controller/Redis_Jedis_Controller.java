@@ -17,7 +17,7 @@ import java.util.*;
 @Slf4j
 @RestController
 @RequestMapping(value = "/redis")
-public class RedisController {
+public class Redis_Jedis_Controller {
 
     @Autowired
     private RedisTemplate<Object, Object> redisTemplate;
