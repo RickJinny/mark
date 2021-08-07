@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -80,6 +81,56 @@ public class Redis_RedisTemplate_Controller {
         String user04Age = (String) boundHashOperations.get("age");
         log.info("RedisTemplate Hash, user04: {}, user04HashKeySet: {}, user04HashValueList: {}, user04Name: {}, user04Age: {}",
                 JSON.toJSONString(user04), JSON.toJSONString(user04HashKeySet), JSON.toJSONString(user04HashValueList), user04Name, user04Age);
+
+        // 2、设置过期时间
+        Boolean user041 = redisTemplate.boundValueOps("user03").expire(1, TimeUnit.MINUTES);
+        Boolean user042 = redisTemplate.expire("user04", 10, TimeUnit.MINUTES);
+
+        // 3、添加一个 Map 集合
+        Map<String, String> map = new HashMap<>();
+        map.put("name", "zhangsan05");
+        map.put("age", "26");
+        BoundHashOperations<String, Object, Object> boundHashOperations1 = redisTemplate.boundHashOps("user05");
+        boundHashOperations1.putAll(map);
+        Map<Object, Object> user05 = boundHashOperations1.entries();
+        log.info("RedisTemplate Hash, user05: {} ", JSON.toJSONString(user05));
+
+        // 4、提取所有的 key 和 value
+        Set<Object> user04Keys = redisTemplate.opsForHash().keys("user04");
+        List<Object> user04Values = redisTemplate.opsForHash().values("user04");
+        Set<Object> user05Keys = redisTemplate.boundHashOps("user05").keys();
+        List<Object> user05Values = redisTemplate.boundHashOps("user05").values();
+        log.info("RedisTemplate Hash, user04Keys: {}, user04Values: {} ", JSON.toJSONString(user04Keys), JSON.toJSONString(user04Values));
+        log.info("RedisTemplate Hash, user05Keys: {}, user05Values: {} ", JSON.toJSONString(user05Keys), JSON.toJSONString(user05Values));
+
+        // 5、根据 key 提取 value
+        String user04Name_ = (String) redisTemplate.opsForHash().get("user04", "name");
+        String user04Age_ = (String) redisTemplate.opsForHash().get("user04", "age");
+        String user05Name_ = (String) redisTemplate.boundHashOps("user05").get("name");
+        String user05Age_ = (String) redisTemplate.boundHashOps("user05").get("age");
+        log.info("RedisTemplate Hash, user04Name: {}, user04Age: {} .", user04Name_, user04Age_);
+        log.info("RedisTemplate Hash, user05Name: {}, user05Age: {} .", user05Name_, user05Age_);
+
+        // 6、获取所有的键值对集合
+        Map<Object, Object> user04Map = redisTemplate.opsForHash().entries("user04");
+        Map<Object, Object> user05Map = redisTemplate.boundHashOps("user05").entries();
+        log.info("RedisTemplate Hash, user04Map: {} .", JSON.toJSONString(user04Map));
+        log.info("RedisTemplate Hash, user05Map: {} .", JSON.toJSONString(user05Map));
+
+        // 7、删除
+        // 删除小key
+        redisTemplate.boundHashOps("user04").delete("name");
+        user04Map = redisTemplate.opsForHash().entries("user04");
+        log.info("RedisTemplate Hash, delete name, user04Map: {} .", JSON.toJSONString(user04Map));
+        // 删除大key
+        redisTemplate.delete("user05");
+        user05Map = redisTemplate.boundHashOps("user05").entries();
+        log.info("RedisTemplate Hash, user05Map: {} .", JSON.toJSONString(user05Map));
+
+        // 8、判断 Hash 中是否有该值
+        Boolean hasKey = redisTemplate.boundHashOps("user02").hasKey("name");
+        log.info("user02 has name key: {}", hasKey);
+        
         System.out.println("-------------- RedisTemplate Hash Type ------------------");
     }
 
