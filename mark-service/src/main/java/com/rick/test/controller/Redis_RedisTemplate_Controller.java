@@ -69,7 +69,8 @@ public class Redis_RedisTemplate_Controller {
         String user03Name = (String) redisTemplate.boundHashOps("user03").get("name");
         String user03Age = (String) redisTemplate.boundHashOps("user03").get("age");
         log.info("RedisTemplate Hash, user03: {}, user03HashKeySet: {}, user03HashValueList: {}, user03Name: {}, user03Age: {}",
-                JSON.toJSONString(user03), JSON.toJSONString(user03HashKeySet), JSON.toJSONString(user03HashValueList), user03Name, user03Age);
+                JSON.toJSONString(user03), JSON.toJSONString(user03HashKeySet), JSON.toJSONString(user03HashValueList), user03Name,
+                user03Age);
         // 方式四: 通过  BoundHashOperations 添加缓存
         BoundHashOperations<String, Object, Object> boundHashOperations = redisTemplate.boundHashOps("user04");
         boundHashOperations.put("name", "zhangsan04");
@@ -80,7 +81,8 @@ public class Redis_RedisTemplate_Controller {
         String user04Name = (String) boundHashOperations.get("name");
         String user04Age = (String) boundHashOperations.get("age");
         log.info("RedisTemplate Hash, user04: {}, user04HashKeySet: {}, user04HashValueList: {}, user04Name: {}, user04Age: {}",
-                JSON.toJSONString(user04), JSON.toJSONString(user04HashKeySet), JSON.toJSONString(user04HashValueList), user04Name, user04Age);
+                JSON.toJSONString(user04), JSON.toJSONString(user04HashKeySet), JSON.toJSONString(user04HashValueList), user04Name,
+                user04Age);
 
         // 2、设置过期时间
         Boolean user041 = redisTemplate.boundValueOps("user03").expire(1, TimeUnit.MINUTES);
@@ -130,7 +132,7 @@ public class Redis_RedisTemplate_Controller {
         // 8、判断 Hash 中是否有该值
         Boolean hasKey = redisTemplate.boundHashOps("user02").hasKey("name");
         log.info("user02 has name key: {}", hasKey);
-        
+
         System.out.println("-------------- RedisTemplate Hash Type ------------------");
     }
 
