@@ -1,8 +1,11 @@
 package com.rick.test.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.rick.common.ServerResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.BoundHashOperations;
+import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,6 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
@@ -25,24 +31,54 @@ public class Redis_RedisTemplate_Controller {
     public ServerResponse<String> testRedisTemplate() {
         // String 类型相关操作
         stringType();
-
-
-
-
-
-
-
-
-
+        // Hash 类型相关操作
+        hashType();
 
         return ServerResponse.createBySuccess("success");
+    }
+
+    /**
+     * Hash 类型相关操作
+     */
+    private void hashType() {
+        System.out.println("-------------- RedisTemplate Hash Type ------------------");
+        // 1、添加缓存 (三种方式)
+        // 方式一: 通过 redisTemplate.opsForHash() 添加缓存
+        redisTemplate.opsForHash().put("user01", "name", "zhangsan01");
+        redisTemplate.opsForHash().put("user01", "age", "20");
+        Set<Object> user01HashKeySet = redisTemplate.opsForHash().keys("user01");
+        List<Object> user01HashValueList = redisTemplate.opsForHash().values("user01");
+        Map<Object, Object> user01 = redisTemplate.opsForHash().entries("user01");
+        log.info("redisTemplate.opsForHash, user01HashKeySet: {}, user01HashValueList:{}, user01:{}",
+                JSON.toJSONString(user01HashKeySet), JSON.toJSONString(user01HashValueList), JSON.toJSONString(user01));
+        // 方式二: 通过  HashOperations 添加 hash 类型缓存
+        HashOperations<String, Object, Object> hashOperations = redisTemplate.opsForHash();
+        hashOperations.put("user02", "name", "zhangsan02");
+        hashOperations.put("user02", "age", "20");
+        Map<Object, Object> user02 = hashOperations.entries("user02");
+        String user02Name = (String) hashOperations.get("user02", "name");
+        String user02Age = (String) hashOperations.get("user02", "age");
+        log.info("RedisTemplate Hash, user02: {}, user02Name: {}, user02Age: {} .", JSON.toJSONString(user02), user02Name, user02Age);
+        // 方式三: 通过 redisTemplate.boundHashOps() 添加缓存, 即 BoundHashOperations 添加 Hash 类型
+        BoundHashOperations<String, Object, Object> boundHashOperations = redisTemplate.boundHashOps("user03");
+        boundHashOperations.put("name", "zhangsan03");
+        boundHashOperations.put("age", "23");
+        Map<Object, Object> user03 = redisTemplate.boundHashOps("user03").entries();
+        Set<Object> user03HashKeySet = redisTemplate.boundHashOps("user03").keys();
+        List<Object> user03HashValueList = redisTemplate.boundHashOps("user03").values();
+        String user03Name = (String) redisTemplate.boundHashOps("user03").get("name");
+        String user03Age = (String) redisTemplate.boundHashOps("user03").get("age");
+        log.info("RedisTemplate Hash, user03: {}, user03HashKeySet: {}, user03HashValueList: {}, user03Name: {}, user03Age: {}",
+                JSON.toJSONString(user03), JSON.toJSONString(user03HashKeySet), JSON.toJSONString(user03HashValueList), user03Name, user03Age);
+
+        System.out.println("-------------- RedisTemplate Hash Type ------------------");
     }
 
     /**
      * String类型相关操作
      */
     private void stringType() {
-        System.out.println("-------------- RedisTemplate String ------------------");
+        System.out.println("-------------- RedisTemplate String Type ------------------");
         // 通过 redisTemplate.opsForValue(), 即 ValueOperations 设置
         ValueOperations<String, String> operations = redisTemplate.opsForValue();
         operations.set("opsForValue_key01", "xiaowang01");
@@ -77,7 +113,7 @@ public class Redis_RedisTemplate_Controller {
         key02 = redisTemplate.boundValueOps("boundValueOps_key02").get();
         log.info("boundValueOps_key02: {}", key02);
 
-        System.out.println("-------------- RedisTemplate String ------------------");
+        System.out.println("-------------- RedisTemplate String Type ------------------");
     }
 
 
