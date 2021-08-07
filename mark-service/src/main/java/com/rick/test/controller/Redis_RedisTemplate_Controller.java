@@ -54,15 +54,14 @@ public class Redis_RedisTemplate_Controller {
         // 方式二: 通过  HashOperations 添加 hash 类型缓存
         HashOperations<String, Object, Object> hashOperations = redisTemplate.opsForHash();
         hashOperations.put("user02", "name", "zhangsan02");
-        hashOperations.put("user02", "age", "20");
+        hashOperations.put("user02", "age", "21");
         Map<Object, Object> user02 = hashOperations.entries("user02");
         String user02Name = (String) hashOperations.get("user02", "name");
         String user02Age = (String) hashOperations.get("user02", "age");
         log.info("RedisTemplate Hash, user02: {}, user02Name: {}, user02Age: {} .", JSON.toJSONString(user02), user02Name, user02Age);
-        // 方式三: 通过 redisTemplate.boundHashOps() 添加缓存, 即 BoundHashOperations 添加 Hash 类型
-        BoundHashOperations<String, Object, Object> boundHashOperations = redisTemplate.boundHashOps("user03");
-        boundHashOperations.put("name", "zhangsan03");
-        boundHashOperations.put("age", "23");
+        // 方式三: 通过 redisTemplate.boundHashOps() 添加缓存
+        redisTemplate.boundHashOps("user03").put("name", "zhangsan03");
+        redisTemplate.boundHashOps("user03").put("age", "22");
         Map<Object, Object> user03 = redisTemplate.boundHashOps("user03").entries();
         Set<Object> user03HashKeySet = redisTemplate.boundHashOps("user03").keys();
         List<Object> user03HashValueList = redisTemplate.boundHashOps("user03").values();
@@ -70,7 +69,17 @@ public class Redis_RedisTemplate_Controller {
         String user03Age = (String) redisTemplate.boundHashOps("user03").get("age");
         log.info("RedisTemplate Hash, user03: {}, user03HashKeySet: {}, user03HashValueList: {}, user03Name: {}, user03Age: {}",
                 JSON.toJSONString(user03), JSON.toJSONString(user03HashKeySet), JSON.toJSONString(user03HashValueList), user03Name, user03Age);
-
+        // 方式四: 通过  BoundHashOperations 添加缓存
+        BoundHashOperations<String, Object, Object> boundHashOperations = redisTemplate.boundHashOps("user04");
+        boundHashOperations.put("name", "zhangsan04");
+        boundHashOperations.put("age", "23");
+        Map<Object, Object> user04 = boundHashOperations.entries();
+        Set<Object> user04HashKeySet = boundHashOperations.keys();
+        List<Object> user04HashValueList = boundHashOperations.values();
+        String user04Name = (String) boundHashOperations.get("name");
+        String user04Age = (String) boundHashOperations.get("age");
+        log.info("RedisTemplate Hash, user04: {}, user04HashKeySet: {}, user04HashValueList: {}, user04Name: {}, user04Age: {}",
+                JSON.toJSONString(user04), JSON.toJSONString(user04HashKeySet), JSON.toJSONString(user04HashValueList), user04Name, user04Age);
         System.out.println("-------------- RedisTemplate Hash Type ------------------");
     }
 
