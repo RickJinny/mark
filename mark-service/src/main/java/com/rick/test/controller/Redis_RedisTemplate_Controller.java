@@ -31,6 +31,8 @@ public class Redis_RedisTemplate_Controller {
         stringType();
         // Hash 类型相关操作
         hashType();
+        // List 类型相关操作
+        listType();
         // Set 类型相关操作
         setType();
 
@@ -90,6 +92,13 @@ public class Redis_RedisTemplate_Controller {
         redisTemplate.delete("set_03");
 
         System.out.println("-------------- RedisTemplate Set Type ------------------");
+    }
+
+    /**
+     * List 类型相关操作
+     */
+    private void listType() {
+
     }
 
     /**
@@ -231,33 +240,5 @@ public class Redis_RedisTemplate_Controller {
 
         System.out.println("-------------- RedisTemplate String Type ------------------");
     }
-
-
-    /**
-     * 删除 key
-     */
-    private Boolean delete(String key) {
-        return redisTemplate.delete(key);
-    }
-
-    /**
-     * 指定 key 的失效时间
-     */
-    private Boolean expire(String key, long time) {
-        return redisTemplate.expire(key, time, TimeUnit.MINUTES);
-    }
-
-    /**
-     * 根据 key 获取过期时间
-     */
-    private Long getExpire(String key) {
-        return redisTemplate.getExpire(key);
-    }
-
-    /**
-     * 判断 key 是否存在
-     */
-    private Boolean hasKey(String key) {
-        return redisTemplate.hasKey(key);
-    }
+    
 }
