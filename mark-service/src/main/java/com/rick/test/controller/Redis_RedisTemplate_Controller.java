@@ -1,8 +1,10 @@
 package com.rick.test.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.google.common.collect.Lists;
 import com.rick.common.ServerResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.*;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -123,8 +125,45 @@ public class Redis_RedisTemplate_Controller {
         String list03Value01 = redisTemplate.boundListOps("list03").leftPop();
         log.info("listType, list03Value01: {} ", list03Value01);
 
-        // 2、
+        // 2、将 List 放入缓存
+        List<String> list = Lists.newArrayList();
+        list.add("q1");
+        list.add("q2");
+        list.add("q3");
+        redisTemplate.boundListOps("list04").rightPushAll(StringUtils.join(list, ","));
+        redisTemplate.boundListOps("list04").leftPushAll(StringUtils.join(list, ","));
 
+        // 3、获取 List 缓存的全部内容（起始索引 -> 结束索引）
+        List<String> list04 = redisTemplate.boundListOps("list04").range(0, 20);
+        log.info("listType, list04: {}", JSON.toJSONString(list04));
+
+        // 4、从左或右，弹出一个元素
+        String list04LeftValue = redisTemplate.boundListOps("list04").leftPop();
+        String list04RightValue = redisTemplate.boundListOps("list04").rightPop();
+        log.info("listType, list04LeftValue: {}, list04RightValue:{}.", list04LeftValue, list04RightValue);
+
+        // 5、根据索引查询元素
+        String list04_1_Value = redisTemplate.boundListOps("list04").index(1);
+        log.info("listType, list04_1_Value: {} .", list04_1_Value);
+
+        // 6、获取 List 缓存的长度
+        Long size = redisTemplate.boundListOps("list04").size();
+        log.info("listType, list04 size : {} ", size);
+
+        // 7、根据索引修改 List 中的某条数据 (key, 索引, 值)
+        redisTemplate.boundListOps("list04").set(2L, "修改第2个索引位置上值");
+        list04 = redisTemplate.boundListOps("list04").range(0, 20);
+        log.info("listType, list04: {}", JSON.toJSONString(list04));
+
+        // 8、移除 N 个值为 value(移除个数, 值)
+        redisTemplate.boundListOps("list04").remove(3L, "q1");
+        list04 = redisTemplate.boundListOps("list04").range(0, 20);
+        log.info("listType, list04: {}", JSON.toJSONString(list04));
+
+        // 9、设置过期时间
+        redisTemplate.expire("list04", 1, TimeUnit.MINUTES);
+        redisTemplate.boundListOps("list04").expire(1, TimeUnit.MINUTES);
+        
         System.out.println("-------------- RedisTemplate List Type ------------------");
     }
 
