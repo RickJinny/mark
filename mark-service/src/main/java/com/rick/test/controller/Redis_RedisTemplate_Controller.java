@@ -98,7 +98,27 @@ public class Redis_RedisTemplate_Controller {
      * List 类型相关操作
      */
     private void listType() {
+        System.out.println("-------------- RedisTemplate List Type ------------------");
+        // 1、添加缓存
+        // 通过 redisTemplate.opsForList() 设置缓存
+        ListOperations<String, String> listOperations = redisTemplate.opsForList();
+        listOperations.leftPush("list01", "aaa");
+        listOperations.rightPush("list01", "bbb");
+        listOperations.rightPush("list01", "ccc");
+        String list01Value = listOperations.leftPop("list01");
+        log.info("listType, list01Value: {} ", list01Value);
+        // 通过 BoundListOperations 设置缓存
+        BoundListOperations<String, String> boundListOperations = redisTemplate.boundListOps("list02");
+        boundListOperations.leftPush("111");
+        boundListOperations.leftPush("222");
+        boundListOperations.rightPush("333");
+        boundListOperations.rightPush("444");
+        String list02Value = boundListOperations.leftPop();
+        log.info("listType, list02Value: {} ", list02Value);
+        
 
+
+        System.out.println("-------------- RedisTemplate List Type ------------------");
     }
 
     /**
