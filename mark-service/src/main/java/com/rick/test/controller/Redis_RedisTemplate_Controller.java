@@ -1,10 +1,8 @@
 package com.rick.test.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.google.common.collect.Lists;
 import com.rick.common.ServerResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.*;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -125,13 +123,9 @@ public class Redis_RedisTemplate_Controller {
         String list03Value01 = redisTemplate.boundListOps("list03").leftPop();
         log.info("listType, list03Value01: {} ", list03Value01);
 
-        // 2、将 List 放入缓存
-        List<String> list = Lists.newArrayList();
-        list.add("q1");
-        list.add("q2");
-        list.add("q3");
-        redisTemplate.boundListOps("list04").rightPushAll(StringUtils.join(list, ","));
-        redisTemplate.boundListOps("list04").leftPushAll(StringUtils.join(list, ","));
+        // 2、缓存
+        redisTemplate.boundListOps("list04").rightPushAll("q1", "q2", "q3");
+        redisTemplate.boundListOps("list04").leftPushAll("q1", "q2", "q3");
 
         // 3、获取 List 缓存的全部内容（起始索引 -> 结束索引）
         List<String> list04 = redisTemplate.boundListOps("list04").range(0, 20);
