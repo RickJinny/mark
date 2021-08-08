@@ -1,6 +1,7 @@
 package com.rick.test.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.google.common.collect.Lists;
 import com.rick.common.ServerResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,10 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
@@ -35,8 +33,79 @@ public class Redis_RedisTemplate_Controller {
         listType();
         // Set 类型相关操作
         setType();
+        // ZSet 类型相关操作
+        zSetType();
 
         return ServerResponse.createBySuccess("success");
+    }
+
+    /**
+     * ZSet 类型相关操作
+     */
+    private void zSetType() {
+        System.out.println("-------------- RedisTemplate ZSet Type ------------------");
+        // 1、向集合中插入元素，并设置分数
+        // 通过 redisTemplate.opsForZSet() 设置缓存
+        ZSetOperations<String, String> zSetOperations = redisTemplate.opsForZSet();
+        zSetOperations.add("ZSet01", "a1", 100);
+        zSetOperations.add("ZSet01", "a2", 300);
+        zSetOperations.add("ZSet01", "a3", 350);
+        zSetOperations.add("ZSet01", "a4", 651);
+        Set<String> zSet01Set = redisTemplate.boundZSetOps("ZSet01").range(0, -1);
+        log.info("zSetType, zSet01 : {} ", JSON.toJSONString(zSet01Set));
+        // 通过 BoundZSetOperations 设置缓存
+        BoundZSetOperations<String, String> boundZSetOperations = redisTemplate.boundZSetOps("ZSet02");
+        boundZSetOperations.add("b1", 0.21D);
+        boundZSetOperations.add("b2", -0.1D);
+        boundZSetOperations.add("b3", 10.09D);
+        boundZSetOperations.add("b4", 26.92D);
+        Set<String> zSet02Set = redisTemplate.boundZSetOps("ZSet02").range(0, -1);
+        log.info("zSetType, zSet02 : {} ", JSON.toJSONString(zSet02Set));
+        // 通过 redisTemplate.boundZSetOps 设置缓存
+        redisTemplate.boundZSetOps("ZSet03").add("c1", -10.23D);
+        redisTemplate.boundZSetOps("ZSet03").add("c2", 13.13D);
+        redisTemplate.boundZSetOps("ZSet03").add("c3", 30.98D);
+        redisTemplate.boundZSetOps("ZSet03").add("c4", -40.78D);
+        Set<String> zSet03Set = redisTemplate.boundZSetOps("ZSet03").range(0, -1);
+        log.info("zSetType, zSet03 : {} ", JSON.toJSONString(zSet03Set));
+
+        // 2、向集合中插入多个元素，并设置分数
+        DefaultTypedTuple<String> defaultTypedTuple01 = new DefaultTypedTuple<>("d1", 3.9D);
+        DefaultTypedTuple<String> defaultTypedTuple02 = new DefaultTypedTuple<>("d2", 2.1D);
+        DefaultTypedTuple<String> defaultTypedTuple03 = new DefaultTypedTuple<>("d3", 1.4D);
+        DefaultTypedTuple<String> defaultTypedTuple04 = new DefaultTypedTuple<>("d4", -2.9D);
+        redisTemplate.boundZSetOps("ZSet04").add(new HashSet<>(Lists.newArrayList(defaultTypedTuple01,
+                defaultTypedTuple02, defaultTypedTuple03, defaultTypedTuple04)));
+        Set<String> zSet04Set = redisTemplate.boundZSetOps("ZSet04").range(0, -1);
+        log.info("zSetType, zSet04 : {} ", JSON.toJSONString(zSet04Set));
+
+        // 3、获取指定元素的分数
+        Double score = redisTemplate.boundZSetOps("ZSet01").score("a2");
+        log.info("zSetType, ZSet01 a2 score: {} ", score);
+
+        // 4、按照排名先后顺序（从小到大），打印指定区间内的元素。(-1为打印全部)
+        Set<String> zSet02 = redisTemplate.boundZSetOps("ZSet02").range(0, -1);
+        log.info("zSetType, zSet02 : {} ", JSON.toJSONString(zSet02));
+
+        // 5、返回集合内的成员个数
+        Long size = redisTemplate.boundZSetOps("zSet01").size();
+
+        // 6、返回集合内，指定分数范围的成员个数
+        Long zSet01Count = redisTemplate.boundZSetOps("zSet01").count(0D, 500D);
+        log.info("zSetType, zSet01 : {}, 分数在 0-500 之间的个数: {}", JSON.toJSONString(zSet01Set), zSet01Count);
+
+        // 7、返回集合内，元素在指定分数范围内的排名（从小到大）
+        Set<String> zSet01 = redisTemplate.boundZSetOps("zSet01").rangeByScore(0, 500D);
+        log.info("zSetType, zSet01 : {}, 分数在 0-500 之间的个数: {}, 排名: {} ", JSON.toJSONString(zSet01Set),
+                zSet01Count, JSON.toJSONString(zSet01));
+
+        // 8、返回集合内元素的排名，以及分数(从小到大)
+        Set<ZSetOperations.TypedTuple<String>> tuples = redisTemplate.boundZSetOps("zSet01").rangeWithScores(0L, 1000L);
+        for (ZSetOperations.TypedTuple<String> tuple : tuples) {
+            log.info("返回集合内元素的排名，以及分数(从小到大): " + tuple.getValue() + " : " + tuple.getScore());
+        }
+
+        System.out.println("-------------- RedisTemplate ZSet Type ------------------");
     }
 
     /**
