@@ -105,18 +105,25 @@ public class Redis_RedisTemplate_Controller {
         listOperations.leftPush("list01", "aaa");
         listOperations.rightPush("list01", "bbb");
         listOperations.rightPush("list01", "ccc");
-        String list01Value = listOperations.leftPop("list01");
-        log.info("listType, list01Value: {} ", list01Value);
+        String list01Value01 = listOperations.leftPop("list01");
+        log.info("listType, list01Value01: {} ", list01Value01);
         // 通过 BoundListOperations 设置缓存
         BoundListOperations<String, String> boundListOperations = redisTemplate.boundListOps("list02");
         boundListOperations.leftPush("111");
         boundListOperations.leftPush("222");
         boundListOperations.rightPush("333");
         boundListOperations.rightPush("444");
-        String list02Value = boundListOperations.leftPop();
-        log.info("listType, list02Value: {} ", list02Value);
-        
+        String list02Value01 = boundListOperations.leftPop();
+        log.info("listType, list02Value01: {} ", list02Value01);
+        // 通过 redisTemplate.boundListOps 来设置缓存
+        redisTemplate.boundListOps("list03").leftPush("1a1a");
+        redisTemplate.boundListOps("list03").leftPush("2b2b");
+        redisTemplate.boundListOps("list03").leftPush("3c3c");
+        redisTemplate.boundListOps("list03").leftPush("4d4d");
+        String list03Value01 = redisTemplate.boundListOps("list03").leftPop();
+        log.info("listType, list03Value01: {} ", list03Value01);
 
+        // 2、
 
         System.out.println("-------------- RedisTemplate List Type ------------------");
     }
