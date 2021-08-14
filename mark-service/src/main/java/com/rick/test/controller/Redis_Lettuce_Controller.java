@@ -59,7 +59,15 @@ public class Redis_Lettuce_Controller {
      * ZSet 类型相关操作
      */
     private void zSetType(RedisCommands<String, String> syncCommands) {
+        System.out.println("-------------- Lettuce ZSet Type ------------------");
+        syncCommands.zadd("lettuce_zset01", 100, "a1");
+        syncCommands.zadd("lettuce_zset01", 2100, "a2");
+        syncCommands.zadd("lettuce_zset01", 320, "a3");
+        syncCommands.zadd("lettuce_zset01", 790, "a4");
+        List<String> lettuceZSet01Value = syncCommands.zrange("lettuce_zset01", 0, -1);
+        log.info("Lettuce ZSet Type, lettuceZSet01Value: {} ", JSON.toJSONString(lettuceZSet01Value));
 
+        System.out.println("-------------- Lettuce ZSet Type ------------------");
     }
 
     /**
