@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -65,7 +66,11 @@ public class Redis_Lettuce_Controller {
      * Set 类型相关操作
      */
     private void setType(RedisCommands<String, String> syncCommands) {
-
+        System.out.println("-------------- Lettuce Set Type ------------------");
+        syncCommands.sadd("lettuce_set01", "111", "222", "333", "444", "555");
+        Set<String> lettuceSet01Value = syncCommands.smembers("lettuce_set01");
+        log.info("Lettuce Set Type, lettuceSet01Value: {} ", JSON.toJSONString(lettuceSet01Value));
+        System.out.println("-------------- Lettuce Set Type ------------------");
     }
 
     /**
