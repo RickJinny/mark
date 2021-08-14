@@ -1,5 +1,6 @@
 package com.rick.test.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.rick.common.ServerResponse;
 import io.lettuce.core.RedisClient;
 import io.lettuce.core.RedisURI;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -22,23 +25,84 @@ import java.util.concurrent.Executors;
 public class Redis_Lettuce_Controller {
 
     @ResponseBody
-    @PostMapping(value = "/test")
-    public ServerResponse<String> testRedisLettuce() {
+    @PostMapping(value = "/testSync")
+    public ServerResponse<String> testRedisLettuceSync() {
         RedisClient redisClient = RedisClient.create(RedisURI.Builder.redis("192.168.0.121", 6379).build());
         StatefulRedisConnection<String, String> connection = redisClient.connect();
 
         // 同步操作
         RedisCommands<String, String> syncCommands = connection.sync();
-        syncCommands.set("lettuce_key01", "xiaowang");
-        String value01 = syncCommands.get("lettuce_key01");
-        log.info("lettuce_key01: {}", value01);
-        // 同步操作，模拟抢票
-        useSyncCommands(syncCommands);
+        // 清空
+        syncCommands.flushall();
+        // String 类型相关操作
+        stringType(syncCommands);
+        // Hash 类型相关操作
+        hashType(syncCommands);
+        // List 类型相关操作
+        listType(syncCommands);
+        // Set 类型相关操作
+        setType(syncCommands);
+        // ZSet 类型相关操作
+        zSetType(syncCommands);
 
+        // 同步操作，模拟抢票
+        //  useSyncCommands(syncCommands);
 
         connection.close();
         redisClient.shutdown();
+
         return ServerResponse.createBySuccess("success");
+    }
+
+    /**
+     * ZSet 类型相关操作
+     */
+    private void zSetType(RedisCommands<String, String> syncCommands) {
+
+    }
+
+    /**
+     * Set 类型相关操作
+     */
+    private void setType(RedisCommands<String, String> syncCommands) {
+
+    }
+
+    /**
+     * List 类型相关操作
+     */
+    private void listType(RedisCommands<String, String> syncCommands) {
+
+    }
+
+    /**
+     * Hash 类型相关操作
+     */
+    private void hashType(RedisCommands<String, String> syncCommands) {
+        System.out.println("-------------- Lettuce Hash Type ------------------");
+        syncCommands.hset("lettuce_user01", "name", "zhangsan01");
+        syncCommands.hset("lettuce_user01", "age", "26");
+        List<String> lettuceUser01Keys = syncCommands.keys("lettuce_user01");
+        log.info("Lettuce Hash, lettuce_user01, keys: {} ", JSON.toJSONString(lettuceUser01Keys));
+        String lettuceUser01Name = syncCommands.hget("lettuce_user01", "name");
+        log.info("Lettuce Hash, lettuce_user01, name: {} ", lettuceUser01Name);
+        String lettuceUser01Age = syncCommands.hget("lettuce_user01", "age");
+        log.info("Lettuce Hash, lettuce_user01, age: {} ", lettuceUser01Age);
+        Map<String, String> map = syncCommands.hgetall("lettuce_user01");
+        log.info("Lettuce Hash, lettuce_user01: {} ", JSON.toJSONString(map));
+
+        System.out.println("-------------- Lettuce Hash Type ------------------");
+    }
+
+    /**
+     * String 类型相关操作
+     */
+    private void stringType(RedisCommands<String, String> syncCommands) {
+        System.out.println("-------------- Lettuce String Type ------------------");
+        syncCommands.set("lettuce_key01", "xiaowang");
+        String value01 = syncCommands.get("lettuce_key01");
+        log.info("lettuce_key01: {}", value01);
+        System.out.println("-------------- Lettuce String Type ------------------");
     }
 
     private void useSyncCommands(RedisCommands<String, String> syncCommands) {
