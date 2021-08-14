@@ -51,7 +51,6 @@ public class Redis_Lettuce_Controller {
 
         connection.close();
         redisClient.shutdown();
-
         return ServerResponse.createBySuccess("success");
     }
 
