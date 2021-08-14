@@ -72,7 +72,19 @@ public class Redis_Lettuce_Controller {
      * List 类型相关操作
      */
     private void listType(RedisCommands<String, String> syncCommands) {
+        System.out.println("-------------- Lettuce List Type ------------------");
+        syncCommands.lpush("list01", "aaa");
+        syncCommands.rpush("list01", "bbb");
+        syncCommands.rpush("list01", "ccc");
+        String list01Value01 = syncCommands.lpop("list01");
+        log.info("Lettuce List Type, list01Value01: {} ", list01Value01);
 
+        syncCommands.lpush("list02", "a1", "a2", "a3");
+        syncCommands.rpush("list02", "b1", "b2", "b3");
+        List<String> list02 = syncCommands.lrange("list02", 0, 20);
+        log.info("Lettuce List Type, list02: {} ", JSON.toJSONString(list02));
+
+        System.out.println("-------------- Lettuce List Type ------------------");
     }
 
     /**
