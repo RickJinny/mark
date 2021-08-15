@@ -42,7 +42,8 @@ public class Redis_Redisson_Controller {
         streamType(redissonClient);
         // AtomicLong
         atomicLongType(redissonClient);
-
+        // 限流器
+        rateLimiterType(redissonClient);
 
 
 
@@ -50,6 +51,32 @@ public class Redis_Redisson_Controller {
         redissonRxClient.shutdown();
         redissonClient.shutdown();
         return ServerResponse.createBySuccessMessage("success");
+
+    }
+
+    /**
+     * 限流器
+     */
+    private void rateLimiterType(RedissonClient redissonClient) throws InterruptedException {
+        RRateLimiter rateLimiter = redissonClient.getRateLimiter("rateLimiter");
+        // 初始化，最大流速：每 1 秒钟产生 5 个令牌
+        rateLimiter.trySetRate(RateType.OVERALL, 5, 1, RateIntervalUnit.SECONDS);
+        for (int i = 0; i < 10; i++) {
+            new Thread(new Runnable() {
+
+                int count = 0;
+
+                @Override
+                public void run() {
+                    while (true) {
+                        rateLimiter.acquire(1);
+                        System.out.println(Thread.currentThread() + "_" + System.currentTimeMillis() + "_" + count++);
+                    }
+                }
+            }).start();
+        }
+
+        Thread.sleep(1000);
 
     }
 
