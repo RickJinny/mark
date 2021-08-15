@@ -50,7 +50,7 @@ public class Redis_Redisson_Controller {
         // 同步操作
         RBucket<String> rBucket = client.getBucket("user01");
         rBucket.set("xiaowang01");
-        log.info("stringType rBucket user: {}", rBucket.get());
+        log.info("stringType rBucket user01: {}", rBucket.get());
 
         // 异步
         RBucket<String> rBucket2 = client.getBucket("user02");
@@ -65,7 +65,8 @@ public class Redis_Redisson_Controller {
         // RxJava
         RBucketRx<String> rBucketRx = rxClient.getBucket("user04");
         rBucketRx.set("xiaowang04");
-
+        log.info("stringType rBucket user04: {}", rBucketRx.get());
+        
         Thread.sleep(5000);
 
         System.out.println("-------------- Lettuce ZSet Type ------------------");
