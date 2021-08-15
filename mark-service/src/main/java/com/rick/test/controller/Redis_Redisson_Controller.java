@@ -44,7 +44,8 @@ public class Redis_Redisson_Controller {
         set(redissonClient);
         // RQueue 实现了 Queue 接口
         queue(redissonClient);
-
+        // 可重入锁 RLock 实现了 Lock 接口
+        lock(redissonClient);
         // bucket
         bucketType(redissonClient, redissonReactiveClient, redissonRxClient);
         // 二进制流
@@ -61,6 +62,29 @@ public class Redis_Redisson_Controller {
         redissonClient.shutdown();
         return ServerResponse.createBySuccessMessage("success");
 
+    }
+
+    /**
+     * 可重入锁: RLock 实现了 Lock 接口
+     */
+    private void lock(RedissonClient redissonClient) {
+        RLock rLock = redissonClient.getLock("lock");
+        for (int i = 0; i < 5; i++) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    rLock.lock();
+                    try {
+                        System.out.println(Thread.currentThread() + "_" + System.currentTimeMillis() + "_" + "获取了锁");
+                        Thread.sleep(500);
+                    } catch (Exception e) {
+                        log.error("error message: {} ", e.getMessage(), e);
+                    } finally {
+                        rLock.unlock();
+                    }
+                }
+            }).start();
+        }
     }
 
     /**
