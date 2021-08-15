@@ -43,7 +43,7 @@ public class Redis_Redisson_Controller {
         // AtomicLong
         atomicLongType(redissonClient);
         // 限流器
-        rateLimiterType(redissonClient);
+//        rateLimiterType(redissonClient);
 
 
 
@@ -76,7 +76,7 @@ public class Redis_Redisson_Controller {
             }).start();
         }
 
-        Thread.sleep(1000);
+        Thread.sleep(1000 * 5);
 
     }
 
