@@ -36,7 +36,16 @@ public class Redis_Redisson_Controller {
         redissonReactiveClient = Redisson.createReactive(config);
         redissonRxClient = Redisson.createRx(config);
 
-        // String 类型相关操作
+        // RList 实现了 List 接口
+        list(redissonClient);
+        // RMap 实现了 ConcurrentHashMap 接口 和 Map 接口
+        map(redissonClient);
+        // RSet 实现了 Set 接口
+        set(redissonClient);
+        // RQueue 实现了 Queue 接口
+        queue(redissonClient);
+
+        // bucket
         bucketType(redissonClient, redissonReactiveClient, redissonRxClient);
         // 二进制流
         streamType(redissonClient);
@@ -52,6 +61,56 @@ public class Redis_Redisson_Controller {
         redissonClient.shutdown();
         return ServerResponse.createBySuccessMessage("success");
 
+    }
+
+    /**
+     * RQueue 实现了 Queue 接口
+     */
+    private void queue(RedissonClient redissonClient) {
+        RQueue<String> rQueue = redissonClient.getQueue("queue");
+        rQueue.add("haha_01");
+        rQueue.add("haha_02");
+        rQueue.add("haha_03");
+        log.info("first queue poll: {} ", rQueue.poll());
+        log.info("second queue poll: {} ", rQueue.poll());
+    }
+
+    /**
+     * RSet 实现了 Set 接口
+     */
+    private void set(RedissonClient redissonClient) {
+        RSet<String> rSet = redissonClient.getSet("set");
+        rSet.add("aa");
+        rSet.add("bb");
+        rSet.add("cc");
+        rSet.forEach(System.out::println);
+    }
+
+    /**
+     * RMap 实现了 ConcurrentHashMap 接口 和 Map 接口
+     */
+    private void map(RedissonClient redissonClient) {
+        RMap<String, String> map = redissonClient.getMap("map");
+        map.put("name", "wangda");
+        map.put("age", "30");
+        map.put("sex", "男");
+        map.remove("sex");
+        map.forEach((key, value) -> System.out.println("key = " + key + " , value=" + value));
+    }
+
+    /**
+     * RList 实现了 List 接口
+     */
+    private void list(RedissonClient redissonClient) {
+        System.out.println("-------------- Redisson list Type ------------------");
+        RList<String> rList = redissonClient.getList("list");
+        rList.add("A01");
+        rList.add("B01");
+        rList.add("C01");
+        rList.add("D01");
+        rList.remove(1);
+        log.info("rList: {} ", JSON.toJSONString(rList));
+        System.out.println("-------------- Redisson list Type ------------------");
     }
 
     /**
