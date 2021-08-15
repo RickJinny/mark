@@ -28,8 +28,8 @@ public class Redis_Redisson_Controller {
     private RedissonRxClient redissonRxClient;
 
     @ResponseBody
-    @PostMapping(value = "/testRedissonSync")
-    public ServerResponse<String> testRedissonSync() throws Exception {
+    @PostMapping(value = "/testRedisson")
+    public ServerResponse<String> testRedisson() throws Exception {
         Config config = new Config();
         config.useSingleServer().setAddress("redis://192.168.0.121:6379");
         redissonClient = Redisson.create(config);
@@ -39,7 +39,9 @@ public class Redis_Redisson_Controller {
         // String 类型相关操作
         bucketType(redissonClient, redissonReactiveClient, redissonRxClient);
         // 二进制流
-        streamType(redissonClient, redissonReactiveClient, redissonRxClient);
+        streamType(redissonClient);
+        // AtomicLong
+        atomicLongType(redissonClient);
 
 
 
@@ -52,11 +54,20 @@ public class Redis_Redisson_Controller {
     }
 
     /**
+     * AtomicLong
+     */
+    private void atomicLongType(RedissonClient redissonClient) {
+        RAtomicLong atomicLong = redissonClient.getAtomicLong("atomicLong");
+        atomicLong.set(10);
+        atomicLong.incrementAndGet();
+        log.info("atomicLongType atomicLong: {} .", JSON.toJSONString(atomicLong));
+    }
+
+    /**
      * 二进制流
      * 提供了 InputStream 接口 和 OutputStream 接口的实现
      */
-    private void streamType(RedissonClient redissonClient, RedissonReactiveClient redissonReactiveClient,
-                            RedissonRxClient redissonRxClient) throws IOException {
+    private void streamType(RedissonClient redissonClient) throws IOException {
         System.out.println("-------------- Redisson stream Type ------------------");
         RBinaryStream rBinaryStream = redissonClient.getBinaryStream("stream");
         rBinaryStream.set("stream_user01".getBytes());
