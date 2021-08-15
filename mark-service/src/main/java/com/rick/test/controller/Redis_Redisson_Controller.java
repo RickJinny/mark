@@ -1,5 +1,6 @@
 package com.rick.test.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.rick.common.ServerResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.Redisson;
@@ -9,6 +10,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 @Slf4j
 @RestController
@@ -22,15 +28,18 @@ public class Redis_Redisson_Controller {
     private RedissonRxClient redissonRxClient;
 
     @ResponseBody
-    @PostMapping(value = "/testSync")
+    @PostMapping(value = "/testRedissonSync")
     public ServerResponse<String> testRedissonSync() throws Exception {
         Config config = new Config();
         config.useSingleServer().setAddress("redis://192.168.0.121:6379");
         redissonClient = Redisson.create(config);
         redissonReactiveClient = Redisson.createReactive(config);
         redissonRxClient = Redisson.createRx(config);
+
         // String 类型相关操作
-        stringType(redissonClient, redissonReactiveClient, redissonRxClient);
+        bucketType(redissonClient, redissonReactiveClient, redissonRxClient);
+        // 二进制流
+        streamType(redissonClient, redissonReactiveClient, redissonRxClient);
 
 
 
@@ -43,10 +52,33 @@ public class Redis_Redisson_Controller {
     }
 
     /**
-     * String 类型相关操作
+     * 二进制流
+     * 提供了 InputStream 接口 和 OutputStream 接口的实现
      */
-    private void stringType(RedissonClient client, RedissonReactiveClient reactiveClient, RedissonRxClient rxClient) throws Exception {
-        System.out.println("-------------- Lettuce ZSet Type ------------------");
+    private void streamType(RedissonClient redissonClient, RedissonReactiveClient redissonReactiveClient,
+                            RedissonRxClient redissonRxClient) throws IOException {
+        System.out.println("-------------- Redisson stream Type ------------------");
+        RBinaryStream rBinaryStream = redissonClient.getBinaryStream("stream");
+        rBinaryStream.set("stream_user01".getBytes());
+        OutputStream outputStream = rBinaryStream.getOutputStream();
+        outputStream.write("zhangsan".getBytes());
+
+        InputStream inputStream = rBinaryStream.getInputStream();
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        byte[] b = new byte[1024];
+        int len;
+        while ((len = inputStream.read(b)) != -1) {
+            byteArrayOutputStream.write(b, 0, len);
+        }
+        log.info("byteArrayOutputStream: {} .", JSON.toJSONString(byteArrayOutputStream));
+        System.out.println("-------------- Redisson stream Type ------------------");
+    }
+
+    /**
+     * 通用对象桶，可以同来存放任何类型的对象
+     */
+    private void bucketType(RedissonClient client, RedissonReactiveClient reactiveClient, RedissonRxClient rxClient) throws Exception {
+        System.out.println("-------------- Redisson bucket Type ------------------");
         // 同步操作
         RBucket<String> rBucket = client.getBucket("user01");
         rBucket.set("xiaowang01");
@@ -66,10 +98,10 @@ public class Redis_Redisson_Controller {
         RBucketRx<String> rBucketRx = rxClient.getBucket("user04");
         rBucketRx.set("xiaowang04");
         log.info("stringType rBucket user04: {}", rBucketRx.get());
-        
+
         Thread.sleep(5000);
 
-        System.out.println("-------------- Lettuce ZSet Type ------------------");
+        System.out.println("-------------- Redisson bucket Type ------------------");
     }
 
 }
