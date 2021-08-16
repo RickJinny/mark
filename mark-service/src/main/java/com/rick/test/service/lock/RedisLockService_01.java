@@ -117,19 +117,20 @@ public class RedisLockService_01 {
      */
     private boolean tryLock(String key, long time) {
         String lockKey = getLockKey(key);
-        long id = Thread.currentThread().getId();
+        long threadId = Thread.currentThread().getId();
         String uuid = UUID.randomUUID().toString();
         long timeout = Long.parseLong(liveTime);
         // 判断是当前线程是否持有锁，如果当前线程已经在 threadKeyMap 中，说明当前线程已经持有锁。
-        if (threadKeyMap.containsKey(id)) {
+        if (threadKeyMap.containsKey(threadId)) {
             return false;
         }
 
         try {
-            // 将当前线程的 id 作为 key, 放入到 threadKeyMap 中
-            threadKeyMap.put(id, uuid);
+            // 将当前线程的 threadId 作为 key, 放入到 threadKeyMap 中
+            threadKeyMap.put(threadId, uuid);
             // 给 lockKey 加锁，并设置超时时间为 timeout
             boolean success = add(lockKey, uuid, timeout);
+            // 如果加锁不成功，尝试再次加锁
             if (!success) {
                 long max = timeout;
                 long min = 50;
@@ -154,7 +155,7 @@ public class RedisLockService_01 {
             }
             return success;
         } catch (Exception e) {
-            threadKeyMap.remove(id);
+            threadKeyMap.remove(threadId);
             return false;
         }
     }
@@ -165,19 +166,21 @@ public class RedisLockService_01 {
      */
     public void unLock(String key) {
         key = getLockKey(key);
-        long id = Thread.currentThread().getId();
-        if (!threadKeyMap.containsKey(id)) {
+        long threadId = Thread.currentThread().getId();
+        // 删除锁，验证是不是自己的线程，如果不是的话，不能删除该锁，直接 true
+        if (!threadKeyMap.containsKey(threadId)) {
             return;
         }
 
         try {
-            String uuid = threadKeyMap.get(id);
+            // 根据 threadId，获取值，然后删除
+            String uuid = threadKeyMap.get(threadId);
             del(key, uuid);
         } catch (Exception e) {
-            threadKeyMap.remove(id);
+            threadKeyMap.remove(threadId);
         }
     }
-    
+
     private String getLockKey(String key) {
         return "prefix-" + key;
     }
