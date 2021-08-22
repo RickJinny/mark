@@ -5,8 +5,10 @@ import com.rick.test.dto.OrderDTO;
 import com.rick.test.service.mq.kafka.KafkaProducerService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.KafkaProducer;
+import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
+import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.stereotype.Service;
 
 import java.util.Properties;
@@ -23,9 +25,10 @@ public class KafkaProducerServiceImpl implements KafkaProducerService {
 
     public KafkaProducerServiceImpl() {
         properties = new Properties();
-        properties.put("bootstrap.servers", "192.168.0.121:9092");
-        properties.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
-        properties.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+        properties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "192.168.0.121:9092");
+        properties.put(ProducerConfig.ACKS_CONFIG, "all");
+        properties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
+        properties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         producer = new KafkaProducer<>(properties);
 //        producer.initTransactions();
     }
