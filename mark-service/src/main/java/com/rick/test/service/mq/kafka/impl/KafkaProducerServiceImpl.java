@@ -32,28 +32,27 @@ public class KafkaProducerServiceImpl implements KafkaProducerService {
         producer = new KafkaProducer<>(properties);
 //        producer.initTransactions();
     }
-
-
+    
     @Override
     public void send(OrderDTO order) {
         String orderJson = JSON.toJSONString(order);
         try {
             // 开启事务
-//            producer.beginTransaction();
+            // producer.beginTransaction();
             // 向 topic = "my_topic_01" 中, 发送消息
             ProducerRecord<String, String> producerRecord = new ProducerRecord<>(TOPIC, order.getId().toString(), orderJson);
             // 发送消息
             producer.send(producerRecord, (RecordMetadata recordMetadata, Exception exception) -> {
-//                if (exception != null) {
-//                    producer.abortTransaction();
-//                    throw new KafkaException(exception.getMessage() + ", data: " + producerRecord);
-//                }
+            //  if (exception != null) {
+            //     producer.abortTransaction();
+            //     throw new KafkaException(exception.getMessage() + ", data: " + producerRecord);
+            //  }
             });
             // 提交事务
-//            producer.commitTransaction();
+            // producer.commitTransaction();
 
         } catch (Exception e) {
-//            producer.abortTransaction();
+            // producer.abortTransaction();
         }
 
         log.info("------------- json: {} -------------", orderJson);
