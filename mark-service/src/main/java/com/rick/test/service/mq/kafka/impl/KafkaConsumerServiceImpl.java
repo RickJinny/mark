@@ -41,6 +41,7 @@ public class KafkaConsumerServiceImpl implements KafkaConsumerService {
 
     @Override
     public void consumeOrder() {
+        // 订阅 my_topic_01 主题
         consumer.subscribe(Collections.singleton(TOPIC));
         try {
             while (true) {
