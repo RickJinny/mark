@@ -5,9 +5,7 @@ import com.rick.test.dto.OrderDTO;
 import com.rick.test.service.mq.kafka.KafkaConsumerService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.*;
-import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.TopicPartition;
-import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
@@ -35,9 +33,9 @@ public class KafkaConsumerServiceImpl implements KafkaConsumerService {
         // properties.put("isolation.level", "read_committed");
         // properties.put("auto.offset.reset", "latest");
         properties.put("group.id", "rick-java");
-        properties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "192.168.0.121:9092");
-        properties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
-        properties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
+        properties.put("bootstrap.servers", "localhost:9092");
+        properties.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
+        properties.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
         consumer = new KafkaConsumer<>(properties);
     }
 
@@ -46,7 +44,7 @@ public class KafkaConsumerServiceImpl implements KafkaConsumerService {
         consumer.subscribe(Collections.singleton(TOPIC));
         try {
             while (true) {
-                // 拉取数据
+                // 拉取数据 : kafka 是拉数据的
                 ConsumerRecords<String, String> consumerRecords = consumer.poll(Duration.ofSeconds(1));
                 for (ConsumerRecord<String, String> consumerRecord : consumerRecords) {
                     OrderDTO orderDTO = JSON.parseObject(consumerRecord.value(), OrderDTO.class);
