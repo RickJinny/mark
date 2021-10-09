@@ -8,7 +8,7 @@ public class JoinTest {
         myThread.setObject(object);
         myThread.start();
 
-        synchronized (object) {
+        synchronized (MyThread.class) {
             for (int i = 0; i < 100; i++) {
                 if (i == 20) {
                     try {
