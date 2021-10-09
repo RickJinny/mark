@@ -12,7 +12,7 @@ public class Counter {
         return sum;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         int loop = 10000;
 
         // test single thread
@@ -39,11 +39,11 @@ public class Counter {
         thread01.start();
         thread02.start();
 
-        // Thread.sleep(300)
+        Thread.sleep(300);
         // 当前线程的线程组中的数量 > 2
-        while (Thread.activeCount() > 2) {
-            Thread.yield();
-        }
+//        while (Thread.activeCount() > 2) {
+//            Thread.yield();
+//        }
         System.out.println("multiple threads: " + counter2.getSum());
     }
 
