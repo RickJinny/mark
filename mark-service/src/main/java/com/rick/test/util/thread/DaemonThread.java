@@ -18,7 +18,7 @@ public class DaemonThread {
 
         Thread thread = new Thread(task);
         thread.setName("thread-aa");
-        thread.setDaemon(true);
+        thread.setDaemon(false);
         thread.start();
     }
 }
