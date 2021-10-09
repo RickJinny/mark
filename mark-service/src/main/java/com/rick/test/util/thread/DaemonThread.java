@@ -3,7 +3,7 @@ package com.rick.test.util.thread;
 public class DaemonThread {
 
     public static void main(String[] args) {
-        Runnable task = new Runnable() {
+        Runner01 task = new Runner01() {
             @Override
             public void run() {
                 try {
