@@ -4,7 +4,7 @@ public class Counter {
 
     private int sum = 0;
 
-    public void incr() {
+    public synchronized void incr() {
         sum++;
     }
 
