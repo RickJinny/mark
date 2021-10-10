@@ -15,8 +15,8 @@ public class FinalTest {
         Student student = new Student();
         student.setName("小明");
         student.setAge(20);
-        String student1 = getStudent(student);
-        System.out.println(student1);
+        String stu = getStudent(student);
+        System.out.println(stu);
     }
 
     public static String getStudent(final Student student) {
