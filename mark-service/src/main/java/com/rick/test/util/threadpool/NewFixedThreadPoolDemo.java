@@ -7,7 +7,7 @@ public class NewFixedThreadPoolDemo {
 
     public static void main(String[] args) {
         ExecutorService executorService = Executors.newFixedThreadPool(16);
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 50; i++) {
             final int no = i;
             executorService.execute(() -> {
                 try {

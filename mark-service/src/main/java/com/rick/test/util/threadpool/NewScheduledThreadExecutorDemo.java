@@ -9,7 +9,7 @@ public class NewScheduledThreadExecutorDemo {
     public static void main(String[] args) {
         ScheduledExecutorService executorService = Executors.newScheduledThreadPool(16);
 
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 50; i++) {
             final int no = i;
             Runnable runnable = new Runnable() {
                 @Override
