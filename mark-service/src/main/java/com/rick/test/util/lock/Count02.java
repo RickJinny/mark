@@ -1,34 +1,34 @@
 package com.rick.test.util.lock;
 
-import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-public class Count {
+public class Count02 {
 
-    private final ReentrantLock reentrantLock = new ReentrantLock();
+    private final ReentrantReadWriteLock readWriteLock = new ReentrantReadWriteLock();
 
     public void get() {
+        readWriteLock.readLock().lock();
         try {
-            reentrantLock.lock();
             System.out.println(Thread.currentThread().getName() + " get begin.");
             Thread.sleep(1000);
             System.out.println(Thread.currentThread().getName() + " get end.");
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            reentrantLock.unlock();
+            readWriteLock.readLock().unlock();
         }
     }
 
     public void put() {
+        readWriteLock.writeLock().lock();
         try {
-            reentrantLock.lock();
             System.out.println(Thread.currentThread().getName() + " put begin.");
             Thread.sleep(1000);
             System.out.println(Thread.currentThread().getName() + " put end.");
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            reentrantLock.unlock();
+            readWriteLock.writeLock().unlock();
         }
     }
 }
