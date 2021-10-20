@@ -2,7 +2,7 @@ package com.rick.test.util.tool;
 
 import java.util.concurrent.CountDownLatch;
 
-public class CountDownLatchDemo {
+public class CountDownLatchDemo01 {
 
     public static void main(String[] args) throws InterruptedException {
         CountDownLatch countDownLatch = new CountDownLatch(5);
