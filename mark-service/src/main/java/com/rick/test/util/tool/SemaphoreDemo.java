@@ -7,7 +7,7 @@ public class SemaphoreDemo {
     public static void main(String[] args) {
         int n = 8;
         // 5 是机器数目
-        Semaphore semaphore = new Semaphore(5);
+        Semaphore semaphore = new Semaphore(1);
         for (int i = 0; i < n; i++) {
             new Worker(i, semaphore).start();
         }
