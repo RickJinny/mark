@@ -28,7 +28,7 @@ public class SemaphoreDemo {
             try {
                 // 在子线程里控制资源占用
                 semaphore.acquire();
-                System.out.println("工人" + this.num + "占用一个机器在生产...");
+                System.out.println("工人" + this.num + "占用一个机器在生产..." + "  我是线程 " + Thread.currentThread().getName());
                 Thread.sleep(2000);
                 System.out.println("工人" + this.num + "释放出机器");
                 // 在子线程里控制释放资源占用
@@ -38,5 +38,4 @@ public class SemaphoreDemo {
             }
         }
     }
-
 }
