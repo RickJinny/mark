@@ -6,7 +6,7 @@ import java.util.concurrent.Executors;
 
 public class CountDownLatchDemo02 {
 
-    private final static int threadCount = 200;
+    private final static int threadCount = 20;
 
     public static void main(String[] args) throws InterruptedException {
         ExecutorService executorService = Executors.newCachedThreadPool();
