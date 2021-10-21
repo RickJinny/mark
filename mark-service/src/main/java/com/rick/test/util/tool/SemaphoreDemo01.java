@@ -2,7 +2,7 @@ package com.rick.test.util.tool;
 
 import java.util.concurrent.Semaphore;
 
-public class SemaphoreDemo {
+public class SemaphoreDemo01 {
 
     public static void main(String[] args) {
         int n = 8;
