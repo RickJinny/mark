@@ -6,7 +6,7 @@ public class LinkedHashMapDemo {
 
     public static void main(String[] args) {
         // 测试 HashMap
-        System.out.println("=====>1、test hash map");
+        System.out.println("=====> 1、test hash map");
         Map<String, String> hashMap = new HashMap<>();
         hashMap.put("name01", "haha01");
         hashMap.put("name02", "haha02");
@@ -21,7 +21,7 @@ public class LinkedHashMapDemo {
         }
 
         // 测试 LinkedHashMap
-        System.out.println("=====>2、test linked hash map");
+        System.out.println("=====> 2、test linked hash map");
         LinkedHashMap<String, String> linkedHashMap = new LinkedHashMap<>();
         linkedHashMap.put("name01", "haha01");
         linkedHashMap.put("name02", "haha02");
