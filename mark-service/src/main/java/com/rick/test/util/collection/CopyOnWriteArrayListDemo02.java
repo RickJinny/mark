@@ -49,7 +49,7 @@ public class CopyOnWriteArrayListDemo02 {
         }
     }
 
-    private class ListWriter implements Runnable {
+    private static class ListWriter implements Runnable {
 
         private List<String> mList;
 
