@@ -37,7 +37,7 @@ public class GCLogAnalysis {
     private static Object generateGarbage(int max) {
         int randomSize = random.nextInt(max);
         int type = randomSize % 4;
-        Object result = null;
+        Object result;
         switch (type) {
             case 0:
                 result = new int[randomSize];
