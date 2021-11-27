@@ -29,10 +29,12 @@ public class LambdaDemo {
         MathOperation mathOperation4 = (int a, int b) -> a / b;
 
         System.out.println("10 + 5 = " + lambdaDemo.operate(10, 5, mathOperation1));
-        System.out.println("10 - 5 = " + lambdaDemo.operate(10, 5, mathOperation1));
-        System.out.println("10 * 5 = " + lambdaDemo.operate(10, 5, mathOperation2));
-        System.out.println("10 / 5 = " + lambdaDemo.operate(10, 5, mathOperation3));
-        System.out.println("10 ^ 5 = " + lambdaDemo.operate(10, 5, mathOperation4));
+        System.out.println("10 - 5 = " + lambdaDemo.operate(10, 5, mathOperation2));
+        System.out.println("10 * 5 = " + lambdaDemo.operate(10, 5, mathOperation3));
+        System.out.println("10 / 5 = " + lambdaDemo.operate(10, 5, mathOperation4));
+
+        System.out.println("10 ^ 5 = " + lambdaDemo.operate(10, 5,
+                (a, b) -> new Double(Math.pow(a, b)).intValue()));
     }
 
 }
