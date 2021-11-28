@@ -1,5 +1,7 @@
 package com.rick.test.util.spring01;
 
+import java.util.Arrays;
+
 public class LambdaDemo {
 
     /**
@@ -37,6 +39,11 @@ public class LambdaDemo {
 
         System.out.println("10 ^ 5 = " + lambdaDemo.operate(10, 5,
                 (a, b) -> new Double(Math.pow(a, b)).intValue()));
+
+
+        Arrays.asList(1, 2, 3, 4).forEach(a -> System.out.println(a + 3));
+        Arrays.asList(1, 2, 3, 4).forEach(System.out::print);
+
     }
 
 }
