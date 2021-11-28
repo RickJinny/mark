@@ -3,6 +3,9 @@ package com.rick.test.util.spring01;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
+/**
+ * 怎么输出一个泛型，去找这个泛型
+ */
 public class GenericDemo {
 
     public static class Person<T> {
