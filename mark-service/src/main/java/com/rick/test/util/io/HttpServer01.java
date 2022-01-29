@@ -30,7 +30,7 @@ public class HttpServer01 {
             printWriter.close();
             socket.close();
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
     }
 
